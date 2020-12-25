@@ -2,10 +2,10 @@
 % Please edit documentation in R/models.R
 \name{fit_models}
 \alias{fit_models}
-\alias{fit_mod_delivery}
+\alias{fit_births.total}
 \title{Fit the models}
 \usage{
-fit_mod_delivery(
+fit_births.total(
   mother_level_data = NULL,
   args_spaMM = list(),
   verbose = FALSE
@@ -27,6 +27,6 @@ They have been programmed to be used with our specific data structure.
 }
 \section{Functions}{
 \itemize{
-\item \code{fit_mod_delivery}: Fit the model predicting the total number of births per mother from her twinning status
+\item \code{fit_births.total}: Fit the model predicting the total number of births per mother from her twinning status
 }}
 

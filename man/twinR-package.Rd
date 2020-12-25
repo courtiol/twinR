@@ -50,7 +50,7 @@ export_table_xlsx(tableS16, file = "tables/tableS16.xlsx")
 #----------------------------------------------------------------------------
 #----------------------- Fitting models -------------------------------------
 #----------------------------------------------------------------------------
-fit1 <- fit_mod_delivery(data_mothers_monthly)
+fit1 <- fit_births.total(data_mothers_monthly)
 
 
 }

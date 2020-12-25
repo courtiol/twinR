@@ -13,10 +13,9 @@
 NULL
 
 #' @describeIn fit_models Fit the model predicting the total number of births per mother from her twinning status
-
 #' @export
 #'
-fit_mod_delivery <- function(mother_level_data = NULL, args_spaMM = list(), verbose = FALSE) {
+fit_births.total <- function(mother_level_data = NULL, args_spaMM = list(), verbose = FALSE) {
 
   formula <- paste0("births_total ~ 1 + twinner + (1|pop)")
 
