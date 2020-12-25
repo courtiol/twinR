@@ -12,7 +12,7 @@ This dataset contains the raw data associated with 116,082 birth events.
 It contains the following variables:
 \itemize{
 \item \code{pop} a factor with 9 levels defining the population
-\item \code{maternalID} a factor with 23,281 levels defining the identity of the mothers
+\item \code{maternal_id} a factor with 23,281 levels defining the identity of the mothers
 \item \code{maternal_birthyear} the year when the mother was born
 \item \code{maternal_age} the age of the mother (in months)
 \item \code{birth_year} the year when a given birth occurred

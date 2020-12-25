@@ -15,7 +15,7 @@ build_summary_table <- function(data) {
 
   ## add total births and twinning status to the data:
   data %>%
-    dplyr::group_by(.data$pop, .data$maternalID) %>%
+    dplyr::group_by(.data$pop, .data$maternal_id) %>%
     dplyr::mutate(total_births = dplyr::n(),
                   twinners     = any(.data$birth_twin),
                   nontwinners  = all(!.data$birth_twin)) %>%
@@ -33,9 +33,9 @@ build_summary_table <- function(data) {
     dplyr::group_by(.data$pop) %>%
     dplyr::summarise(
       "Maternal birth period" = paste(min(floor(.data$maternal_birthyear), na.rm = TRUE), "-", max(floor(.data$maternal_birthyear), na.rm = TRUE), sep = ""),
-      "Mothers" = length(unique(.data$maternalID)),
-      "Non-twinners" = length(unique(.data$maternalID[.data$nontwinners])),
-      "Twinners" = length(unique(.data$maternalID[.data$twinners])),
+      "Mothers" = length(unique(.data$maternal_id)),
+      "Non-twinners" = length(unique(.data$maternal_id[.data$nontwinners])),
+      "Twinners" = length(unique(.data$maternal_id[.data$twinners])),
       "Twinner rate (\u2030)" = round(.data$Twinners / (.data$Twinners + .data$`Non-twinners`)* 1000, digits = 2L),
       "Offspring birth period" = paste(min(.data$birth_year, na.rm = TRUE), "-", max(.data$birth_year, na.rm = TRUE), sep = ""),
       "Births" = dplyr::n(),
@@ -83,9 +83,9 @@ build_summary_table <- function(data) {
   tibble::tibble("Population" = "All the above",
                  "Locations" = "All the above",
                  "Maternal birth period" = paste(min(floor(data$maternal_birthyear), na.rm = TRUE), "-", max(floor(data$maternal_birthyear), na.rm = TRUE), sep = ""),
-                 "Mothers" = length(unique(data$maternalID)),
-                 "Non-twinners" = length(unique(data$maternalID[data$nontwinners])),
-                 "Twinners" = length(unique(data$maternalID[data$twinners])),
+                 "Mothers" = length(unique(data$maternal_id)),
+                 "Non-twinners" = length(unique(data$maternal_id[data$nontwinners])),
+                 "Twinners" = length(unique(data$maternal_id[data$twinners])),
                  "Twinner rate (\u2030)" = round(.data$Twinners / (.data$Twinners + .data$`Non-twinners`)* 1000, digits = 2L),
                  "Offspring birth period" = paste(min(data$birth_year, na.rm = TRUE), "-", max(data$birth_year, na.rm = TRUE), sep = ""),
                  "Births" = nrow(data),

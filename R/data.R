@@ -3,7 +3,7 @@
 #' This dataset contains the raw data associated with 116,082 birth events.
 #' It contains the following variables:
 #' - `pop` a factor with 9 levels defining the population
-#' - `maternalID` a factor with 23,281 levels defining the identity of the mothers
+#' - `maternal_id` a factor with 23,281 levels defining the identity of the mothers
 #' - `maternal_birthyear` the year when the mother was born
 #' - `maternal_age` the age of the mother (in months)
 #' - `birth_year` the year when a given birth occurred
@@ -39,7 +39,7 @@ NULL
 filter_data <- function(data) {
   data %>%
     dplyr::filter(.data$monthly) %>%
-    dplyr::group_by(.data$maternalID) %>%
+    dplyr::group_by(.data$maternal_id) %>%
     dplyr::filter(dplyr::across(tidyselect::everything(), ~ !is.na(.x))) %>%
     dplyr::ungroup() %>%
     droplevels()
