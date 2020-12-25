@@ -20,8 +20,11 @@
 #' #----------------------- Preparing datasets ---------------------------------
 #' #----------------------------------------------------------------------------
 #'
-#' ## Filter the raw data to only keep data with monthly resolution
+#' ## Filter the raw data to only keep data with monthly resolution:
 #' data_births_monthly <- filter_data(data_births_all)
+#'
+#' ## Aggregate the data at the level of mothers:
+#' data_mothers_monthly <- aggregate_data(data_births_monthly)
 #'
 #'
 #'
@@ -32,7 +35,6 @@
 #' dir.create("tables") # create a folder to store the tables
 #'
 #' ## Create table 1:
-#'
 #' table1 <- build_summary_table(data_births_monthly)
 #' table1
 #' export_table_xlsx(table1, file = "tables/table1.xlsx")

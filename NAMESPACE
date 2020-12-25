@@ -2,6 +2,7 @@
 
 export("%>%")
 export(.onAttach)
+export(aggregate_data)
 export(build_summary_table)
 export(export_table_xlsx)
 export(filter_data)

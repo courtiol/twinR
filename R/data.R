@@ -44,3 +44,30 @@ filter_data <- function(data) {
     dplyr::ungroup() %>%
     droplevels()
 }
+
+
+#' Aggregate birth-level data into mother-level data
+#'
+#' This function aggregates the data so that each row corresponds to a single mother.
+#'
+#' @param birth_level_data the dataset to aggregate
+#'
+#' @return a `tibble`
+#' @export
+#'
+#' @examples
+#' aggregate_data(data_births_all)
+#'
+aggregate_data <- function(birth_level_data) {
+  birth_level_data %>%
+    dplyr::group_by(.data$maternal_id) %>%
+    dplyr::summarize(births_total = dplyr::n(),
+                     births_total_fac = as.factor(ifelse(.data$births_total < 10, as.character(.data$births_total), "10+")),
+                     twinner = any(.data$birth_twin),
+                     first_twinner = .data$birth_twin[1],
+                     twin_total = sum(.data$birth_twin),
+                     singleton_total = sum(!.data$birth_twin),
+                     AFB = .data$maternal_age[1]/12) %>%
+    dplyr::ungroup()
+}
+
