@@ -1,11 +1,11 @@
 test_that("full data are fine", {
   job <- digest::digest(data_births_all)
-  ref <- "dbae070d28185106e600a52c1d106c73"
+  ref <- "d15966ed5666ba27a1351506ae9309f6"
   expect_equal(job, ref)
 })
 
 test_that("clean data are fine", {
   job <- digest::digest(filter_data(data_births_all))
-  ref <- "b99ad0fa1210ea20e36c8eec032014d0"
+  ref <- "a2b59696cf81876935b1919856c3bb33"
   expect_equal(job, ref)
 })

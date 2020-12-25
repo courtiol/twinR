@@ -60,7 +60,7 @@ filter_data <- function(birth_level_data) {
 #'
 aggregate_data <- function(birth_level_data) {
   birth_level_data %>%
-    dplyr::group_by(.data$maternal_id) %>%
+    dplyr::group_by(.data$pop, .data$maternal_id) %>%
     dplyr::summarize(births_total = dplyr::n(),
                      births_total_fac = as.factor(ifelse(.data$births_total < 10, as.character(.data$births_total), "10+")),
                      twinner = any(.data$birth_twin),
