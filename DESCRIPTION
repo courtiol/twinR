@@ -1,0 +1,27 @@
+Package: twinR
+Type: Package
+Title: A Supporting R Package for the Paper "Twinners in pre-industrial Europe: more babies but fewer births"
+Version: 0.9999
+Authors@R: c(person("Alexandre", "Courtiol", email = "courtiol@izw-berlin.de", role = c("cre", "aut"), comment = c(ORCID = "0000-0003-0637-2959")),
+             person("François", "Rousset", email = "francois.rousset@umontpellier.fr", role = "aut", comment = c(ORCID = "0000-0003-4670-0371")),
+             person("Ian", "Rickard", email = "ian.rickard@durham.ac.uk", role = "aut", comment = c(ORCID = "0000-0003-0762-1689")),
+             person("Colin", "Vullioud", email = "colin.vullioud@posteo.org", role = "aut", comment = c(ORCID = "0000-0001-9218-1571")))
+Description: This package contains the code necessary to produce the results of the paper "Twinners in pre-industrial Europe: more babies but fewer births".
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
+Depends:
+    R (>= 3.5.0)
+Imports:
+    dplyr (>= 1.0),
+    magrittr,
+    rlang,
+    spaMM (>= 3.1.18),
+    tibble,
+    tidyselect
+Suggests:
+    openxlsx,
+    testthat,
+    digest
