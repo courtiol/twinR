@@ -49,8 +49,9 @@
 #' #----------------------------------------------------------------------------
 #' #----------------------- Fitting models -------------------------------------
 #' #----------------------------------------------------------------------------
-#' fit1 <- fit_births.total(data_mothers_monthly)
-#'
+#' fit1 <- fit_births.total(data_mothers_monthly, when_twinner = "allbirths")
+#' fit2 <- fit_twinner(data_mothers_monthly)
+#' fit3 <- fit_births.total(data_mothers_monthly, when_twinner = "firstbirth")
 #'
 #' }
 #'

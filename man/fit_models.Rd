@@ -3,16 +3,22 @@
 \name{fit_models}
 \alias{fit_models}
 \alias{fit_births.total}
+\alias{fit_twinner}
 \title{Fit the models}
 \usage{
 fit_births.total(
   mother_level_data = NULL,
+  when_twinner = "allbirths",
   args_spaMM = list(),
-  verbose = FALSE
+  verbose = TRUE
 )
+
+fit_twinner(mother_level_data = NULL, args_spaMM = list(), verbose = TRUE)
 }
 \arguments{
 \item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}
+
+\item{when_twinner}{a string of characters indicating if the twinner status is based on all births ('allbirths') or just on the first one ('firstbirth')}
 
 \item{args_spaMM}{list of additional arguments to pass to the function \code{\link[spaMM:fitme]{fitme}}}
 
@@ -28,5 +34,7 @@ They have been programmed to be used with our specific data structure.
 \section{Functions}{
 \itemize{
 \item \code{fit_births.total}: Fit the model predicting the total number of births per mother from her twinning status
+
+\item \code{fit_twinner}: Fit the model predicting the twining status of the mother from her total number of births
 }}
 
