@@ -4,10 +4,10 @@
 \alias{build_summary_table}
 \title{Create data summary tables}
 \usage{
-build_summary_table(data)
+build_summary_table(birth_level_data)
 }
 \arguments{
-\item{data}{the dataset to summarize}
+\item{birth_level_data}{the dataset to summarize}
 }
 \value{
 a \code{tibble}

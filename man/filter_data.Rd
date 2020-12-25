@@ -4,10 +4,10 @@
 \alias{filter_data}
 \title{Filter the full data to retain full records}
 \usage{
-filter_data(data)
+filter_data(birth_level_data)
 }
 \arguments{
-\item{data}{the dataset to filter}
+\item{birth_level_data}{the dataset to filter}
 }
 \value{
 a \code{tibble}

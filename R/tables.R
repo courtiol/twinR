@@ -3,7 +3,7 @@
 #'
 #' This function is used to create the tables providing the details of the data used in the study.
 #'
-#' @param data the dataset to summarize
+#' @param birth_level_data the dataset to summarize
 #'
 #' @return a `tibble`
 #' @export
@@ -11,10 +11,10 @@
 #' @examples
 #' build_summary_table(data_births_all)
 #'
-build_summary_table <- function(data) {
+build_summary_table <- function(birth_level_data) {
 
   ## add total births and twinning status to the data:
-  data %>%
+  birth_level_data %>%
     dplyr::group_by(.data$pop, .data$maternal_id) %>%
     dplyr::mutate(total_births = dplyr::n(),
                   twinners     = any(.data$birth_twin),

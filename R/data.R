@@ -26,7 +26,7 @@ NULL
 #' This function only keeps information from mothers with complete life history
 #' and for which dates have been recorded at a monthly resolution.
 #'
-#' @param data the dataset to filter
+#' @param birth_level_data the dataset to filter
 
 #' @importFrom rlang .data
 #'
@@ -36,8 +36,8 @@ NULL
 #' @examples
 #' filter_data(data_births_all)
 #'
-filter_data <- function(data) {
-  data %>%
+filter_data <- function(birth_level_data) {
+  birth_level_data %>%
     dplyr::filter(.data$monthly) %>%
     dplyr::group_by(.data$maternal_id) %>%
     dplyr::filter(dplyr::across(tidyselect::everything(), ~ !is.na(.x))) %>%
