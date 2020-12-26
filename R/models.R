@@ -57,3 +57,22 @@ fit_twinner.allbirths <- function(mother_level_data = NULL, args_spaMM = list(),
 
   fit
 }
+
+
+#' @describeIn fit_models fit the model predicting the twinning status of the mother at first birth from her total number of births
+#' @export
+#'
+fit_twinner.firstbirth <- function(mother_level_data = NULL, args_spaMM = list(), verbose = TRUE) {
+
+  formula <- "first_twinner ~ 1 + births_total + (1|pop)"
+
+  if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
+
+  args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
+  args <- c(args, args_spaMM)
+  fit <- do.call(spaMM::fitme, args = args)
+
+  if (verbose) print("done!")
+
+  fit
+}
