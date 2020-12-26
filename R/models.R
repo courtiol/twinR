@@ -2,6 +2,7 @@
 #'
 #' These functions fit the models used in the paper.
 #' They have been programmed to be used with our specific data structure.
+#' See **Functions**, below, for details on each function.
 #'
 #' @name fit_models
 #' @param mother_level_data a `tibble` or `data.frame` with mother level data
@@ -9,14 +10,17 @@
 #' @param verbose whether to display the formula of the fit during the fitting procedure
 #'
 #' @return the fitted model
+#' @examples
+#' # See ?twinR
 #'
 NULL
 
-#' @describeIn fit_models Fit the model predicting the total number of births per mother from her twinning status
-#' @param when_twinner a string of characters indicating if the twinner status is based on all births ('allbirths') or just on the first one ('firstbirth')
+
+#' @describeIn fit_models fit the model predicting the total number of births per mother from her twinning status
+#' @param when_twinner a string of characters indicating if the twinning status is based on all births ('allbirths') or just on the first one ('firstbirth')
 #' @export
 #'
-fit_births.total <- function(mother_level_data = NULL, when_twinner = "allbirths", args_spaMM = list(), verbose = TRUE) {
+fit_totalbirths <- function(mother_level_data = NULL, when_twinner = "allbirths", args_spaMM = list(), verbose = TRUE) {
 
   if (when_twinner == "allbirths") {
     formula <- "births_total ~ 1 + twinner + (1|pop)"
@@ -36,10 +40,10 @@ fit_births.total <- function(mother_level_data = NULL, when_twinner = "allbirths
 }
 
 
-#' @describeIn fit_models Fit the model predicting the twining status of the mother from her total number of births
+#' @describeIn fit_models fit the model predicting the twinning status of the mother at any birth during her life from her total number of births
 #' @export
 #'
-fit_twinner <- function(mother_level_data = NULL, args_spaMM = list(), verbose = TRUE) {
+fit_twinner.allbirths <- function(mother_level_data = NULL, args_spaMM = list(), verbose = TRUE) {
 
   formula <- "twinner ~ 1 + births_total + (1|pop)"
 
