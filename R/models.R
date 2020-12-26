@@ -97,3 +97,21 @@ fit_twinning.prob <- function(mother_level_data = NULL, args_spaMM = list(), ver
   fit
 }
 
+
+#' @describeIn fit_models fit the model predicting the age at first birth from the twinning status and the total number of births
+#' @export
+#'
+fit_AFB <- function(mother_level_data = NULL, args_spaMM = list(), verbose = FALSE) {
+
+  formula <- "AFB ~ 1 + twinner * births_total_fac + (1|pop)"
+
+  args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = spaMM::negbin(link = "log"), method = "PQL/L")
+  args <- c(args, args_spaMM)
+
+  fit <- do.call(spaMM::fitme, args = args)
+
+  if (verbose) print("done!")
+
+  fit
+}
+

@@ -6,6 +6,7 @@
 \alias{fit_twinner.allbirths}
 \alias{fit_twinner.firstbirth}
 \alias{fit_twinning.prob}
+\alias{fit_AFB}
 \title{Fit the models}
 \usage{
 fit_totalbirths(
@@ -32,6 +33,8 @@ fit_twinning.prob(
   args_spaMM = list(),
   verbose = FALSE
 )
+
+fit_AFB(mother_level_data = NULL, args_spaMM = list(), verbose = FALSE)
 }
 \arguments{
 \item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}
@@ -59,6 +62,8 @@ See \strong{Functions}, below, for details on each function.
 \item \code{fit_twinner.firstbirth}: fit the model predicting the twinning status of the mother at first birth from her total number of births
 
 \item \code{fit_twinning.prob}: fit the model predicting the probability of a birth to result in twins from the total number of births
+
+\item \code{fit_AFB}: fit the model predicting the age at first birth from the twinning status and the total number of births
 }}
 
 \examples{

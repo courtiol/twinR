@@ -62,12 +62,12 @@ aggregate_data <- function(birth_level_data) {
   birth_level_data %>%
     dplyr::group_by(.data$pop, .data$maternal_id) %>%
     dplyr::summarize(births_total = dplyr::n(),
-                     births_total_fac = as.factor(ifelse(.data$births_total < 10, as.character(.data$births_total), "10+")),
+                     births_total_fac = factor(ifelse(.data$births_total < 10, as.character(.data$births_total), "10+"), levels = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10+")),
                      twinner = any(.data$birth_twin),
                      first_twinner = .data$birth_twin[1],
                      twin_total = sum(.data$birth_twin),
                      singleton_total = sum(!.data$birth_twin),
-                     AFB = .data$maternal_age[1]/12) %>%
+                     AFB = .data$maternal_age[1]) %>%
     dplyr::ungroup()
 }
 
