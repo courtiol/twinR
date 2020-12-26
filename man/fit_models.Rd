@@ -10,31 +10,19 @@
 \title{Fit the models}
 \usage{
 fit_totalbirths(
-  mother_level_data = NULL,
+  mother_level_data,
   when_twinner = "allbirths",
   args_spaMM = list(),
   verbose = TRUE
 )
 
-fit_twinner.allbirths(
-  mother_level_data = NULL,
-  args_spaMM = list(),
-  verbose = TRUE
-)
+fit_twinner.allbirths(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
-fit_twinner.firstbirth(
-  mother_level_data = NULL,
-  args_spaMM = list(),
-  verbose = TRUE
-)
+fit_twinner.firstbirth(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
-fit_twinning.prob(
-  mother_level_data = NULL,
-  args_spaMM = list(),
-  verbose = FALSE
-)
+fit_twinning.prob(mother_level_data, args_spaMM = list(), verbose = FALSE)
 
-fit_AFB(mother_level_data = NULL, args_spaMM = list(), verbose = FALSE)
+fit_AFB(mother_level_data, args_spaMM = list(), verbose = FALSE)
 }
 \arguments{
 \item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}

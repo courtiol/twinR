@@ -20,7 +20,7 @@ NULL
 #' @param when_twinner a string of characters indicating if the twinning status is based on all births ('allbirths') or just on the first one ('firstbirth')
 #' @export
 #'
-fit_totalbirths <- function(mother_level_data = NULL, when_twinner = "allbirths", args_spaMM = list(), verbose = TRUE) {
+fit_totalbirths <- function(mother_level_data, when_twinner = "allbirths", args_spaMM = list(), verbose = TRUE) {
 
   if (when_twinner == "allbirths") {
     formula <- "births_total ~ 1 + twinner + (1|pop)"
@@ -43,7 +43,7 @@ fit_totalbirths <- function(mother_level_data = NULL, when_twinner = "allbirths"
 #' @describeIn fit_models fit the model predicting the twinning status of the mother at any birth during her life from her total number of births
 #' @export
 #'
-fit_twinner.allbirths <- function(mother_level_data = NULL, args_spaMM = list(), verbose = TRUE) {
+fit_twinner.allbirths <- function(mother_level_data, args_spaMM = list(), verbose = TRUE) {
 
   formula <- "twinner ~ 1 + births_total + (1|pop)"
 
@@ -62,7 +62,7 @@ fit_twinner.allbirths <- function(mother_level_data = NULL, args_spaMM = list(),
 #' @describeIn fit_models fit the model predicting the twinning status of the mother at first birth from her total number of births
 #' @export
 #'
-fit_twinner.firstbirth <- function(mother_level_data = NULL, args_spaMM = list(), verbose = TRUE) {
+fit_twinner.firstbirth <- function(mother_level_data, args_spaMM = list(), verbose = TRUE) {
 
   formula <- "first_twinner ~ 1 + births_total + (1|pop)"
 
@@ -81,7 +81,7 @@ fit_twinner.firstbirth <- function(mother_level_data = NULL, args_spaMM = list()
 #' @describeIn fit_models fit the model predicting the probability of a birth to result in twins from the total number of births
 #' @export
 #'
-fit_twinning.prob <- function(mother_level_data = NULL, args_spaMM = list(), verbose = FALSE) {
+fit_twinning.prob <- function(mother_level_data, args_spaMM = list(), verbose = FALSE) {
 
   formula <- "cbind(twin_total, singleton_total) ~ 1 + births_total + (1|pop)"
 
@@ -101,7 +101,7 @@ fit_twinning.prob <- function(mother_level_data = NULL, args_spaMM = list(), ver
 #' @describeIn fit_models fit the model predicting the age at first birth from the twinning status and the total number of births
 #' @export
 #'
-fit_AFB <- function(mother_level_data = NULL, args_spaMM = list(), verbose = FALSE) {
+fit_AFB <- function(mother_level_data, args_spaMM = list(), verbose = FALSE) {
 
   formula <- "AFB ~ 1 + twinner * births_total_fac + (1|pop)"
 
