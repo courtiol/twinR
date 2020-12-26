@@ -5,6 +5,7 @@
 \alias{fit_totalbirths}
 \alias{fit_twinner.allbirths}
 \alias{fit_twinner.firstbirth}
+\alias{fit_twinning.prob}
 \title{Fit the models}
 \usage{
 fit_totalbirths(
@@ -24,6 +25,12 @@ fit_twinner.firstbirth(
   mother_level_data = NULL,
   args_spaMM = list(),
   verbose = TRUE
+)
+
+fit_twinning.prob(
+  mother_level_data = NULL,
+  args_spaMM = list(),
+  verbose = FALSE
 )
 }
 \arguments{
@@ -50,6 +57,8 @@ See \strong{Functions}, below, for details on each function.
 \item \code{fit_twinner.allbirths}: fit the model predicting the twinning status of the mother at any birth during her life from her total number of births
 
 \item \code{fit_twinner.firstbirth}: fit the model predicting the twinning status of the mother at first birth from her total number of births
+
+\item \code{fit_twinning.prob}: fit the model predicting the probability of a birth to result in twins from the total number of births
 }}
 
 \examples{

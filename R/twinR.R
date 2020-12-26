@@ -54,6 +54,7 @@
 #' fit2 <- fit_twinner.allbirths(data_mothers_monthly)
 #' fit3 <- fit_totalbirths(data_mothers_monthly, when_twinner = "firstbirth")
 #' fit4 <- fit_twinner.firstbirth(data_mothers_monthly)
+#' fit5 <- fit_twinning.prob(data_mothers_monthly)
 #'
 #' }
 #'
