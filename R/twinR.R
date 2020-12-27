@@ -117,7 +117,7 @@
 #' #------------------------------------------------------------------------------------------------
 #' # See ?predictions for details on the underlying functions doing the job
 #'
-#' ## Computing extra births to twinners (at any birth):
+#' ## Computing extra (total) births to twinners (at any birth):
 #'
 #' effect_twinner_on_births <- compare_predictions(fit_01,
 #'                                                 newdata = data.frame(twinner = c(FALSE, TRUE)),
@@ -159,7 +159,7 @@
 #' #1    0.934 0.895 0.971
 #'
 #'
-#' ## Slope of the relationship between per-birth twinning probability and maternal total births:
+#' ## Slope of the relationship between per-birth twinning probability and maternal births:
 #'
 #' main_slope <- fixef(fit_05)["births_total"]
 #' `#`(main_slope, digits = 3L)
@@ -190,11 +190,21 @@
 #' effect_births_on_twinning <- compare_predictions(fit_05,
 #'                                                  newdata = data.frame(births_total = c(1L, 2L)),
 #'                                                  oddsratio = TRUE,
-#'                                                  nb_boot = 10)
+#'                                                  nb_boot = nb_boot)
 #' `#`(effect_births_on_twinning$results, digits = 3L)
+#' #  estimate   lwr   upr
+#' #1    0.967 0.952 0.982
 #'
 #'
 #' ## Computing range of per-birth twinning probability for 1 and 18 births:
+#' predictions_twinning_range_births <- compute_predictions(fit_05,
+#'                                                  newdata = data.frame(births_total = c(1L, 18L)),
+#'                                                  nb_boot = nb_boot)
+#' `#`(predictions_twinning_range_births$results, digits = 2L)
+#' #  births_total estimate    lwr   upr
+#' #1            1    0.021 0.0170 0.025
+#' #2           18    0.012 0.0089 0.015
+#'
 #'
 #' ## Increase in duration of interbirth interval after a twinning event at mean age and parity:
 #'
