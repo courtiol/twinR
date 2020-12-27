@@ -30,7 +30,7 @@ fit_totalbirths <- function(mother_level_data, when_twinner = "allbirths", args_
     formula <- "births_total ~ 1 + first_twinner + (1|pop)"
     } else stop("argument 'when_twinner' in fit_births.total() must be 'life' or 'firstbirth'")
 
-  if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
+  if (verbose) print(paste0("Fitting model '", formula, "'..."))
 
   args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = spaMM::Tnegbin(link = "log"), method = "PQL/L")
   args <- c(args, args_spaMM)
@@ -49,7 +49,7 @@ fit_twinner.allbirths <- function(mother_level_data, args_spaMM = list(), verbos
 
   formula <- "twinner ~ 1 + births_total + (1|pop)"
 
-  if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
+  if (verbose) print(paste0("Fitting model '", formula, "'..."))
 
   args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
   args <- c(args, args_spaMM)
@@ -68,7 +68,7 @@ fit_twinner.firstbirth <- function(mother_level_data, args_spaMM = list(), verbo
 
   formula <- "first_twinner ~ 1 + births_total + (1|pop)"
 
-  if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
+  if (verbose) print(paste0("Fitting model '", formula, "'..."))
 
   args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
   args <- c(args, args_spaMM)
@@ -87,7 +87,7 @@ fit_twinning.prob <- function(mother_level_data, args_spaMM = list(), verbose = 
 
   formula <- "cbind(twin_total, singleton_total) ~ 1 + births_total + (1|pop)"
 
-  if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
+  if (verbose) print(paste0("Fitting model '", formula, "'..."))
 
   args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
   args <- c(args, args_spaMM)
@@ -106,6 +106,8 @@ fit_twinning.prob <- function(mother_level_data, args_spaMM = list(), verbose = 
 fit_AFB <- function(mother_level_data, args_spaMM = list(), verbose = TRUE) {
 
   formula <- "AFB ~ 1 + twinner * births_total_fac + (1|pop)"
+
+  if (verbose) print(paste0("Fitting model '", formula, "'..."))
 
   args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = spaMM::negbin(link = "log"), method = "PQL/L")
   args <- c(args, args_spaMM)
