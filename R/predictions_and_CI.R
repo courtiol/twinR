@@ -48,8 +48,10 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
   response_var_raw <- paste(fit$call[[2]][[2]])
   if (length(response_var_raw) == 1) {
     response_var <- response_var_raw
+    response_var2 <- NULL
   } else if (length(response_var_raw) > 1) {
     response_var <- response_var_raw[2] ## for binomial binary
+    response_var2 <- response_var_raw[3] ## for binomial binary
   }
 
   ## capture the data from the fitted model:
@@ -73,6 +75,13 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
 
     if (!all(data[, response_var] == y)) { ## only refit if necessary
       data[, response_var] <- y
+
+      ## if both the number simulated success and the observed number of failure are 0, then the model cannot be fit, so we remove these rare cases:
+      if (!is.null(response_var2)) {
+        null_sample_cases <- apply(data[, cbind(response_var, response_var2)], 1, sum) == 0
+        data <- data[!null_sample_cases, ]
+      }
+
       fit <- eval(fit$call)
     }
 
@@ -92,6 +101,13 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
 
     if (!all(data[, response_var] == y)) { ## only refit if necessary
       data[, response_var] <- y
+
+      ## if both the number simulated success and the observed number of failure are 0, then the model cannot be fit, so we remove these rare cases:
+      if (!is.null(response_var2)) {
+        null_sample_cases <- apply(data[, cbind(response_var, response_var2)], 1, sum) == 0
+        data <- data[!null_sample_cases, ]
+      }
+
       fit <- eval(fit$call)
     }
 
@@ -117,6 +133,13 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
 
     if (!all(data[, response_var] == y)) { ## only refit if necessary
       data[, response_var] <- y
+
+      ## if both the number simulated success and the observed number of failure are 0, then the model cannot be fit, so we remove these rare cases:
+      if (!is.null(response_var2)) {
+        null_sample_cases <- apply(data[, cbind(response_var, response_var2)], 1, sum) == 0
+        data <- data[!null_sample_cases, ]
+      }
+
       fit <- eval(fit$call)
     }
 
@@ -198,8 +221,10 @@ compute_predictions <- function(fit, newdata, random = TRUE, nb_boot = 1000, see
   response_var_raw <- paste(fit$call[[2]][[2]])
   if (length(response_var_raw) == 1) {
     response_var <- response_var_raw
+    response_var2 <- NULL
   } else if (length(response_var_raw) > 1) {
     response_var <- response_var_raw[2] ## for binomial binary
+    response_var2 <- response_var_raw[3] ## for binomial binary
   }
 
   ## capture the data from the fitted model:
@@ -259,6 +284,13 @@ compute_predictions <- function(fit, newdata, random = TRUE, nb_boot = 1000, see
 
     if (!all(data[, response_var] == y)) { ## only refit if necessary
       data[, response_var] <- y
+
+      ## if both the number simulated success and the observed number of failure are 0, then the model cannot be fit, so we remove these rare cases:
+      if (!is.null(response_var2)) {
+        null_sample_cases <- apply(data[, cbind(response_var, response_var2)], 1, sum) == 0
+        data <- data[!null_sample_cases, ]
+      }
+
       fit <- eval(fit$call)
     }
 
