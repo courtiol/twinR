@@ -35,7 +35,7 @@
     tc <- textConnection("str_temp", "w", local = TRUE)
     sink(tc)
     if (digits > 0) {
-      print(round(result, digits = digits))
+      print(signif(result, digits = digits))
     } else {
       print(result)
     }
