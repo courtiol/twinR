@@ -15,8 +15,12 @@ Roxygen: list(markdown = TRUE)
 Depends:
     R (>= 3.5.0)
 Imports:
+    boot,
+    doSNOW,
     dplyr (>= 1.0),
     magrittr,
+    pracma,
+    progress,
     rlang,
     spaMM (>= 3.5.0),
     tibble,

@@ -18,6 +18,29 @@ the results of the paper.
 \dontrun{
 
 #------------------------------------------------------------------------------------------------
+#---------------------------------- Loading packages --------------------------------------------
+#------------------------------------------------------------------------------------------------
+
+library(doSNOW) ## for better load balancing in parallel computing done with spaMM
+
+
+
+#------------------------------------------------------------------------------------------------
+#---------------------------------- Setting packages options ------------------------------------
+#------------------------------------------------------------------------------------------------
+
+## Number of bootstrap replicates to perform:
+nb_boot <- 1000L
+
+## Identify number of CPU cores available for parallel computing:
+nb_cores <- min(c(100, parallel::detectCores() - 1))
+
+## Set option in spaMM:
+spaMM::spaMM.options(nb_cores = nb_cores)
+
+
+
+#------------------------------------------------------------------------------------------------
 #---------------------------------- Preparing datasets ------------------------------------------
 #------------------------------------------------------------------------------------------------
 
@@ -77,10 +100,26 @@ fit_14 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L,
 #------------------------------------------------------------------------------------------------
 #---------------------------------- Computing effect sizes from fitted models -------------------
 #------------------------------------------------------------------------------------------------
+# See ?predictions for details on the underlying functions doing the job
 
 ## Computing extra births to twinners (at any birth):
+effect_twinner_on_births <- compare_predictions(fit_01,
+                                                newdata = data.frame(twinner = c(FALSE, TRUE)),
+                                                nb_boot = nb_boot)
+`#`(effect_twinner_on_births$results) ## `#`() converts the output as text, see ?`#`
+#  estimate  lwr  upr
+#1     1.43 1.22 1.65
+
 
 ## Computing increase in odds of becoming a twinner (at any birth) with each additional birth:
+effect_births_on_twinner <- compare_predictions(fit_02,
+                                                newdata = data.frame(births_total = c(1, 2)),
+                                                oddsratio = TRUE,
+                                                nb_boot = nb_boot)
+`#`(effect_births_on_twinner$results)
+#  estimate  lwr  upr
+#1     1.17 1.16 1.19
+
 
 ## Computing extra births to twinners at first birth:
 
