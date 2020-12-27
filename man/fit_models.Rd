@@ -5,10 +5,11 @@
 \alias{fit_totalbirths}
 \alias{fit_twinner.allbirths}
 \alias{fit_twinner.firstbirth}
-\alias{fit_twinning.prob}
+\alias{fit_twinning.binomial}
 \alias{fit_AFB}
 \alias{fit_PP}
 \alias{fit_IBI}
+\alias{fit_twinning.binary}
 \title{Fit the models}
 \usage{
 fit_totalbirths(
@@ -22,13 +23,20 @@ fit_twinner.allbirths(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
 fit_twinner.firstbirth(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
-fit_twinning.prob(mother_level_data, args_spaMM = list(), verbose = TRUE)
+fit_twinning.binomial(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
 fit_AFB(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
 fit_PP(birth_level_data, poly_order = 0, args_spaMM = list(), verbose = TRUE)
 
 fit_IBI(birth_level_data, poly_order = 0, args_spaMM = list(), verbose = TRUE)
+
+fit_twinning.binary(
+  birth_level_data,
+  poly_order = 0,
+  args_spaMM = list(),
+  verbose = TRUE
+)
 }
 \arguments{
 \item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}
@@ -59,13 +67,15 @@ See \strong{Functions}, below, for details on each function.
 
 \item \code{fit_twinner.firstbirth}: fit the model predicting the twinning status of the mother at first birth from her total number of births
 
-\item \code{fit_twinning.prob}: fit the model predicting the probability of a birth to result in twins from the total number of births
+\item \code{fit_twinning.binomial}: fit the model predicting the probability of a birth to result in twins from the total number of births
 
 \item \code{fit_AFB}: fit the model predicting the age at first birth from the twinning status and the total number of births
 
 \item \code{fit_PP}: fit the model predicting the probability of parity progression
 
 \item \code{fit_IBI}: fit the model predicting the duration of the interbirth interval (minus 6 months)
+
+\item \code{fit_twinning.binary}: fit the model predicting the probability of twinning for a given birth event
 }}
 
 \examples{

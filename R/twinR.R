@@ -16,9 +16,9 @@
 #'
 #' \dontrun{
 #'
-#' #----------------------------------------------------------------------------
-#' #----------------------- Preparing datasets ---------------------------------
-#' #----------------------------------------------------------------------------
+#' #------------------------------------------------------------------------------------------------
+#' #---------------------------------- Preparing datasets ------------------------------------------
+#' #------------------------------------------------------------------------------------------------
 #'
 #' ## Filter the raw data to only keep data with monthly resolution:
 #' data_births_monthly <- filter_data(data_births_all) # See ?filter_data
@@ -31,9 +31,9 @@
 #'
 #'
 #'
-#' #----------------------------------------------------------------------------
-#' #----------------------- Table 1 & S16: data summary ------------------------
-#' #----------------------------------------------------------------------------
+#' #------------------------------------------------------------------------------------------------
+#' #---------------------------------- Table 1 & S16: data summary ---------------------------------
+#' #------------------------------------------------------------------------------------------------
 #'
 #' dir.create("tables") # create a folder to store the tables
 #'
@@ -49,18 +49,19 @@
 #'
 #'
 #'
-#' #----------------------------------------------------------------------------
-#' #----------------------- Fitting models -------------------------------------
-#' #----------------------------------------------------------------------------
+#' #------------------------------------------------------------------------------------------------
+#' #---------------------------------- Fitting models ----------------------------------------------
+#' #------------------------------------------------------------------------------------------------
 #'
 #' fit1 <- fit_totalbirths(data_mothers_monthly, when_twinner = "allbirths")
 #' fit2 <- fit_twinner.allbirths(data_mothers_monthly)
 #' fit3 <- fit_totalbirths(data_mothers_monthly, when_twinner = "firstbirth")
 #' fit4 <- fit_twinner.firstbirth(data_mothers_monthly)
-#' fit5 <- fit_twinning.prob(data_mothers_monthly)
+#' fit5 <- fit_twinning.binomial(data_mothers_monthly)
 #' fit6 <- fit_AFB(data_mothers_monthly)
-#' fit7 <- fit_PP(data_births_monthly.complete, poly_order = 5L) # 5 is best polynomial order
-#' fit8 <- fit_IBI(data_births_monthly.complete, poly_order = 6L) # 6 is best polynomial order
+#' fit7 <- fit_PP(data_births_monthly.complete, poly_order = 5L) # use best polynomial order
+#' fit8 <- fit_IBI(data_births_monthly.complete, poly_order = 6L)
+#' fit9 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L)
 #'
 #' }
 #'

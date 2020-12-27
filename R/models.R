@@ -197,3 +197,37 @@ fit_IBI <- function(birth_level_data, poly_order = 0, args_spaMM = list(), verbo
   fit
 }
 
+
+#' @describeIn fit_models fit the model predicting the probability of twinning for a given birth event
+#' @export
+#'
+fit_twinning.binary <- function(birth_level_data, poly_order = 0, args_spaMM = list(), verbose = TRUE) {
+
+
+  if (poly_order > 0 && any(is.na(birth_level_data$age))) {
+    birth_level_data <- birth_level_data[!is.na(birth_level_data$age), ]
+    warning("the data contains missing values for age, so such rows have not been fitted")
+  }
+
+  if (poly_order > 0 && any(is.na(birth_level_data$parity))) {
+    birth_level_data <- birth_level_data[!is.na(birth_level_data$parity), ]
+    warning("the data contains missing values for parity, so such rows have not been fitted")
+  }
+
+  if (poly_order == 0) {
+    formula <- "twin ~ 1 + (1|maternal_id) + (1|pop)"
+  } else {
+    formula <- paste0("twin ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)")
+  }
+
+  if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
+
+  args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
+  args <- c(args, args_spaMM)
+
+  fit <- do.call(spaMM::fitme, args = args)
+
+  if (verbose) print("done!")
+
+  fit
+}
