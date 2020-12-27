@@ -62,8 +62,8 @@
 #' fit_07 <- fit_PP(data_births_monthly.complete, poly_order = 5L) # use best polynomial order
 #' fit_08 <- fit_IBI(data_births_monthly.complete, poly_order = 6L)
 #' fit_09 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L)
-#' fit_10 <- fit_PP(data_births_monthly.complete, twin_as_predictor = FALSE, poly_order = 5L)
-#' fit_11 <- fit_IBI(data_births_monthly.complete, twin_as_predictor = FALSE, poly_order = 6L)
+#' fit_10 <- fit_PP(data_births_monthly.complete, twin_as.predictor = FALSE, poly_order = 5L)
+#' fit_11 <- fit_IBI(data_births_monthly.complete, twin_as.predictor = FALSE, poly_order = 6L)
 #'
 #' }
 #'

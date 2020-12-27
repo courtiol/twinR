@@ -8,7 +8,7 @@
 #' @param mother_level_data a `tibble` or `data.frame` with mother level data
 #' @param birth_level_data a `tibble` or `data.frame` with (expanded) birth level data
 #' @param poly_order an integer value defining the polynomial order when considering the effect of age and parity (default = `0`, do not fit this effect)
-#' @param twin_as_predictor whether to include the variable `twin` as a predictor or not in some models (default = `TRUE`)
+#' @param twin_as.predictor whether to include the variable `twin` as a predictor or not in some models (default = `TRUE`)
 #' @param args_spaMM list of additional arguments to pass to the function [`fitme`][`spaMM::fitme`]
 #' @param verbose whether to display the formula of the fit during the fitting procedure
 #'
@@ -124,7 +124,7 @@ fit_AFB <- function(mother_level_data, args_spaMM = list(), verbose = TRUE) {
 #' @describeIn fit_models fit the model predicting the probability of parity progression
 #' @export
 #'
-fit_PP <- function(birth_level_data, poly_order = 0, twin_as_predictor = TRUE, args_spaMM = list(), verbose = TRUE) {
+fit_PP <- function(birth_level_data, poly_order = 0, twin_as.predictor = TRUE, args_spaMM = list(), verbose = TRUE) {
 
 
   if (poly_order > 0 && any(is.na(birth_level_data$age))) {
@@ -138,9 +138,9 @@ fit_PP <- function(birth_level_data, poly_order = 0, twin_as_predictor = TRUE, a
   }
 
   if (poly_order == 0) {
-    formula <- ifelse(twin_as_predictor, "PP ~ 1 + twin + (1|maternal_id) + (1|pop)", "PP ~ 1 + (1|maternal_id) + (1|pop)")
+    formula <- ifelse(twin_as.predictor, "PP ~ 1 + twin + (1|maternal_id) + (1|pop)", "PP ~ 1 + (1|maternal_id) + (1|pop)")
   } else {
-    formula <- ifelse(twin_as_predictor,
+    formula <- ifelse(twin_as.predictor,
                       paste0("PP ~ 1 + poly(cbind(age, parity), ", poly_order, ") + twin + (1|maternal_id) + (1|pop)"),
                       paste0("PP ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)"))
   }
@@ -161,7 +161,7 @@ fit_PP <- function(birth_level_data, poly_order = 0, twin_as_predictor = TRUE, a
 #' @describeIn fit_models fit the model predicting the duration of the interbirth interval (minus 6 months)
 #' @export
 #'
-fit_IBI <- function(birth_level_data, poly_order = 0, twin_as_predictor = TRUE, args_spaMM = list(), verbose = TRUE) {
+fit_IBI <- function(birth_level_data, poly_order = 0, twin_as.predictor = TRUE, args_spaMM = list(), verbose = TRUE) {
 
 
   if (poly_order > 0 && any(is.na(birth_level_data$age))) {
@@ -175,9 +175,9 @@ fit_IBI <- function(birth_level_data, poly_order = 0, twin_as_predictor = TRUE, 
   }
 
   if (poly_order == 0) {
-    formula <- ifelse(twin_as_predictor, "IBI ~ 1 + twin + (1|maternal_id) + (1|pop)", "PP ~ 1 + (1|maternal_id) + (1|pop)")
+    formula <- ifelse(twin_as.predictor, "IBI ~ 1 + twin + (1|maternal_id) + (1|pop)", "PP ~ 1 + (1|maternal_id) + (1|pop)")
   } else {
-    formula <- ifelse(twin_as_predictor,
+    formula <- ifelse(twin_as.predictor,
                       paste0("IBI ~ 1 + poly(cbind(age, parity), ", poly_order, ") + twin + (1|maternal_id) + (1|pop)"),
                       paste0("IBI ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)"))
   }
