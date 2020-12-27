@@ -17,8 +17,8 @@ build_summary_table <- function(birth_level_data) {
   birth_level_data %>%
     dplyr::group_by(.data$pop, .data$maternal_id) %>%
     dplyr::mutate(total_births = dplyr::n(),
-                  twinners     = any(.data$birth_twin),
-                  nontwinners  = all(!.data$birth_twin)) %>%
+                  twinners     = any(.data$twin),
+                  nontwinners  = all(!.data$twin)) %>%
     dplyr::ungroup() -> data
 
   ## notes for ASCII encoding of unicodes:
@@ -39,9 +39,9 @@ build_summary_table <- function(birth_level_data) {
       "Twinner rate (\u2030)" = round(.data$Twinners / (.data$Twinners + .data$`Non-twinners`)* 1000, digits = 2L),
       "Offspring birth period" = paste(min(.data$birth_year, na.rm = TRUE), "-", max(.data$birth_year, na.rm = TRUE), sep = ""),
       "Births" = dplyr::n(),
-      "Singleton births" = sum(!.data$birth_twin, na.rm = TRUE),
-      "Twin births" = sum(.data$birth_twin, na.rm = TRUE),
-      "Twinning rate (\u2030)" = round(mean(.data$birth_twin, na.rm = TRUE) * 1000, digits = 2L),
+      "Singleton births" = sum(!.data$twin, na.rm = TRUE),
+      "Twin births" = sum(.data$twin, na.rm = TRUE),
+      "Twinning rate (\u2030)" = round(mean(.data$twin, na.rm = TRUE) * 1000, digits = 2L),
       "Total births (min-median-max)" =  paste(1, "-", round(stats::median(.data$total_births, na.rm = TRUE), digits = 2L), "-", max(.data$total_births, na.rm = TRUE), sep = "")) %>%
     dplyr::mutate(
       "Population" = dplyr::case_when(
@@ -89,9 +89,9 @@ build_summary_table <- function(birth_level_data) {
                  "Twinner rate (\u2030)" = round(.data$Twinners / (.data$Twinners + .data$`Non-twinners`)* 1000, digits = 2L),
                  "Offspring birth period" = paste(min(data$birth_year, na.rm = TRUE), "-", max(data$birth_year, na.rm = TRUE), sep = ""),
                  "Births" = nrow(data),
-                 "Singleton births" = sum(!data$birth_twin, na.rm = TRUE),
-                 "Twin births" = sum(data$birth_twin, na.rm = TRUE),
-                 "Twinning rate (\u2030)" = round(mean(data$birth_twin, na.rm = TRUE) * 1000, digits = 2L),
+                 "Singleton births" = sum(!data$twin, na.rm = TRUE),
+                 "Twin births" = sum(data$twin, na.rm = TRUE),
+                 "Twinning rate (\u2030)" = round(mean(data$twin, na.rm = TRUE) * 1000, digits = 2L),
                  "Total births (min-median-max)" =  paste(1, "-", round(stats::median(data$total_births, na.rm = TRUE), digits = 2L), "-", max(data$total_births, na.rm = TRUE), sep = ""),
                  "References" = "This paper") -> tbl_total
 

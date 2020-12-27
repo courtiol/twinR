@@ -7,7 +7,7 @@
 #' - `maternal_birthyear` the year when the mother was born
 #' - `maternal_age` the age of the mother (in months)
 #' - `birth_year` the year when a given birth occurred
-#' - `birth_twin` the outcome of the birth in terms of twinning (`TRUE` or `FALSE`)
+#' - `twin` the outcome of the birth in terms of twinning (`TRUE` or `FALSE`)
 #' - `monthly` whether the observations were collected at a monthly resolution (`TRUE` or `FALSE`)
 #'
 #' @name data_births_all
@@ -64,10 +64,10 @@ aggregate_data <- function(birth_level_data) {
     dplyr::summarize(births_total = dplyr::n(),
                      births_total_fac = factor(ifelse(.data$births_total < 10, as.character(.data$births_total), "10+"),
                                                levels = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10+")),
-                     twinner = any(.data$birth_twin),
-                     first_twinner = .data$birth_twin[1],
-                     twin_total = sum(.data$birth_twin),
-                     singleton_total = sum(!.data$birth_twin),
+                     twinner = any(.data$twin),
+                     first_twinner = .data$twin[1],
+                     twin_total = sum(.data$twin),
+                     singleton_total = sum(!.data$twin),
                      AFB = .data$maternal_age[1]) %>%
     dplyr::ungroup()
 }
@@ -96,7 +96,7 @@ expand_data <- function(birth_level_data) {
   birth_level_data %>%
     dplyr::mutate(age = .data$maternal_age/12L, .after = .data$maternal_age) %>% ## turn the age in years
     dplyr::group_by(.data$maternal_id) %>%
-    #dplyr::mutate(twin_prev = ifelse(dplyr::row_number() == 1, FALSE, dplyr::lag(birth_twin)), .after = .data$birth_twin) %>% ## whether previous birth was twin
+    #dplyr::mutate(twin_prev = ifelse(dplyr::row_number() == 1, FALSE, dplyr::lag(twin)), .after = .data$twin) %>% ## whether previous birth was twin
     dplyr::mutate(parity = 1:dplyr::n(), ## birth rank
                   PP = dplyr::row_number() != dplyr::n(), ## parity progression Boolean
                   IBI = dplyr::lead(.data$maternal_age) - .data$maternal_age) %>%

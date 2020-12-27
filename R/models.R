@@ -137,9 +137,9 @@ fit_PP <- function(birth_level_data, poly_order = 0, args_spaMM = list(), verbos
   }
 
   if (poly_order == 0) {
-      formula <- "PP ~ 1 + birth_twin + (1|maternal_id) + (1|pop)"
+      formula <- "PP ~ 1 + twin + (1|maternal_id) + (1|pop)"
   } else {
-      formula <- paste0("PP ~ 1 + poly(cbind(age, parity), ", poly_order, ") + birth_twin + (1|maternal_id) + (1|pop)")
+      formula <- paste0("PP ~ 1 + poly(cbind(age, parity), ", poly_order, ") + twin + (1|maternal_id) + (1|pop)")
   }
 
   if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
@@ -172,9 +172,9 @@ fit_IBI <- function(birth_level_data, poly_order = 0, args_spaMM = list(), verbo
   }
 
   if (poly_order == 0) {
-    formula <- "IBI ~ 1 + birth_twin + (1|maternal_id) + (1|pop)"
+    formula <- "IBI ~ 1 + twin + (1|maternal_id) + (1|pop)"
   } else {
-    formula <- paste0("IBI ~ 1 + poly(cbind(age, parity), ", poly_order, ") + birth_twin + (1|maternal_id) + (1|pop)")
+    formula <- paste0("IBI ~ 1 + poly(cbind(age, parity), ", poly_order, ") + twin + (1|maternal_id) + (1|pop)")
   }
 
   if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))

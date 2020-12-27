@@ -16,7 +16,7 @@ It contains the following variables:
 \item \code{maternal_birthyear} the year when the mother was born
 \item \code{maternal_age} the age of the mother (in months)
 \item \code{birth_year} the year when a given birth occurred
-\item \code{birth_twin} the outcome of the birth in terms of twinning (\code{TRUE} or \code{FALSE})
+\item \code{twin} the outcome of the birth in terms of twinning (\code{TRUE} or \code{FALSE})
 \item \code{monthly} whether the observations were collected at a monthly resolution (\code{TRUE} or \code{FALSE})
 }
 }
