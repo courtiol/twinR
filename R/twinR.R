@@ -53,15 +53,17 @@
 #' #---------------------------------- Fitting models ----------------------------------------------
 #' #------------------------------------------------------------------------------------------------
 #'
-#' fit1 <- fit_totalbirths(data_mothers_monthly, when_twinner = "allbirths")
-#' fit2 <- fit_twinner.allbirths(data_mothers_monthly)
-#' fit3 <- fit_totalbirths(data_mothers_monthly, when_twinner = "firstbirth")
-#' fit4 <- fit_twinner.firstbirth(data_mothers_monthly)
-#' fit5 <- fit_twinning.binomial(data_mothers_monthly)
-#' fit6 <- fit_AFB(data_mothers_monthly)
-#' fit7 <- fit_PP(data_births_monthly.complete, poly_order = 5L) # use best polynomial order
-#' fit8 <- fit_IBI(data_births_monthly.complete, poly_order = 6L)
-#' fit9 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L)
+#' fit_01 <- fit_totalbirths(data_mothers_monthly, when_twinner = "allbirths")
+#' fit_02 <- fit_twinner.allbirths(data_mothers_monthly)
+#' fit_03 <- fit_totalbirths(data_mothers_monthly, when_twinner = "firstbirth")
+#' fit_04 <- fit_twinner.firstbirth(data_mothers_monthly)
+#' fit_05 <- fit_twinning.binomial(data_mothers_monthly)
+#' fit_06 <- fit_AFB(data_mothers_monthly)
+#' fit_07 <- fit_PP(data_births_monthly.complete, poly_order = 5L) # use best polynomial order
+#' fit_08 <- fit_IBI(data_births_monthly.complete, poly_order = 6L)
+#' fit_09 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L)
+#' fit_10 <- fit_PP(data_births_monthly.complete, twin_as_predictor = FALSE, poly_order = 5L)
+#' fit_11 <- fit_IBI(data_births_monthly.complete, twin_as_predictor = FALSE, poly_order = 6L)
 #'
 #' }
 #'

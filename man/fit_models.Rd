@@ -27,9 +27,21 @@ fit_twinning.binomial(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
 fit_AFB(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
-fit_PP(birth_level_data, poly_order = 0, args_spaMM = list(), verbose = TRUE)
+fit_PP(
+  birth_level_data,
+  poly_order = 0,
+  twin_as_predictor = TRUE,
+  args_spaMM = list(),
+  verbose = TRUE
+)
 
-fit_IBI(birth_level_data, poly_order = 0, args_spaMM = list(), verbose = TRUE)
+fit_IBI(
+  birth_level_data,
+  poly_order = 0,
+  twin_as_predictor = TRUE,
+  args_spaMM = list(),
+  verbose = TRUE
+)
 
 fit_twinning.binary(
   birth_level_data,
@@ -49,7 +61,9 @@ fit_twinning.binary(
 
 \item{birth_level_data}{a \code{tibble} or \code{data.frame} with (expanded) birth level data}
 
-\item{poly_order}{an integer value defining the polynomial order when considering the effect of age and parity (default = 0, do not fit this effect)}
+\item{poly_order}{an integer value defining the polynomial order when considering the effect of age and parity (default = \code{0}, do not fit this effect)}
+
+\item{twin_as_predictor}{whether to include the variable \code{twin} as a predictor or not in some models (default = \code{TRUE})}
 }
 \value{
 the fitted model
