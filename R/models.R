@@ -139,12 +139,12 @@ fit_PP <- function(birth_level_data, poly_order = 0, twin_as.predictor = TRUE, a
   }
 
   if (poly_order == 0) {
-    formula <- ifelse(twin_as.predictor, "PP ~ 1 + twin + (1|maternal_id) + (1|pop)", "PP ~ 1 + (1|maternal_id) + (1|pop)")
+    formula <- "PP ~ 1 + (1|maternal_id) + (1|pop)"
   } else {
-    formula <- ifelse(twin_as.predictor,
-                      paste0("PP ~ 1 + poly(cbind(age, parity), ", poly_order, ") + twin + (1|maternal_id) + (1|pop)"),
-                      paste0("PP ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)"))
+    formula <- paste0("PP ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)")
   }
+
+  if (twin_as.predictor) formula <- paste(formula, " + twin")
 
   if (verbose) {
     if (poly_order > 1L) {
@@ -182,12 +182,12 @@ fit_IBI <- function(birth_level_data, poly_order = 0, twin_as.predictor = TRUE, 
   }
 
   if (poly_order == 0) {
-    formula <- ifelse(twin_as.predictor, "IBI ~ 1 + twin + (1|maternal_id) + (1|pop)", "PP ~ 1 + (1|maternal_id) + (1|pop)")
+    formula <- "IBI ~ 1 + (1|maternal_id) + (1|pop)"
   } else {
-    formula <- ifelse(twin_as.predictor,
-                      paste0("IBI ~ 1 + poly(cbind(age, parity), ", poly_order, ") + twin + (1|maternal_id) + (1|pop)"),
-                      paste0("IBI ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)"))
+    formula <- paste0("IBI ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)")
   }
+
+  if (twin_as.predictor) formula <- paste(formula, " + twin")
 
 
   if (verbose) {
@@ -234,15 +234,15 @@ fit_twinning.binary <- function(birth_level_data, poly_order = 0, maternal_ID_as
   }
 
   if (poly_order == 0) {
-    formula <- ifelse(maternal_ID_as.predictor, "twin ~ 1 + (1|maternal_id) + (1|pop)", "twin ~ 1 + (1|pop)")
+    formula <- "twin ~ 1 + (1|pop)"
   } else {
-    formula <- ifelse(maternal_ID_as.predictor,
-                      paste0("twin ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)"),
-                      paste0("twin ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|pop)"))
+    formula <- paste0("twin ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|pop)")
   }
 
+  if (maternal_ID_as.predictor) formula <- paste(formula, " + (1|maternal_id)")
+
   if (verbose) {
-    if (poly_order > 1L && maternal_ID_as.predictor) {
+    if (maternal_ID_as.predictor) {
       print(paste0("Fitting model '", formula, "'... (be patient)"))
     } else {
       print(paste0("Fitting model '", formula, "'..."))
