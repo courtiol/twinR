@@ -123,7 +123,7 @@ fit_AFB <- function(mother_level_data, args_spaMM = list(), verbose = TRUE) {
 #' @describeIn fit_models fit the model predicting the probability of parity progression
 #' @export
 #'
-fit_pp.prob <- function(birth_level_data, poly_order = 0, args_spaMM = list(), verbose = TRUE) {
+fit_PP <- function(birth_level_data, poly_order = 0, args_spaMM = list(), verbose = TRUE) {
 
 
   if (poly_order > 0 && any(is.na(birth_level_data$age))) {
