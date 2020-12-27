@@ -21,10 +21,13 @@
 #' #----------------------------------------------------------------------------
 #'
 #' ## Filter the raw data to only keep data with monthly resolution:
-#' data_births_monthly <- filter_data(data_births_all)
+#' data_births_monthly <- filter_data(data_births_all) # See ?filter_data
 #'
 #' ## Aggregate the data at the level of mothers:
-#' data_mothers_monthly <- aggregate_data(data_births_monthly)
+#' data_mothers_monthly <- aggregate_data(data_births_monthly) # See ?aggregate_data
+#'
+#' ## Expand the birth level data for the fit of statistical models:
+#' data_births_monthly.complete <- expand_data(data_births_monthly) # See ?expand_data
 #'
 #'
 #'
