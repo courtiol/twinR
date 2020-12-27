@@ -6,6 +6,8 @@
 #'
 #' @name fit_models
 #' @param mother_level_data a `tibble` or `data.frame` with mother level data
+#' @param birth_level_data a `tibble` or `data.frame` with (expanded) birth level data
+#' @param poly_order an integer value defining the polynomial order when considering the effect of age and parity (default = 0, do not fit this effect)
 #' @param args_spaMM list of additional arguments to pass to the function [`fitme`][`spaMM::fitme`]
 #' @param verbose whether to display the formula of the fit during the fitting procedure
 #'
@@ -81,7 +83,7 @@ fit_twinner.firstbirth <- function(mother_level_data, args_spaMM = list(), verbo
 #' @describeIn fit_models fit the model predicting the probability of a birth to result in twins from the total number of births
 #' @export
 #'
-fit_twinning.prob <- function(mother_level_data, args_spaMM = list(), verbose = FALSE) {
+fit_twinning.prob <- function(mother_level_data, args_spaMM = list(), verbose = TRUE) {
 
   formula <- "cbind(twin_total, singleton_total) ~ 1 + births_total + (1|pop)"
 
@@ -101,11 +103,46 @@ fit_twinning.prob <- function(mother_level_data, args_spaMM = list(), verbose = 
 #' @describeIn fit_models fit the model predicting the age at first birth from the twinning status and the total number of births
 #' @export
 #'
-fit_AFB <- function(mother_level_data, args_spaMM = list(), verbose = FALSE) {
+fit_AFB <- function(mother_level_data, args_spaMM = list(), verbose = TRUE) {
 
   formula <- "AFB ~ 1 + twinner * births_total_fac + (1|pop)"
 
   args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = spaMM::negbin(link = "log"), method = "PQL/L")
+  args <- c(args, args_spaMM)
+
+  fit <- do.call(spaMM::fitme, args = args)
+
+  if (verbose) print("done!")
+
+  fit
+}
+
+
+#' @describeIn fit_models fit the model predicting the probability of parity progression
+#' @export
+#'
+fit_pp.prob <- function(birth_level_data, poly_order = 0, args_spaMM = list(), verbose = TRUE) {
+
+
+  if (poly_order > 0 && any(is.na(birth_level_data$age))) {
+    birth_level_data <- birth_level_data[!is.na(birth_level_data$age), ]
+    warning("the data contains missing values for age, so such rows have not been fitted")
+  }
+
+  if (poly_order > 0 && any(is.na(birth_level_data$parity))) {
+    birth_level_data <- birth_level_data[!is.na(birth_level_data$parity), ]
+    warning("the data contains missing values for parity, so such rows have not been fitted")
+  }
+
+  if (poly_order == 0) {
+      formula <- "PP ~ 1 + birth_twin + (1|maternal_id) + (1|pop)"
+  } else {
+      formula <- paste0("PP ~ 1 + poly(cbind(age, parity), ", poly_order, ") + birth_twin + (1|maternal_id) + (1|pop)")
+  }
+
+  if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
+
+  args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
   args <- c(args, args_spaMM)
 
   fit <- do.call(spaMM::fitme, args = args)

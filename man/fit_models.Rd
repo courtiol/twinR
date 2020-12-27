@@ -7,6 +7,7 @@
 \alias{fit_twinner.firstbirth}
 \alias{fit_twinning.prob}
 \alias{fit_AFB}
+\alias{fit_pp.prob}
 \title{Fit the models}
 \usage{
 fit_totalbirths(
@@ -20,9 +21,16 @@ fit_twinner.allbirths(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
 fit_twinner.firstbirth(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
-fit_twinning.prob(mother_level_data, args_spaMM = list(), verbose = FALSE)
+fit_twinning.prob(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
-fit_AFB(mother_level_data, args_spaMM = list(), verbose = FALSE)
+fit_AFB(mother_level_data, args_spaMM = list(), verbose = TRUE)
+
+fit_pp.prob(
+  birth_level_data,
+  poly_order = 0,
+  args_spaMM = list(),
+  verbose = TRUE
+)
 }
 \arguments{
 \item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}
@@ -32,6 +40,10 @@ fit_AFB(mother_level_data, args_spaMM = list(), verbose = FALSE)
 \item{args_spaMM}{list of additional arguments to pass to the function \code{\link[spaMM:fitme]{fitme}}}
 
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
+
+\item{birth_level_data}{a \code{tibble} or \code{data.frame} with (expanded) birth level data}
+
+\item{poly_order}{an integer value defining the polynomial order when considering the effect of age and parity (default = 0, do not fit this effect)}
 }
 \value{
 the fitted model
@@ -52,6 +64,8 @@ See \strong{Functions}, below, for details on each function.
 \item \code{fit_twinning.prob}: fit the model predicting the probability of a birth to result in twins from the total number of births
 
 \item \code{fit_AFB}: fit the model predicting the age at first birth from the twinning status and the total number of births
+
+\item \code{fit_pp.prob}: fit the model predicting the probability of parity progression
 }}
 
 \examples{
