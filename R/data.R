@@ -62,7 +62,8 @@ aggregate_data <- function(birth_level_data) {
   birth_level_data %>%
     dplyr::group_by(.data$pop, .data$maternal_id) %>%
     dplyr::summarize(births_total = dplyr::n(),
-                     births_total_fac = factor(ifelse(.data$births_total < 10, as.character(.data$births_total), "10+"), levels = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10+")),
+                     births_total_fac = factor(ifelse(.data$births_total < 10, as.character(.data$births_total), "10+"),
+                                               levels = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10+")),
                      twinner = any(.data$birth_twin),
                      first_twinner = .data$birth_twin[1],
                      twin_total = sum(.data$birth_twin),
@@ -78,6 +79,7 @@ aggregate_data <- function(birth_level_data) {
 #' - `age` the age of the mother at each birth (in years)
 #' - `parity` the rank of a given birth within the life history of a mother
 #' - `PP` whether the mother go on reproducing after a given birth
+#' - `IBI` the interbirth interval between a given birth and the next one (in months)
 #'
 #' These new columns are derived from existing columns and are required for the
 #' fit of statistical models.
@@ -96,7 +98,8 @@ expand_data <- function(birth_level_data) {
     dplyr::group_by(.data$maternal_id) %>%
     #dplyr::mutate(twin_prev = ifelse(dplyr::row_number() == 1, FALSE, dplyr::lag(birth_twin)), .after = .data$birth_twin) %>% ## whether previous birth was twin
     dplyr::mutate(parity = 1:dplyr::n(), ## birth rank
-                  PP = dplyr::row_number() != dplyr::n()) %>% ## parity progression Boolean
+                  PP = dplyr::row_number() != dplyr::n(), ## parity progression Boolean
+                  IBI = dplyr::lead(.data$maternal_age) - .data$maternal_age) %>%
     dplyr::ungroup()
 }
 
