@@ -18,6 +18,7 @@ This function adds new columns to the birth level data, i.e.:
 \item \code{age} the age of the mother at each birth (in years)
 \item \code{parity} the rank of a given birth within the life history of a mother
 \item \code{PP} whether the mother go on reproducing after a given birth
+\item \code{IBI} the interbirth interval between a given birth and the next one (in months)
 }
 }
 \details{

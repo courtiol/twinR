@@ -59,7 +59,8 @@
 #' fit4 <- fit_twinner.firstbirth(data_mothers_monthly)
 #' fit5 <- fit_twinning.prob(data_mothers_monthly)
 #' fit6 <- fit_AFB(data_mothers_monthly)
-#' fit7 <- fit_pp.prob(data_births_monthly.complete, poly_order = 5L)
+#' fit7 <- fit_PP(data_births_monthly.complete, poly_order = 5L) # 5 is best polynomial order
+#' fit8 <- fit_IBI(data_births_monthly.complete, poly_order = 6L) # 6 is best polynomial order
 #'
 #' }
 #'

@@ -154,3 +154,46 @@ fit_PP <- function(birth_level_data, poly_order = 0, args_spaMM = list(), verbos
   fit
 }
 
+
+#' @describeIn fit_models fit the model predicting the duration of the interbirth interval (minus 6 months)
+#' @export
+#'
+fit_IBI <- function(birth_level_data, poly_order = 0, args_spaMM = list(), verbose = TRUE) {
+
+
+  if (poly_order > 0 && any(is.na(birth_level_data$age))) {
+    birth_level_data <- birth_level_data[!is.na(birth_level_data$age), ]
+    warning("the data contains missing values for age, so such rows have not been fitted")
+  }
+
+  if (poly_order > 0 && any(is.na(birth_level_data$parity))) {
+    birth_level_data <- birth_level_data[!is.na(birth_level_data$parity), ]
+    warning("the data contains missing values for parity, so such rows have not been fitted")
+  }
+
+  if (poly_order == 0) {
+    formula <- "IBI ~ 1 + birth_twin + (1|maternal_id) + (1|pop)"
+  } else {
+    formula <- paste0("IBI ~ 1 + poly(cbind(age, parity), ", poly_order, ") + birth_twin + (1|maternal_id) + (1|pop)")
+  }
+
+  if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
+
+  ## We remove 6 months to the IBI in order to avoid numerical issues during bootstraps and simulation.
+  ## The idea is that no interbirth interval should ever be predicted to be lower than 6 months and
+  ## the model will actually predict the duration between those 6 months and the next birth.
+  ## Importantly, this implies that 6 months should always be added to predictions from such models.
+  ## Since as.integer() does floor when rounding and since a real double can be just its integer value,
+  ## the correct way to remove 6 months is to actually remove a little less:
+  birth_level_data$IBI <- as.integer(birth_level_data$IBI - 5.5)
+
+  args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = spaMM::negbin(link = "log"), method = "PQL/L")
+  args <- c(args, args_spaMM)
+
+  fit <- do.call(spaMM::fitme, args = args)
+
+  if (verbose) print("done!")
+
+  fit
+}
+
