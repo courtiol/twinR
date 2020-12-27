@@ -1,32 +1,34 @@
 #' Show an object as text output
 #'
 #' This function makes copying and pasting the results of the analyses more straightforward.
-#' It adds a pound sign (`#`) or equivalent before displaying each line of the output.
+#' It adds a pound sign (`#`), or equivalent, before displaying each line of the output.
 #'
 #' @param result an object to output
-#' @param digits the number of digits to display (default = 2)
+#' @param digits the number of digits to display (default = 0)
 #' @param prefix the prefix added to each line (the default is roxygen friendly)
 #'
 #' @export
 #'
 #' @examples
 #' test <- runif(3)
-#' `#`(test)
+#' test
+#' round(test, digits = 2)
+#' `#`(test, digits = 2)
 #' `#`(test, prefix = "#")
-#' `#`(data.frame(x = test, y = test), prefix = "#")
+#' `#`(data.frame(x = test, y = test), digits = 2, prefix = "#")
 #'
 #' \dontrun{
 #' ## do not attempt to round a list:
-#'   `#`(list(x = test, y = test), prefix = "#")
+#'   `#`(list(x = test, y = test), digits = 2, prefix = "#")
 #' }
 #'
-#' `#`(list(x = test, y = test), digits = 0, prefix = "#")
+#' `#`(list(x = test, y = test), prefix = "#")
 #'
-`#` <- function(result, digits = 2, prefix = "#' #") {
+`#` <- function(result, digits = 0, prefix = "#' #") {
 
   if ("list" %in% class(result) && digits != 0) {
     digits <- 0
-    warning("list object cannot be rounded with this function. Set 'digits = 0'.")
+    warning("list object cannot be rounded with this function. Set 'digits = 0'; i.e. the default.")
   }
 
   .hash <- function(result, digits, prefix) {
