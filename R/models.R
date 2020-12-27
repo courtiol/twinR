@@ -83,7 +83,7 @@ fit_twinner.firstbirth <- function(mother_level_data, args_spaMM = list(), verbo
 #' @describeIn fit_models fit the model predicting the probability of a birth to result in twins from the total number of births
 #' @export
 #'
-fit_twinning.prob <- function(mother_level_data, args_spaMM = list(), verbose = TRUE) {
+fit_twinning.binomial <- function(mother_level_data, args_spaMM = list(), verbose = TRUE) {
 
   formula <- "cbind(twin_total, singleton_total) ~ 1 + births_total + (1|pop)"
 
