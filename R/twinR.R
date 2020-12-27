@@ -71,6 +71,55 @@
 #' fit_14 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L,
 #'                               maternal_ID_as.predictor = FALSE)
 #'
+#'
+#'
+#' #------------------------------------------------------------------------------------------------
+#' #---------------------------------- Computing effect sizes from fitted models -------------------
+#' #------------------------------------------------------------------------------------------------
+#'
+#' ## Computing extra births to twinners (at any birth):
+#'
+#' ## Computing increase in odds of becoming a twinner (at any birth) with each additional birth:
+#'
+#' ## Computing extra births to twinners at first birth:
+#'
+#' ## Computing increase in odds of becoming a twinner at first birth with each additional birth:
+#'
+#' ## Slope of the relationship between per-birth twinning probability and maternal total births:
+#'
+#' ## Same using the full dataset (legend Fig S5):
+#'
+#' ## Computing increase in odds of twinning at a given birth with each additional birth:
+#'
+#' ## Computing range of per-birth twinning probability for 1 and 18 births:
+#'
+#' ## Increase in duration of interbirth interval after a twinning event at mean age and parity:
+#'
+#' ## Computing AFB for twinners and non-twinners with one and two total births (legend Fig S1):
+#'
+#' ## Computing delay in AFB for twinners compared to non-twinners (legend Fig S1):
+#'
+#'
+#'
+#' #------------------------------------------------------------------------------------------------
+#' #---------------------------------- Plotting predictions from model fits ------------------------
+#' #------------------------------------------------------------------------------------------------
+#'
+#' ## Figure 1:
+#'
+#'
+#' ## Figure 2:
+#'
+#'
+#' ## Figure 3:
+#'
+#'
+#' ## Figure S1:
+#'
+#'
+#' ## Figure S2:
+#'
+#'
 #' }
 #'
 NULL
