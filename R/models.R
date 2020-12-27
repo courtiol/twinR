@@ -9,6 +9,7 @@
 #' @param birth_level_data a `tibble` or `data.frame` with (expanded) birth level data
 #' @param poly_order an integer value defining the polynomial order when considering the effect of age and parity (default = `0`, do not fit this effect)
 #' @param twin_as.predictor whether to include the variable `twin` as a predictor or not in some models (default = `TRUE`)
+#' @param maternal_ID_as.predictor whether to include the variable `maternal_ID` as a random effect predictor or not in some models (default = `TRUE`)
 #' @param args_spaMM list of additional arguments to pass to the function [`fitme`][`spaMM::fitme`]
 #' @param verbose whether to display the formula of the fit during the fitting procedure
 #'
@@ -145,7 +146,13 @@ fit_PP <- function(birth_level_data, poly_order = 0, twin_as.predictor = TRUE, a
                       paste0("PP ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)"))
   }
 
-  if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
+  if (verbose) {
+    if (poly_order > 1L) {
+      print(paste0("Fitting model '", formula, "'... (be patient)"))
+    } else {
+      print(paste0("Fitting model '", formula, "'..."))
+    }
+  }
 
   args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
   args <- c(args, args_spaMM)
@@ -183,7 +190,13 @@ fit_IBI <- function(birth_level_data, poly_order = 0, twin_as.predictor = TRUE, 
   }
 
 
-  if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
+  if (verbose) {
+    if (poly_order > 1L) {
+      print(paste0("Fitting model '", formula, "'... (be patient)"))
+    } else {
+      print(paste0("Fitting model '", formula, "'..."))
+    }
+  }
 
   ## We remove 6 months to the IBI in order to avoid numerical issues during bootstraps and simulation.
   ## The idea is that no interbirth interval should ever be predicted to be lower than 6 months and
@@ -207,7 +220,7 @@ fit_IBI <- function(birth_level_data, poly_order = 0, twin_as.predictor = TRUE, 
 #' @describeIn fit_models fit the model predicting the probability of twinning for a given birth event
 #' @export
 #'
-fit_twinning.binary <- function(birth_level_data, poly_order = 0, args_spaMM = list(), verbose = TRUE) {
+fit_twinning.binary <- function(birth_level_data, poly_order = 0, maternal_ID_as.predictor = TRUE, args_spaMM = list(), verbose = TRUE) {
 
 
   if (poly_order > 0 && any(is.na(birth_level_data$age))) {
@@ -221,12 +234,20 @@ fit_twinning.binary <- function(birth_level_data, poly_order = 0, args_spaMM = l
   }
 
   if (poly_order == 0) {
-    formula <- "twin ~ 1 + (1|maternal_id) + (1|pop)"
+    formula <- ifelse(maternal_ID_as.predictor, "twin ~ 1 + (1|maternal_id) + (1|pop)", "twin ~ 1 + (1|pop)")
   } else {
-    formula <- paste0("twin ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)")
+    formula <- ifelse(maternal_ID_as.predictor,
+                      paste0("twin ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)"),
+                      paste0("twin ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|pop)"))
   }
 
-  if (verbose) print(paste0("Fitting model '", formula, "'... (be patient)"))
+  if (verbose) {
+    if (poly_order > 1L && maternal_ID_as.predictor) {
+      print(paste0("Fitting model '", formula, "'... (be patient)"))
+    } else {
+      print(paste0("Fitting model '", formula, "'..."))
+    }
+  }
 
   args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
   args <- c(args, args_spaMM)

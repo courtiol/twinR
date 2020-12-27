@@ -24,7 +24,8 @@
 #' data_births_monthly <- filter_data(data_births_all) # See ?filter_data
 #'
 #' ## Aggregate the data at the level of mothers:
-#' data_mothers_monthly <- aggregate_data(data_births_monthly) # See ?aggregate_data
+#' data_mothers_all <- aggregate_data(data_births_all) # See ?aggregate_data
+#' data_mothers_monthly <- aggregate_data(data_births_monthly)
 #'
 #' ## Expand the birth level data for the fit of statistical models:
 #' data_births_monthly.complete <- expand_data(data_births_monthly) # See ?expand_data
@@ -58,12 +59,17 @@
 #' fit_03 <- fit_totalbirths(data_mothers_monthly, when_twinner = "firstbirth")
 #' fit_04 <- fit_twinner.firstbirth(data_mothers_monthly)
 #' fit_05 <- fit_twinning.binomial(data_mothers_monthly)
+#' fit_05bis <- fit_twinning.binomial(data_mothers_all) # for Fig S5
 #' fit_06 <- fit_AFB(data_mothers_monthly)
 #' fit_07 <- fit_PP(data_births_monthly.complete, poly_order = 5L) # use best polynomial order
 #' fit_08 <- fit_IBI(data_births_monthly.complete, poly_order = 6L)
 #' fit_09 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L)
 #' fit_10 <- fit_PP(data_births_monthly.complete, twin_as.predictor = FALSE, poly_order = 5L)
 #' fit_11 <- fit_IBI(data_births_monthly.complete, twin_as.predictor = FALSE, poly_order = 6L)
+#' fit_12 <- fit_twinning.binary(data_births_monthly.complete) # no age and parity
+#' fit_13 <- fit_twinning.binary(data_births_monthly.complete, maternal_ID_as.predictor = FALSE)
+#' fit_14 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L,
+#'                               maternal_ID_as.predictor = FALSE)
 #'
 #' }
 #'
