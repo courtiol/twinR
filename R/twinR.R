@@ -63,13 +63,18 @@
 #' dir.create("tables") # create a folder to store the tables
 #'
 #' ## Create table 1:
+#'
 #' table1 <- build_summary_table(data_births_monthly)
 #' table1
+#'
 #' export_table_xlsx(table1, file = "tables/table1.xlsx")
 #'
+#'
 #' ## Create table S16:
+#'
 #' tableS16 <- build_summary_table(data_births_all)
 #' tableS16
+#'
 #' export_table_xlsx(tableS16, file = "tables/tableS16.xlsx")
 #'
 #'
@@ -78,45 +83,57 @@
 #' #---------------------------------- Fitting models ----------------------------------------------
 #' #------------------------------------------------------------------------------------------------
 #'
+#'    #### Note: the fitted models are also saved and available on GitHub for you not to have to
+#'    #### refit them all, see next section.
+#'
 #' fit_01 <- fit_totalbirths(data_mothers_monthly, when_twinner = "allbirths")
-#'
 #' fit_02 <- fit_twinner.allbirths(data_mothers_monthly)
-#'
 #' fit_03 <- fit_totalbirths(data_mothers_monthly, when_twinner = "firstbirth")
-#'
 #' fit_04 <- fit_twinner.firstbirth(data_mothers_monthly)
-#'
 #' fit_05 <- fit_twinning.binomial(data_mothers_monthly)
 #'
 #' ## we refit fit_05 on the complete dataset to study the effect of dropping observations:
 #' fit_05bis <- fit_twinning.binomial(data_mothers_all) # for Fig S5
 #'
 #' fit_06 <- fit_AFB(data_mothers_monthly)
-#'
 #' fit_07 <- fit_PP(data_births_monthly.complete, poly_order = 5L) # use best polynomial order
-#'
 #' fit_08 <- fit_IBI(data_births_monthly.complete, poly_order = 6L)
-#'
 #' fit_09 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L)
-#'
 #' fit_10 <- fit_PP(data_births_monthly.complete, twin_as.predictor = FALSE, poly_order = 5L)
-#'
 #' fit_11 <- fit_IBI(data_births_monthly.complete, twin_as.predictor = FALSE, poly_order = 6L)
-#'
 #' fit_12 <- fit_twinning.binary(data_births_monthly.complete) # no age and parity
-#'
 #' fit_13 <- fit_twinning.binary(data_births_monthly.complete, maternal_ID_as.predictor = FALSE)
-#'
 #' fit_14 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L,
 #'                               maternal_ID_as.predictor = FALSE)
 #'
+#'
+#' #------------------------------------------------------------------------------------------------
+#' #---------------------------------- Saving fitted models ----------------------------------------
+#' #------------------------------------------------------------------------------------------------
+#'
+#' dir.create("fitted_models") # create a folder to store the fitted models
+#' save(fit_01, file = "fitted_models/fit_01.rda", compress = "xz")
+#' save(fit_02, file = "fitted_models/fit_02.rda", compress = "xz")
+#' save(fit_03, file = "fitted_models/fit_03.rda", compress = "xz")
+#' save(fit_04, file = "fitted_models/fit_04.rda", compress = "xz")
+#' save(fit_05, file = "fitted_models/fit_05.rda", compress = "xz")
+#' save(fit_05bis, file = "fitted_models/fit_05bis.rda", compress = "xz")
+#' save(fit_06, file = "fitted_models/fit_06.rda", compress = "xz")
+#' save(fit_07, file = "fitted_models/fit_07.rda", compress = "xz")
+#' save(fit_08, file = "fitted_models/fit_08.rda", compress = "xz")
+#' save(fit_09, file = "fitted_models/fit_09.rda", compress = "xz")
+#' save(fit_10, file = "fitted_models/fit_10.rda", compress = "xz")
+#' save(fit_11, file = "fitted_models/fit_11.rda", compress = "xz")
+#' save(fit_12, file = "fitted_models/fit_12.rda", compress = "xz")
+#' save(fit_13, file = "fitted_models/fit_13.rda", compress = "xz")
+#' save(fit_14, file = "fitted_models/fit_14.rda", compress = "xz")
 #'
 #'
 #' #------------------------------------------------------------------------------------------------
 #' #---------------------------------- Computing effect sizes from fitted models -------------------
 #' #------------------------------------------------------------------------------------------------
 #'
-#'    #### See ?predictions for details on the two main underlying functions doing the job ####
+#'    #### Note: see ?predictions for details on the two main underlying functions doing the job
 #'
 #' ## Computing extra (total) births to twinners (at any birth):
 #'
