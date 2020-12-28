@@ -46,14 +46,14 @@ spaMM.options(nb_cores = nb_cores)
 #------------------------------------------------------------------------------------------------
 
 ## Filter the raw data to only keep data with monthly resolution:
-data_births_monthly <- filter_data(data_births_all) # See ?filter_data
+data_births_monthly <- filter_data(data_births_all) # see ?filter_data
 
 ## Aggregate the data at the level of mothers:
-data_mothers_all <- aggregate_data(data_births_all) # See ?aggregate_data
+data_mothers_all <- aggregate_data(data_births_all) # see ?aggregate_data
 data_mothers_monthly <- aggregate_data(data_births_monthly)
 
 ## Expand the birth level data for the fit of statistical models:
-data_births_monthly.complete <- expand_data(data_births_monthly) # See ?expand_data
+data_births_monthly.complete <- expand_data(data_births_monthly) # see ?expand_data
 
 
 
@@ -142,7 +142,7 @@ effect_twinner_on_births <- compare_predictions(fit_01,
                                                 newdata = data.frame(twinner = c(TRUE, FALSE)),
                                                 nb_boot = nb_boot)
 
-`#`(effect_twinner_on_births$results, digits = 3L) ## `#`() modifies display in Console, see ?`#`
+`#`(effect_twinner_on_births$results, digits = 3L) # `#`() modifies display in Console, see ?`#`
 #  estimate  lwr  upr
 #1     1.43 1.22 1.65
 
@@ -246,7 +246,7 @@ effect_twinning_on_IBI <- compare_predictions(fit_08,
                                              twin = c(TRUE, FALSE)),
                                        nb_boot = nb_boot)
 
-`#`(effect_twinning_on_IBI$results, digits = 3L) ## in months
+`#`(effect_twinning_on_IBI$results, digits = 3L) # in months
 #  estimate   lwr    upr
 #1    -1.03 -1.94 -0.169
 
@@ -259,14 +259,14 @@ predictions_AFB_1_2_births <- compute_predictions(fit_06,
                                                        twinner = c(TRUE, FALSE, TRUE, FALSE)),
                                                  nb_boot = nb_boot)
 
-`#`(predictions_AFB_1_2_births$results) ## in months
+`#`(predictions_AFB_1_2_births$results) # in months
 #  births_total_fac twinner estimate      lwr      upr
 #1                1    TRUE 379.2339 361.8971 396.3609
 #2                1   FALSE 351.7503 343.5182 360.2318
 #3                2    TRUE 355.9884 342.6304 370.0890
 #4                2   FALSE 338.0832 329.8782 346.0908
 
-`#`(predictions_AFB_1_2_births$results[, c("estimate", "lwr", "upr")]/12, digits = 3L) ## in years
+`#`(predictions_AFB_1_2_births$results[, c("estimate", "lwr", "upr")]/12, digits = 3L) # in years
 #  estimate  lwr  upr
 #1     31.6 30.2 33.0
 #2     29.3 28.6 30.0
@@ -288,7 +288,7 @@ effect_twinner_on_AFB_2_births <- compare_predictions(fit_06,
                                                        twinner = c(TRUE, FALSE)),
                                        nb_boot = nb_boot)
 
-`#`(effect_twinner_on_AFB_1_birth$results, digits = 3L) ## in months
+`#`(effect_twinner_on_AFB_1_birth$results, digits = 3L) # in months
 #  estimate  lwr  upr
 #1     27.5 11.9 43.7
 
@@ -301,7 +301,36 @@ effect_twinner_on_AFB_2_births <- compare_predictions(fit_06,
 #---------------------------------- Plotting predictions from model fits ------------------------
 #------------------------------------------------------------------------------------------------
 
+   #### Note: see ?figures for details on the underlying functions doing the job
+
+dir.create("figures") # create a folder to store the figures
+
+min_births <- min(data_mothers_monthly$births_total)
+max_births <- max(data_mothers_monthly$births_total)
+
+
 ## Figure 1:
+
+data_fig_1A <- compute_predictions(fit_01,
+                                   newdata = data.frame(twinner = c(TRUE, FALSE)),
+                                   nb_boot = nb_boot)
+data_fig_1B <- compute_predictions(fit_02,
+                                   newdata = data.frame(births_total = min_births:max_births),
+                                   nb_boot = nb_boot)
+data_fig_1C <- compute_predictions(fit_03,
+                                   newdata = data.frame(first_twinner = c(TRUE, FALSE)),
+                                   nb_boot = nb_boot)
+data_fig_1D <- compute_predictions(fit_04,
+                                   newdata = data.frame(births_total = min_births:max_births),
+                                   nb_boot = nb_boot)
+
+fig_1A <- draw_fig_1A(data_fig_1A)
+fig_1B <- draw_fig_1B(data_fig_1B)
+fig_1C <- draw_fig_1C(data_fig_1C)
+fig_1D <- draw_fig_1D(data_fig_1D)
+plot_grid(fig_1A, fig_1B, fig_1C, fig_1D, labels = "AUTO", label_size = 12)
+
+ggsave(file = "figures/fig1.pdf", width = 11.4, height = 9, unit = "cm") # export as PDF
 
 
 ## Figure 2:

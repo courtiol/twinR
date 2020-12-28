@@ -16,6 +16,7 @@ Depends:
     R (>= 3.5.0)
 Imports:
     boot,
+    cowplot,
     doSNOW,
     ggplot2,
     dplyr (>= 1.0),
