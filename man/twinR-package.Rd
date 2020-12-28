@@ -116,13 +116,15 @@ fit_14 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L,
 #------------------------------------------------------------------------------------------------
 #---------------------------------- Computing effect sizes from fitted models -------------------
 #------------------------------------------------------------------------------------------------
-# See ?predictions for details on the underlying functions doing the job
+
+   #### See ?predictions for details on the two main underlying functions doing the job ####
 
 ## Computing extra (total) births to twinners (at any birth):
 
 effect_twinner_on_births <- compare_predictions(fit_01,
-                                                newdata = data.frame(twinner = c(FALSE, TRUE)),
+                                                newdata = data.frame(twinner = c(TRUE, FALSE)),
                                                 nb_boot = nb_boot)
+
 `#`(effect_twinner_on_births$results, digits = 3L) ## `#`() modifies display in Console, see ?`#`
 #  estimate  lwr  upr
 #1     1.43 1.22 1.65
@@ -131,9 +133,10 @@ effect_twinner_on_births <- compare_predictions(fit_01,
 ## Computing increase in odds of becoming a twinner (at any birth) with each additional birth:
 
 effect_births_on_twinner <- compare_predictions(fit_02,
-                                                newdata = data.frame(births_total = c(1L, 2L)),
+                                                newdata = data.frame(births_total = c(2L, 1L)),
                                                 oddsratio = TRUE,
                                                 nb_boot = nb_boot)
+
 `#`(effect_births_on_twinner$results, digits = 3L)
 #  estimate  lwr  upr
 #1     1.17 1.16 1.19
@@ -142,8 +145,9 @@ effect_births_on_twinner <- compare_predictions(fit_02,
 ## Computing extra births to twinners at first birth:
 
 effect_first.twinner_on_births <- compare_predictions(fit_03,
-                                            newdata = data.frame(first_twinner = c(FALSE, TRUE)),
+                                            newdata = data.frame(first_twinner = c(TRUE, FALSE)),
                                             nb_boot = nb_boot)
+
 `#`(effect_first.twinner_on_births$results, digits = 3L)
 #  estimate    lwr    upr
 #1    -0.55 -0.881 -0.247
@@ -152,9 +156,10 @@ effect_first.twinner_on_births <- compare_predictions(fit_03,
 ## Computing increase in odds of becoming a twinner at first birth with each additional birth:
 
 effect_births_on_first.twinner <- compare_predictions(fit_04,
-                                                newdata = data.frame(births_total = c(1L, 2L)),
+                                                newdata = data.frame(births_total = c(2L, 1L)),
                                                 oddsratio = TRUE,
                                                 nb_boot = nb_boot)
+
 `#`(effect_births_on_first.twinner$results, digits = 3L)
 #  estimate   lwr   upr
 #1    0.934 0.895 0.971
@@ -163,11 +168,13 @@ effect_births_on_first.twinner <- compare_predictions(fit_04,
 ## Slope of the relationship between per-birth twinning probability and maternal births:
 
 main_slope <- fixef(fit_05)["births_total"]
+
 `#`(main_slope, digits = 3L)
 #births_total
 #    -0.0338
 
 main_slope_CI <- confint(fit_05, "births_total")$interval
+
 `#`(main_slope_CI, digits = 3L)
 #lower births_total upper births_total
 #           -0.0508            -0.0170
@@ -176,11 +183,13 @@ main_slope_CI <- confint(fit_05, "births_total")$interval
 ## Same using the full dataset (legend Fig S5):
 
 main_slope_full <- fixef(fit_05bis)["births_total"]
+
 `#`(main_slope_full, digits = 3L)
 #' #births_total
 #     -0.0346
 
 main_slope_CI_full <- confint(fit_05bis, "births_total")$interval
+
 `#`(main_slope_CI_full, digits = 3L)
 #lower births_total upper births_total
 #           -0.0509            -0.0185
@@ -189,18 +198,21 @@ main_slope_CI_full <- confint(fit_05bis, "births_total")$interval
 ## Computing increase in odds of twinning at a given birth with each additional birth:
 
 effect_births_on_twinning <- compare_predictions(fit_05,
-                                                 newdata = data.frame(births_total = c(1L, 2L)),
+                                                 newdata = data.frame(births_total = c(2L, 1L)),
                                                  oddsratio = TRUE,
                                                  nb_boot = nb_boot)
+
 `#`(effect_births_on_twinning$results, digits = 3L)
 #  estimate   lwr   upr
 #1    0.967 0.952 0.982
 
 
 ## Computing range of per-birth twinning probability for 1 and 18 births:
+
 predictions_twinning_range_births <- compute_predictions(fit_05,
                                                  newdata = data.frame(births_total = c(1L, 18L)),
                                                  nb_boot = nb_boot)
+
 `#`(predictions_twinning_range_births$results, digits = 2L)
 #  births_total estimate    lwr   upr
 #1            1    0.021 0.0170 0.025
@@ -208,11 +220,64 @@ predictions_twinning_range_births <- compute_predictions(fit_05,
 
 
 ## Increase in duration of interbirth interval after a twinning event at mean age and parity:
+## Note: this computation takes ~ 11 days on a single CPU
+
+effect_twinning_on_IBI <- compare_predictions(fit_08,
+                                       newdata = data.frame(
+                                             age = mean(data_births_monthly.complete$age),
+                                             parity = mean(data_births_monthly.complete$parity),
+                                             twin = c(TRUE, FALSE)),
+                                       nb_boot = nb_boot)
+
+`#`(effect_twinning_on_IBI$results, digits = 3L) ## in months
+#  estimate   lwr    upr
+#1    -1.03 -1.94 -0.169
+
 
 ## Computing AFB for twinners and non-twinners with one and two total births (legend Fig S1):
 
+predictions_AFB_1_2_births <- compute_predictions(fit_06,
+                                                 newdata = data.frame(
+                                                       births_total_fac = c("1", "1", "2", "2"),
+                                                       twinner = c(TRUE, FALSE, TRUE, FALSE)),
+                                                 nb_boot = nb_boot)
+
+`#`(predictions_AFB_1_2_births$results) ## in months
+#  births_total_fac twinner estimate      lwr      upr
+#1                1    TRUE 379.2339 361.8971 396.3609
+#2                1   FALSE 351.7503 343.5182 360.2318
+#3                2    TRUE 355.9884 342.6304 370.0890
+#4                2   FALSE 338.0832 329.8782 346.0908
+
+`#`(predictions_AFB_1_2_births$results[, c("estimate", "lwr", "upr")]/12, digits = 3L) ## in years
+#  estimate  lwr  upr
+#1     31.6 30.2 33.0
+#2     29.3 28.6 30.0
+#3     29.7 28.6 30.8
+#4     28.2 27.5 28.8
+
+
 ## Computing delay in AFB for twinners compared to non-twinners (legend Fig S1):
 
+effect_twinner_on_AFB_1_birth <- compare_predictions(fit_06,
+                                       newdata = data.frame(
+                                                       births_total_fac = "1",
+                                                       twinner = c(TRUE, FALSE)),
+                                       nb_boot = nb_boot)
+
+effect_twinner_on_AFB_2_births <- compare_predictions(fit_06,
+                                       newdata = data.frame(
+                                                       births_total_fac = "2",
+                                                       twinner = c(TRUE, FALSE)),
+                                       nb_boot = nb_boot)
+
+`#`(effect_twinner_on_AFB_1_birth$results, digits = 3L) ## in months
+#  estimate  lwr  upr
+#1     27.5 11.9 43.7
+
+`#`(effect_twinner_on_AFB_2_births$results, digits = 3L)
+#  estimate  lwr  upr
+#1     17.9 6.55 29.4
 
 
 #------------------------------------------------------------------------------------------------
