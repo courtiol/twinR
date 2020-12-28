@@ -116,12 +116,12 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
     prediction2 <- spaMM::predict.HLfit(fit, newdata = newdata2, re.form = NA, type = "link")[[1]]
 
     ## we integrate over the entire (Gaussian) distribution of the random effects:
-    fn0 <- function(x) linkinv(prediction1 +
+    fn1 <- function(x) linkinv(prediction1 +
                                  stats::qnorm(x, sd = sqrt(fit$lambda[[1]])))
-    fn1 <- function(x) linkinv(prediction2 +
+    fn2 <- function(x) linkinv(prediction2 +
                                  stats::qnorm(x, sd = sqrt(fit$lambda[[1]])))
     p1 <- stats::integrate(fn1, lower = 0, upper = 1)$value
-    p2 <- stats::integrate(fn0, lower = 0, upper = 1)$value
+    p2 <- stats::integrate(fn2, lower = 0, upper = 1)$value
 
     ## convert the result as a difference between predictions or as an odds ratio:
     ifelse(oddsratio, (p1/(1 - p1))/(p2/(1 - p2)), p1 - p2)
@@ -149,15 +149,15 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
 
     ## we integrate over the entire (Gaussian) distributions of the random effects;
     ## the package {pracma} is used to perform a bivariate integration:
-    fn0 <- function(x, y) linkinv(prediction1 +
+    fn1 <- function(x, y) linkinv(prediction1 +
                                     stats::qnorm(x, sd = sqrt(fit$lambda[[1]])) +
                                     stats::qnorm(y, sd = sqrt(fit$lambda[[2]])))
-    fn1 <- function(x, y) linkinv(prediction2 +
+    fn2 <- function(x, y) linkinv(prediction2 +
                                     stats::qnorm(x, sd = sqrt(fit$lambda[[1]])) +
                                     stats::qnorm(y, sd = sqrt(fit$lambda[[2]])))
 
-    p1 <- pracma::integral2(fn0, xmin = 0, xmax = 1, ymin = 0, ymax = 1)$Q
-    p2 <- pracma::integral2(fn1, xmin = 0, xmax = 1, ymin = 0, ymax = 1)$Q
+    p1 <- pracma::integral2(fn1, xmin = 0, xmax = 1, ymin = 0, ymax = 1)$Q
+    p2 <- pracma::integral2(fn2, xmin = 0, xmax = 1, ymin = 0, ymax = 1)$Q
 
     ## convert the result as a difference between predictions or as an odds ratio:
     ifelse(oddsratio, (p1/(1 - p1))/(p2/(1 - p2)), p1 - p2)
