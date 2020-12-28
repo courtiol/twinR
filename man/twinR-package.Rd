@@ -335,6 +335,14 @@ ggsave(file = "figures/fig1.pdf", width = 11.4, height = 9, unit = "cm") # expor
 
 ## Figure 2:
 
+data_fig_2 <- compute_predictions(fit_05,
+                                  newdata = data.frame(births_total = min_births:max_births),
+                                  nb_boot = nb_boot)
+
+draw_fig_2(data_fig_2)
+
+ggsave(file = "figures/fig2.pdf", width = 11.4, height = 9, unit = "cm") # export as PDF
+
 
 ## Figure 3:
 

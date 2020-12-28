@@ -175,4 +175,35 @@ draw_fig_1D <- function(data) {
 }
 
 
+#' @describeIn figures draw fig. 2
+#' @export
+#'
+draw_fig_2 <- function(data) {
+
+  ## extract results component from the output of compute_predictions() if not done by user
+  if (is.list(data) && !is.data.frame(data)) {
+    data <- data$results
+  }
+
+  data %>%
+    ggplot2::ggplot() +
+    ggplot2::aes(x = .data$births_total,
+                 y = .data$estimate,
+                 ymin = .data$lwr,
+                 ymax = .data$upr,
+                 fill = .data$estimate) +
+    ggplot2::labs(y = "Per-birth twin. prob.",
+                  x = "Maternal total births" ) +
+    ggplot2::geom_line(colour = "black", size = 1) +
+    ggplot2::geom_ribbon(alpha = 0.3, fill = "grey") +
+    ggplot2::scale_x_continuous(breaks = c(1, 5, 10, 15, 18),
+                                labels = c("1", "5", "10", "15", "18")) +
+    ggplot2::scale_y_continuous(trans = "logit",
+                                breaks = c(0.01, 0.015, 0.02, 0.025),
+                                labels = c("0.010", "0.015", "0.020", "0.025")) +
+    theme_twin() +
+    ggplot2::coord_cartesian()
+}
+
+
 
