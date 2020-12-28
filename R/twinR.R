@@ -33,7 +33,7 @@
 #' nb_boot <- 1000L
 #'
 #' ## Identify number of CPU cores available for parallel computing:
-#' nb_cores <- min(c(100, parallel::detectCores() - 1))
+#' nb_cores <- min(c(50, parallel::detectCores() - 1))
 #'
 #' ## Set option in spaMM:
 #' spaMM.options(nb_cores = nb_cores)
@@ -197,6 +197,7 @@
 #'
 #'
 #' ## Computing range of per-birth twinning probability for 1 and 18 births:
+#'
 #' predictions_twinning_range_births <- compute_predictions(fit_05,
 #'                                                  newdata = data.frame(births_total = c(1L, 18L)),
 #'                                                  nb_boot = nb_boot)
@@ -208,7 +209,19 @@
 #'
 #' ## Increase in duration of interbirth interval after a twinning event at mean age and parity:
 #'
+#' effect_twinning_on_IBI <- compare_predictions(fit_08,
+#'                                        newdata = data.frame(
+#'                                              age = mean(data_births_monthly.complete$age),
+#'                                              parity = mean(data_births_monthly.complete$parity),
+#'                                              twin = c(TRUE, FALSE)),
+#'                                        nb_boot = nb_boot)
+#' `#`(effect_twinning_on_IBI$results, digits = 3L)
+#' #  estimate   lwr    upr
+#' #1    -1.03 -1.94 -0.169
+#'
+#'
 #' ## Computing AFB for twinners and non-twinners with one and two total births (legend Fig S1):
+#'
 #'
 #' ## Computing delay in AFB for twinners compared to non-twinners (legend Fig S1):
 #'
