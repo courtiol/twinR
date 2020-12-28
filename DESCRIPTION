@@ -17,6 +17,7 @@ Depends:
 Imports:
     boot,
     doSNOW,
+    ggplot2,
     dplyr (>= 1.0),
     magrittr,
     pracma,
