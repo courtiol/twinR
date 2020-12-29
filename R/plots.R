@@ -58,9 +58,9 @@ NULL
 
 
 
-#' Functions to prepare data for Fig. 3
+#' Functions to prepare data for the figures
 #'
-#' These functions are used to prepare the data required to draw Fig. 3.
+#' These functions are used to prepare the data required to draw the figures.
 #' They allow for the computation of predictions averaged over the non focal fixed predictors.
 #'
 #' We recommend to look at the raw R code of these functions on GitHub (file
@@ -68,12 +68,14 @@ NULL
 #' While you could directly look at the code of these functions while using the package, mind that
 #' the comments will have been stripped away during the installation process.
 #'
-#' @name prepare_fig_3
+#' @name prepare_data_for_fig
 #' @inheritParams fit_models
+#' @inheritParams predictions
 #' @param xaxis a `character` indicating whether `"age"` or `"parity"` must be considered as the x-axis
 #' @param fit_PP a fitted model for predicting the parity progression
 #' @param fit_IBI a fitted model for predicting the interbirth interval
 #' @param fit_twin a fitted model for predicting the per-birth probability of twinning
+#' @param fit_AFB a fitted model for predicting the age at first birth
 #' @examples
 #' prepare_newdata_fig_3(expand_data(data_births_all), xaxis = "age")
 #' prepare_newdata_fig_3(expand_data(data_births_all), xaxis = "parity")
@@ -83,7 +85,7 @@ NULL
 NULL
 
 
-#' @describeIn prepare_fig_3 an internal function to prepare the data used to generate the predictions to be plotted in Fig. 3
+#' @describeIn prepare_data_for_fig an internal function to prepare the data used to generate the predictions to be plotted in Fig. 3
 #' @export
 #'
 prepare_newdata_fig_3 <- function(birth_level_data, xaxis = c("age", "parity")) {
@@ -134,7 +136,7 @@ prepare_newdata_fig_3 <- function(birth_level_data, xaxis = c("age", "parity")) 
 }
 
 
-#' @describeIn prepare_fig_3 prepare the data to be plotted in Fig. 3A
+#' @describeIn prepare_data_for_fig prepare the data to be plotted in Fig. 3A
 #' @export
 #'
 prepare_data_fig_3A <- function(fit_PP) {
@@ -165,7 +167,7 @@ prepare_data_fig_3A <- function(fit_PP) {
 }
 
 
-#' @describeIn prepare_fig_3 prepare the data to be plotted in Fig. 3B
+#' @describeIn prepare_data_for_fig prepare the data to be plotted in Fig. 3B
 #' @export
 #'
 prepare_data_fig_3B <- function(fit_IBI) {
@@ -188,7 +190,7 @@ prepare_data_fig_3B <- function(fit_IBI) {
 }
 
 
-#' @describeIn prepare_fig_3 prepare the data to be plotted in Fig. 3C
+#' @describeIn prepare_data_for_fig prepare the data to be plotted in Fig. 3C
 #' @export
 #'
 prepare_data_fig_3C <- function(fit_twin) {
@@ -213,6 +215,47 @@ prepare_data_fig_3C <- function(fit_twin) {
     dplyr::relocate(.data$age, .after = .data$twin) %>%
     tibble::as_tibble()
 }
+
+
+#' @describeIn prepare_data_for_fig an internal function to prepare the data used to generate the predictions to be plotted in Fig. S1
+#' @export
+#'
+prepare_newdata_fig_S1 <- function() {
+  expand.grid(twinner = c(TRUE, FALSE),
+              births_total_fac = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"))
+}
+
+
+#' @describeIn prepare_data_for_fig prepare the data to be plotted in Fig. S1
+#' @export
+#'
+prepare_data_fig_S1 <- function(fit_AFB, nb_boot = 1000) {
+
+  ### part 1: predictions for AFB according to total births and twinning status
+
+  ## compute the newdata for predictions:
+  new_data <- prepare_newdata_fig_S1()
+
+  ## compute the predictions:
+  pred_AFB <- compute_predictions(fit_AFB, newdata = new_data, nb_boot = nb_boot)
+
+  ## keep only the outputs needed:
+  pred_AFB$results %>%
+    dplyr::rename(AFB = .data$estimate) %>%
+    tibble::as_tibble() -> data_part1
+
+
+  ### part 2: sample size for each total birth and twinning status
+
+  mother_level_data <- fit_AFB$data
+
+  mother_level_data %>%
+    dplyr::count(.data$twinner, .data$births_total_fac) %>%
+    tibble::as_tibble() -> data_part2
+
+  list(data_part1 = data_part1, data_part2 = data_part2)
+}
+
 
 
 #' Functions producing the figures
@@ -474,3 +517,54 @@ draw_fig_3C <- function(data) {
                    legend.margin = ggplot2::margin(c(0, 0, 0, 0)))
 }
 
+
+
+#' @describeIn figures draw fig. S1
+#' @export
+#'
+draw_fig_S1 <- function(data) {
+
+  data$data_part1 %>%
+    dplyr::mutate(twinner = factor(ifelse(.data$twinner, "twinner", "non-twinner"),
+                                   levels = c("non-twinner", "twinner"))) -> data_plot1
+
+  data$data_part2 %>%
+    dplyr::mutate(twinner = factor(ifelse(.data$twinner, "twinner", "non-twinner"),
+                                   levels = c("non-twinner", "twinner"))) -> data_plot2
+
+  data_plot1 %>%
+    ggplot2::ggplot() +
+    ggplot2::aes(x = factor(.data$births_total_fac)) +
+    ggplot2::geom_line(data = data_plot2,
+                       mapping = ggplot2::aes(y = log(.data$n)*2.5 + 12,
+                                              group = .data$twinner,
+                                              linetype = .data$twinner), colour = "grey") +
+    ggplot2::geom_point(data = data_plot2,
+                        mapping = ggplot2::aes(y = log(.data$n)*2.5 + 12,
+                                               shape = .data$twinner), colour = "grey") +
+    ggplot2::scale_shape_discrete("Lifetime twin. status", solid = TRUE) +
+    ggnewscale::new_scale("shape") +
+    ggplot2::geom_errorbar(ggplot2::aes(
+      group = .data$twinner,
+      y = .data$AFB/12,
+      ymin = .data$lwr/12,
+      ymax = .data$upr/12),
+      size = 0.2, width = 0.3, linetype = 1,
+      position = ggplot2::position_dodge(width = 0.2)) +
+    ggplot2::geom_point(ggplot2::aes(shape = .data$twinner,
+                                     y = .data$AFB/12),
+                        size = 2, position = ggplot2::position_dodge(width = 0.2)) +
+    ggplot2::scale_y_continuous("Maternal age at first birth",
+                                breaks = c(21:35),
+                                sec.axis = ggplot2::sec_axis(~ (exp((. - 12)/2.5)),
+                                                             name = "Number of observations",
+                                                             breaks = c(50, 100, 200, 400, 800, 1600, 3200))) +
+    ggplot2::scale_shape_discrete("Lifetime twin. status", solid = FALSE) +
+    ggplot2::labs(x = "Maternal total births", linetype = "Lifetime twin. status") +
+    theme_twin() +
+    ggplot2::theme(legend.position = "right",
+                   legend.key.width = ggplot2::unit(0.5, units = "cm"),
+                   legend.text = ggplot2::element_text(size = 6),
+                   legend.title = ggplot2::element_text(size = 8),
+                   legend.margin = ggplot2::margin(c(0, 0, 0, 0)))
+}

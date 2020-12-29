@@ -19,6 +19,7 @@ Imports:
     cowplot,
     doSNOW,
     ggplot2,
+    ggnewscale,
     dplyr (>= 1.0),
     magrittr,
     pracma,

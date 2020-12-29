@@ -362,8 +362,19 @@ ggsave(file = "figures/fig3.pdf", width = 8.7, height = 20, units = "cm")
 
 ## Figure S1:
 
+data_fig_S1 <- prepare_data_fig_S1(fit_06)
+
+draw_fig_S1(data_fig_S1)
+
+ggsave(file = "figures/figS1.pdf", width = 11.4, height = 6, units = "cm")
+
+
 
 ## Figure S2:
+
+
+## Figure S5:
+
 
 
 }
