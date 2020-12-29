@@ -26,6 +26,7 @@ Imports:
     rlang,
     spaMM (>= 3.5.0),
     tibble,
+    tidyr,
     tidyselect
 Suggests:
     openxlsx,

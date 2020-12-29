@@ -345,6 +345,17 @@
 #'
 #' ## Figure 3:
 #'
+#' data_fig_3A <- prepare_data_fig_3A(fit_07)
+#' data_fig_3B <- prepare_data_fig_3B(fit_08)
+#' data_fig_3C <- prepare_data_fig_3C(fit_09)
+#'
+#' fig_3A <- draw_fig_3A(data_fig_3A)
+#' fig_3B <- draw_fig_3B(data_fig_3B)
+#' fig_3C <- draw_fig_3C(data_fig_3C)
+#' plot_grid(fig_3A, fig_3B, fig_3C, labels = "AUTO", nrow = 3, label_size = 12, align = "v", axis = "lr")
+#'
+#' ggsave(file = "figures/fig3.pdf", width = 8.7, height = 20, units = "cm") # export as PDF
+#'
 #'
 #' ## Figure S1:
 #'

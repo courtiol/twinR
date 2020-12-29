@@ -57,6 +57,164 @@ NULL
 NULL
 
 
+
+#' Functions to prepare data for Fig. 3
+#'
+#' These functions are used to prepare the data required to draw Fig. 3.
+#' They allow for the computation of predictions averaged over the non focal fixed predictors.
+#'
+#' We recommend to look at the raw R code of these functions on GitHub (file
+#' '/R/plots.R') to understand how they work. We commented the code to make this clear.
+#' While you could directly look at the code of these functions while using the package, mind that
+#' the comments will have been stripped away during the installation process.
+#'
+#' @name prepare_fig_3
+#' @inheritParams fit_models
+#' @param xaxis a `character` indicating whether `"age"` or `"parity"` must be considered as the x-axis
+#' @param fit_PP a fitted model for predicting the parity progression
+#' @param fit_IBI a fitted model for predicting the interbirth interval
+#' @param fit_twin a fitted model for predicting the per-birth probability of twinning
+#' @examples
+#' prepare_newdata_fig_3(expand_data(data_births_all), xaxis = "age")
+#' prepare_newdata_fig_3(expand_data(data_births_all), xaxis = "parity")
+#'
+#' # for more realistic use, see ?twinR
+#'
+NULL
+
+
+#' @describeIn prepare_fig_3 an internal function to prepare the data used to generate the predictions to be plotted in Fig. 3
+#' @export
+#'
+prepare_newdata_fig_3 <- function(birth_level_data, xaxis = c("age", "parity")) {
+
+  new_data <- birth_level_data[, c("age", "parity")]
+
+  if (length(xaxis) > 1) {
+    xaxis <- xaxis[1]
+    warning("the argument 'xaxis' must be of length 1")
+  }
+
+  ## when the x-axis is the maternal age, then we want a regular sampling of 100 maternal ages
+  ## within the 95% range of the actual distribution for age among mothers of each given parity:
+  if (xaxis == "age") {
+
+    new_data %>%
+      dplyr::filter(.data$parity %in% c(1, 2, 3, 5, 7, 9)) %>%
+      dplyr::group_by(parity_fct = as.factor(.data$parity)) %>%
+      dplyr::summarise(parity = unique(.data$parity)[1],
+                       age_min = stats::quantile(.data$age, probs = 0.025, na.rm = TRUE),
+                       age_max = stats::quantile(.data$age, probs = 0.975, na.rm = TRUE)) %>%
+      dplyr::rowwise() %>%
+      dplyr::mutate(age = list(seq(.data$age_min, .data$age_max, length.out = 100))) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(.data$parity, .data$age) %>%
+      tidyr::unnest(cols = .data$age) %>% # age is a nested column, so we must unnest it
+      dplyr::mutate(pop = "new",
+                    maternal_ID = "new",
+                    twin = TRUE) -> new_data
+
+  ## when the x-axis is the parity, then we want all ages associated with each parity, so that
+  ## we can compute the integration over the observed distribution of ages:
+  } else if (xaxis == "parity") {
+    new_data %>%
+      dplyr::count(.data$parity, .data$age) %>%
+      dplyr::mutate(pop = "new",
+                    maternal_ID = "new",
+                    twin = TRUE) -> new_data
+  } else {
+    stop("the argument 'xaxis' must be 'age' or 'parity'")
+  }
+
+  new_data %>%
+    dplyr::bind_rows(new_data %>%
+                       dplyr::mutate(pop = "new",
+                                     maternal_ID = "new",
+                                     twin = FALSE))
+}
+
+
+#' @describeIn prepare_fig_3 prepare the data to be plotted in Fig. 3A
+#' @export
+#'
+prepare_data_fig_3A <- function(fit_PP) {
+
+  birth_level_data <- fit_PP$data
+
+  ## compute the newdata for predictions:
+  new_data <- prepare_newdata_fig_3(birth_level_data, xaxis = "parity")
+
+  ## compute the predictions for all existing parity - ages combinations:
+  pred_PP <- compute_predictions(fit_PP, new_data, nb_boot = 0)[[1]]
+
+  ## average the predictions across the different ages corresponding to each parity and twinning status:
+  pred_PP %>%
+    dplyr::group_by(.data$parity, .data$twin) %>%
+    dplyr::summarise(PP = sum(.data$n*.data$estimates)/sum(.data$n)) %>%
+    dplyr::ungroup() -> pred_PP_avg
+
+  ## compute the mean maternal age at each parity:
+  birth_level_data %>%
+    dplyr::group_by(parity_fct = as.factor(.data$parity)) %>%
+    dplyr::summarise(parity = unique(.data$parity)[1],
+                     age = mean(.data$age)) %>%
+    dplyr::select(-.data$parity_fct) -> mean_age_per_parity
+
+  ## join the datasets:
+  dplyr::full_join(pred_PP_avg, mean_age_per_parity, by = "parity")
+}
+
+
+#' @describeIn prepare_fig_3 prepare the data to be plotted in Fig. 3B
+#' @export
+#'
+prepare_data_fig_3B <- function(fit_IBI) {
+
+  birth_level_data <- fit_IBI$data
+
+  ## compute the newdata for predictions:
+  new_data <- prepare_newdata_fig_3(birth_level_data, xaxis = "age")
+
+  ## compute the predictions:
+  pred_IBI <- compute_predictions(fit_IBI, new_data, nb_boot = 0)
+
+  ## keep only the outputs needed and add the 6 months that were removed
+  ## during the fit of the interbirth interval:
+  pred_IBI[[1]] %>%
+    dplyr::mutate(IBI = .data$estimates + 6) %>%
+    dplyr::select(.data$parity, .data$age, .data$twin, .data$IBI) %>%
+    dplyr::relocate(.data$age, .after = .data$IBI) %>%
+    tibble::as_tibble()
+}
+
+
+#' @describeIn prepare_fig_3 prepare the data to be plotted in Fig. 3C
+#' @export
+#'
+prepare_data_fig_3C <- function(fit_twin) {
+
+  birth_level_data <- fit_twin$data
+
+  ## compute the newdata for predictions:
+  new_data <- prepare_newdata_fig_3(birth_level_data, xaxis = "age")
+
+  ## remove the twin covariate, which is not used in twin_fit:
+  new_data %>%
+    dplyr::filter(.data$twin) %>%
+    dplyr::select(-.data$twin) -> new_data
+
+  ## compute the predictions:
+  pred_twin <- compute_predictions(fit_twin, new_data, nb_boot = 0)
+
+  ## keep only the outputs needed:
+  pred_twin[[1]] %>%
+    dplyr::mutate(twin = .data$estimates) %>%
+    dplyr::select(.data$parity, .data$age, .data$twin) %>%
+    dplyr::relocate(.data$age, .after = .data$twin) %>%
+    tibble::as_tibble()
+}
+
+
 #' Functions producing the figures
 #'
 #' @param data a `data.frame` or a `list` containing the data to be plotted
@@ -207,3 +365,111 @@ draw_fig_2 <- function(data) {
 
 
 
+#' @describeIn figures draw fig. 3A
+#' @export
+#'
+draw_fig_3A <- function(data) {
+
+  data %>%
+    dplyr::mutate(
+      twin = ifelse(.data$twin, "twin", "singleton"),
+      twin = factor(.data$twin, levels = c("singleton", "twin"))) -> data_plot
+
+  data_plot %>%
+    dplyr::filter(.data$twin == "twin") -> data_plot_twin
+
+  data_plot %>%
+    ggplot2::ggplot() +
+    ggplot2::aes(x = .data$parity) +
+    ggplot2::geom_line(data = data_plot_twin,
+                       mapping = ggplot2::aes(y = (.data$age - 25) / 20,
+                                              x = .data$parity), colour = "grey") +
+    ggplot2::geom_point(data = data_plot_twin,
+                        mapping = ggplot2::aes(y = (.data$age - 25) / 20,
+                                               x = .data$parity),
+                        colour = "grey") +
+    ggplot2::scale_y_continuous("Parity progression prob.",
+                                sec.axis = ggplot2::sec_axis(~ (.* 20) + 25,
+                                                             name = "Mean maternal age",
+                                                             breaks = seq(25, 45, by = 5)),
+                                breaks = seq(0, 1, by = 0.1)) +
+    ggplot2::geom_line(ggplot2::aes(y = .data$PP,
+                                    linetype = .data$twin)) +
+    ggplot2::geom_point(ggplot2::aes(y = .data$PP,
+                                     shape = .data$twin)) +
+    ggplot2::expand_limits(y = c(0, 1)) +
+    ggplot2::scale_x_continuous("Parity", breaks = c(1, 5, 10, 15, 18)) +
+    ggplot2::scale_shape_discrete("Twinning status", guide = ggplot2::guide_legend(title.vjust = 0.5, nrow = 1), solid = FALSE) +
+    ggplot2::scale_linetype_discrete("Twinning status", guide = ggplot2::guide_legend(title.vjust = 0.5, nrow = 1)) +
+    ggplot2::labs(linetype = "Twinning status",
+                  shape = "Twinning status") +
+    theme_twin() +
+    ggplot2::theme(legend.position = "bottom",
+                   legend.key.width = ggplot2::unit(0.5, units = "cm"),
+                   legend.text = ggplot2::element_text(size = 6),
+                   legend.title = ggplot2::element_text(size = 8),
+                   legend.margin = ggplot2::margin(c(0, 0, 0, 0)))
+}
+
+
+#' @describeIn figures draw fig. 3B
+#' @export
+#'
+draw_fig_3B <- function(data) {
+
+  data %>%
+    dplyr::mutate(
+      twin_birth = ifelse(.data$twin, "twin", "singleton"),
+      twin_birth = factor(.data$twin, levels = c("singleton", "twin"))) -> data_plot
+
+  data_plot %>%
+    ggplot2::ggplot() +
+    ggplot2::aes(x = .data$age,
+                 y = .data$IBI,
+                 col = as.factor(.data$parity),
+                 shape = .data$twin,
+                 linetype = .data$twin) +
+    ggplot2::geom_line() +
+    ggplot2::scale_color_viridis_d("Parity", guide = NULL) +
+    ggplot2::scale_linetype_discrete("Twinning status", guide = ggplot2::guide_legend(title.vjust = 0.5, nrow = 1)) +
+    ggplot2::scale_x_continuous("Maternal age", breaks = seq(20, 45, by = 5)) +
+    theme_twin() +
+    ggplot2::labs(y = "Interbirth interval (months)") +
+    ggplot2::expand_limits(y = c(25, 50)) +
+    ggplot2::expand_limits(x = c(20, 45)) +
+    ggplot2::theme(legend.position = "bottom",
+                   legend.key.width = ggplot2::unit(0.5, units = "cm"),
+                   legend.text = ggplot2::element_text(size = 6),
+                   legend.title = ggplot2::element_text(size = 8),
+                   legend.margin = ggplot2::margin(c(0, 0, 0, 0)))
+}
+
+
+#' @describeIn figures draw fig. 3C
+#' @export
+#'
+draw_fig_3C <- function(data) {
+
+  data %>%
+    dplyr::mutate(
+      twin = ifelse(.data$twin, "twin", "singleton"),
+      twin = factor(.data$twin, levels = c("singleton", "twin"))) -> data_plot
+
+  data %>%
+    ggplot2::ggplot() +
+    ggplot2::aes(x = .data$age,
+                 y = .data$twin,
+                 col = as.factor(.data$parity)) +
+    ggplot2::geom_line() +
+    ggplot2::scale_color_viridis_d("Parity", guide = ggplot2::guide_legend(title.vjust = 0.5, nrow = 1)) +
+    ggplot2::scale_y_continuous("Per-birth twin. prob.", breaks = seq(0.01, 0.04, by = 0.005)) +
+    ggplot2::scale_x_continuous("Maternal age", breaks = seq(20, 45, by = 5)) +
+    ggplot2::expand_limits(y = c(0.01, 0.04)) +
+    ggplot2::expand_limits(x = c(20, 45)) +
+    theme_twin() +
+    ggplot2::theme(legend.position = "top",
+                   legend.key.width = ggplot2::unit(0.5, units = "cm"),
+                   legend.text = ggplot2::element_text(size = 6),
+                   legend.title = ggplot2::element_text(size = 8),
+                   legend.margin = ggplot2::margin(c(0, 0, 0, 0)))
+}
