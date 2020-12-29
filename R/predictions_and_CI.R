@@ -44,14 +44,12 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
 
   if (nrow(newdata) != 2) stop("The dataset provided via the argument `newdata` should contain 2 rows.")
 
-  ## identify the response variable (required for bootstrapping):
+  ## identify the response variable:
   response_var_raw <- paste(fit$call[[2]][[2]])
   if (length(response_var_raw) == 1) {
     response_var <- response_var_raw
-    response_var2 <- NULL
   } else if (length(response_var_raw) > 1) {
     response_var <- response_var_raw[2] ## for binomial binary
-    response_var2 <- response_var_raw[3] ## for binomial binary
   }
 
   ## capture the data from the fitted model:
@@ -75,16 +73,9 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
   ## define function computing differences or odds-ratio between 2 marginal predictions when there is no random effect:
   compute_comparison_0_random <- function(y, ...) {
 
-    if (!all(data[, response_var] == y)) { ## only refit if necessary
-      data[, response_var] <- y
-
-      ## if both the number simulated success and the observed number of failure are 0, then the model cannot be fit, so we remove these rare cases:
-      if (!is.null(response_var2)) {
-        null_sample_cases <- apply(data[, cbind(response_var, response_var2)], 1, sum) == 0
-        data <- data[!null_sample_cases, ]
-      }
-
-      fit <- eval(fit$call)
+    ## refit model, but only if the response has been simulated during the bootstrap:
+    if (!all(y == data[, response_var])) {
+      fit <- spaMM::update_resp(fit, newresp = y)
     }
 
     ## we compute the 2 predictions without the random effect on the scale of the link:
@@ -101,16 +92,9 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
   ## same thing when there is one random effect:
   compute_comparison_1_random <- function(y, ...) {
 
-    if (!all(data[, response_var] == y)) { ## only refit if necessary
-      data[, response_var] <- y
-
-      ## if both the number simulated success and the observed number of failure are 0, then the model cannot be fit, so we remove these rare cases:
-      if (!is.null(response_var2)) {
-        null_sample_cases <- apply(data[, cbind(response_var, response_var2)], 1, sum) == 0
-        data <- data[!null_sample_cases, ]
-      }
-
-      fit <- eval(fit$call)
+    ## refit model, but only if the response has been simulated during the bootstrap:
+    if (!all(y == data[, response_var])) {
+      fit <- spaMM::update_resp(fit, newresp = y)
     }
 
     ## we compute the 2 predictions without the random effect on the scale of the link:
@@ -133,16 +117,9 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
   ## same thing when there are two random effects:
   compute_comparison_2_random <- function(y, ...) {
 
-    if (!all(data[, response_var] == y)) { ## only refit if necessary
-      data[, response_var] <- y
-
-      ## if both the number simulated success and the observed number of failure are 0, then the model cannot be fit, so we remove these rare cases:
-      if (!is.null(response_var2)) {
-        null_sample_cases <- apply(data[, cbind(response_var, response_var2)], 1, sum) == 0
-        data <- data[!null_sample_cases, ]
-      }
-
-      fit <- eval(fit$call)
+    ## refit model, but only if the response has been simulated during the bootstrap:
+    if (!all(y == data[, response_var])) {
+      fit <- spaMM::update_resp(fit, newresp = y)
     }
 
     ## we compute the 2 predictions without the random effect on the scale of the link:
@@ -219,14 +196,12 @@ compute_predictions <- function(fit, newdata, random = TRUE, nb_boot = 1000, see
 
   if (length(fit$lambda) > 2) stop("This function can only handle up to 2 random effect.")
 
-  ## identify the response variable (required for bootstrapping):
+  ## identify the response variable:
   response_var_raw <- paste(fit$call[[2]][[2]])
   if (length(response_var_raw) == 1) {
     response_var <- response_var_raw
-    response_var2 <- NULL
   } else if (length(response_var_raw) > 1) {
     response_var <- response_var_raw[2] ## for binomial binary
-    response_var2 <- response_var_raw[3] ## for binomial binary
   }
 
   ## capture the data from the fitted model:
@@ -286,16 +261,9 @@ compute_predictions <- function(fit, newdata, random = TRUE, nb_boot = 1000, see
   ## create wrapper around the correct function that computes all predictions:
   compute_all_predictions <- function(y, ...) {
 
-    if (!all(data[, response_var] == y)) { ## only refit if necessary
-      data[, response_var] <- y
-
-      ## if both the number simulated success and the observed number of failure are 0, then the model cannot be fit, so we remove these rare cases:
-      if (!is.null(response_var2)) {
-        null_sample_cases <- apply(data[, cbind(response_var, response_var2)], 1, sum) == 0
-        data <- data[!null_sample_cases, ]
-      }
-
-      fit <- eval(fit$call)
+    ## refit model, but only if the response has been simulated during the bootstrap:
+    if (!all(y == data[, response_var])) {
+      fit <- spaMM::update_resp(fit, newresp = y)
     }
 
     rec <- numeric(nrow(newdata))

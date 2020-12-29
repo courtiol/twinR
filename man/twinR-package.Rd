@@ -221,7 +221,7 @@ effect_births_on_twinning <- compare_predictions(fit_05,
 
 `#`(effect_births_on_twinning$results, digits = 3L)
 #  estimate   lwr   upr
-#1    0.967 0.952 0.982
+#1    0.967 0.952 0.983
 
 
 ## Computing range of per-birth twinning probability for 1 and 18 births:
@@ -233,7 +233,7 @@ predictions_twinning_range_births <- compute_predictions(fit_05,
 `#`(predictions_twinning_range_births$results, digits = 2L)
 #  births_total estimate    lwr   upr
 #1            1    0.021 0.0170 0.025
-#2           18    0.012 0.0089 0.015
+#2           18    0.012 0.0088 0.015
 
 
 ## Increase in duration of interbirth interval after a twinning event at mean age and parity:
