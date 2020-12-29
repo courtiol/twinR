@@ -327,9 +327,9 @@
 #' fig_1B <- draw_fig_1B(data_fig_1B)
 #' fig_1C <- draw_fig_1C(data_fig_1C)
 #' fig_1D <- draw_fig_1D(data_fig_1D)
-#' plot_grid(fig_1A, fig_1B, fig_1C, fig_1D, labels = "AUTO", label_size = 12)
+#' plot_grid(fig_1A, fig_1B, fig_1C, fig_1D, labels = "AUTO", label_size = 12, align = "v", axis = "l")
 #'
-#' ggsave(file = "figures/fig1.pdf", width = 11.4, height = 9, unit = "cm") # export as PDF
+#' ggsave(file = "figures/fig1.pdf", width = 11.4, height = 8.5, units = "cm") # export as PDF
 #'
 #'
 #' ## Figure 2:
@@ -340,7 +340,7 @@
 #'
 #' draw_fig_2(data_fig_2)
 #'
-#' ggsave(file = "figures/fig2.pdf", width = 11.4, height = 9, unit = "cm") # export as PDF
+#' ggsave(file = "figures/fig2.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm") # export as PDF
 #'
 #'
 #' ## Figure 3:

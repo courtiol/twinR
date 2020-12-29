@@ -247,7 +247,7 @@ draw_fig_1A <- function(data) {
     ggplot2::geom_errorbar(size = 0.5, width = 0.1, linetype = 1) +
     ggplot2::labs(y = "Maternal total births", x = "Lifetime twin. status") +
     ggplot2::scale_x_discrete(labels = c("Non-twinner", "Twinner")) +
-    ggplot2::scale_y_continuous(limits = c(0, 7), breaks = c(0, 2, 4, 6)) +
+    ggplot2::scale_y_continuous(limits = c(0, 8), breaks = c(0, 2, 4, 6, 8)) +
     theme_twin()
 }
 
@@ -275,7 +275,7 @@ draw_fig_1B <- function(data) {
     ggplot2::geom_ribbon(alpha = 0.3, fill = "grey") +
     ggplot2::scale_x_continuous(breaks = c(1, 5, 10, 15, 18),
                                 labels = c("1", "5", "10", "15", "18")) +
-    ggplot2::expand_limits(y = 0) +
+    ggplot2::expand_limits(y = c(0, 0.5)) +
     theme_twin()
 }
 
@@ -300,7 +300,7 @@ draw_fig_1C <- function(data) {
     ggplot2::geom_errorbar(size = 0.5, width = 0.1, linetype = 1) +
     ggplot2::labs(y = "Maternal total births", x = "First-birth twin. status") +
     ggplot2::scale_x_discrete(labels = c("Singleton", "Twins")) +
-    ggplot2::scale_y_continuous(limits = c(0, 7), breaks = c(0, 2, 4, 6)) +
+    ggplot2::scale_y_continuous(limits = c(0, 6), breaks = c(0, 2, 4, 6)) +
     theme_twin()
 }
 
@@ -328,7 +328,7 @@ draw_fig_1D <- function(data) {
     ggplot2::geom_ribbon(alpha = 0.3, fill = "grey") +
     ggplot2::scale_x_continuous(breaks = c(1, 5, 10, 15, 18),
                                 labels = c("1", "5", "10", "15", "18")) +
-    ggplot2::expand_limits(y = 0) +
+    ggplot2::expand_limits(y = c(0, 0.025)) +
     theme_twin()
 }
 
@@ -473,3 +473,4 @@ draw_fig_3C <- function(data) {
                    legend.title = ggplot2::element_text(size = 8),
                    legend.margin = ggplot2::margin(c(0, 0, 0, 0)))
 }
+
