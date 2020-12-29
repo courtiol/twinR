@@ -327,6 +327,7 @@
 #' fig_1B <- draw_fig_1B(data_fig_1B)
 #' fig_1C <- draw_fig_1C(data_fig_1C)
 #' fig_1D <- draw_fig_1D(data_fig_1D)
+#'
 #' plot_grid(fig_1A, fig_1B, fig_1C, fig_1D,
 #'           labels = "AUTO", label_size = 12, align = "v", axis = "l")
 #'
@@ -368,8 +369,14 @@
 #' ggsave(file = "figures/figS1.pdf", width = 11.4, height = 6, units = "cm")
 #'
 #'
-#'
 #' ## Figure S2:
+#'
+#' data_fig_S2 <- prepare_data_fig_S2(fit_PP = fit_07, fit_IBI = fit_08, fit_twin = fit_09,
+#'                                    mother_level_data = data_mothers_monthly)
+#'
+#' draw_fig_S2(data_fig_S2)
+#'
+#' ggsave(file = "figures/figS2.pdf", width = 17.8, height = 10, units = "cm", scale = 1.3)
 #'
 #'
 #' ## Figure S5:

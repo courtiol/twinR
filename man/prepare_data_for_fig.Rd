@@ -8,6 +8,7 @@
 \alias{prepare_data_fig_3C}
 \alias{prepare_newdata_fig_S1}
 \alias{prepare_data_fig_S1}
+\alias{prepare_data_fig_S2}
 \title{Functions to prepare data for the figures}
 \usage{
 prepare_newdata_fig_3(birth_level_data, xaxis = c("age", "parity"))
@@ -21,6 +22,8 @@ prepare_data_fig_3C(fit_twin)
 prepare_newdata_fig_S1()
 
 prepare_data_fig_S1(fit_AFB, nb_boot = 1000)
+
+prepare_data_fig_S2(fit_PP, fit_IBI, fit_twin, mother_level_data)
 }
 \arguments{
 \item{birth_level_data}{a \code{tibble} or \code{data.frame} with (expanded) birth level data}
@@ -37,6 +40,8 @@ prepare_data_fig_S1(fit_AFB, nb_boot = 1000)
 
 \item{nb_boot}{the number of simulations for the parametric bootstrap used to
 compute the intervals}
+
+\item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}
 }
 \description{
 These functions are used to prepare the data required to draw the figures.
@@ -61,6 +66,8 @@ the comments will have been stripped away during the installation process.
 \item \code{prepare_newdata_fig_S1}: an internal function to prepare the data used to generate the predictions to be plotted in Fig. S1
 
 \item \code{prepare_data_fig_S1}: prepare the data to be plotted in Fig. S1
+
+\item \code{prepare_data_fig_S2}: prepare the data to be plotted in Fig. S2
 }}
 
 \examples{

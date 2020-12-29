@@ -11,6 +11,7 @@
 \alias{draw_fig_3B}
 \alias{draw_fig_3C}
 \alias{draw_fig_S1}
+\alias{draw_fig_S2}
 \title{Functions producing the figures}
 \usage{
 draw_fig_1A(data)
@@ -30,6 +31,8 @@ draw_fig_3B(data)
 draw_fig_3C(data)
 
 draw_fig_S1(data)
+
+draw_fig_S2(data)
 }
 \arguments{
 \item{data}{a \code{data.frame} or a \code{list} containing the data to be plotted}
@@ -59,6 +62,8 @@ Functions producing the figures
 \item \code{draw_fig_3C}: draw fig. 3C
 
 \item \code{draw_fig_S1}: draw fig. S1
+
+\item \code{draw_fig_S2}: draw fig. S2
 }}
 
 \examples{

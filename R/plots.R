@@ -257,6 +257,24 @@ prepare_data_fig_S1 <- function(fit_AFB, nb_boot = 1000) {
 }
 
 
+#' @describeIn prepare_data_for_fig prepare the data to be plotted in Fig. S2
+#' @export
+#'
+prepare_data_fig_S2 <- function(fit_PP, fit_IBI, fit_twin, mother_level_data) {
+
+  ## extract random effects from each model fit:
+  ranef_PP   <- tibble::as_tibble_row(spaMM::ranef(fit_PP)[[1]]) %>% tidyr::pivot_longer(tidyselect::everything(), values_to = "ranef_PP")
+  ranef_IBI  <- tibble::as_tibble_row(spaMM::ranef(fit_IBI)[[1]]) %>% tidyr::pivot_longer(tidyselect::everything(), values_to = "ranef_IBI")
+  ranef_twin <- tibble::as_tibble_row(spaMM::ranef(fit_twin)[[2]]) %>% tidyr::pivot_longer(tidyselect::everything(), values_to = "ranef_twin")
+
+  ## combine random effects in one tibble:
+  ranefs_all <- dplyr::full_join(dplyr::full_join(ranef_PP, ranef_IBI, by = "name"), ranef_twin, by = "name")
+
+  ## add number of twin births to the data:
+  dplyr::left_join(mother_level_data %>% dplyr::select(.data$maternal_id, .data$twin_total), ranefs_all, by = c(maternal_id = "name"))
+}
+
+
 
 #' Functions producing the figures
 #'
@@ -567,4 +585,79 @@ draw_fig_S1 <- function(data) {
                    legend.text = ggplot2::element_text(size = 6),
                    legend.title = ggplot2::element_text(size = 8),
                    legend.margin = ggplot2::margin(c(0, 0, 0, 0)))
+}
+
+
+#' @describeIn figures draw fig. S2
+#' @export
+#'
+draw_fig_S2 <- function(data) {
+
+  data %>%
+    dplyr::filter(.data$twin_total == 0) %>%
+    tidyr::drop_na(.data$ranef_twin, .data$ranef_PP) %>%
+    ggplot2::ggplot() +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_PP), size = 0.05) +
+    ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
+    ggplot2::scale_y_continuous(limits = c(-0.5, 1.55)) +
+    ggplot2::scale_x_continuous(breaks = seq(-0.15, 0, 0.05), limits = c(-0.15, 0)) +
+    theme_twin() +
+    ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on parity progression") -> p1
+
+  data %>%
+    dplyr::filter(.data$twin_total == 1) %>%
+    tidyr::drop_na(.data$ranef_twin, .data$ranef_PP) %>%
+    ggplot2::ggplot() +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_PP), size = 0.05) +
+    ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
+    ggplot2::scale_y_continuous(limits = c(-0.5, 1.55)) +
+    ggplot2::scale_x_continuous(breaks = seq(0.3, 0.5, 0.05), limits = c(0.3, 0.5)) +
+    theme_twin() +
+    ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on parity progression") -> p2
+
+  data %>%
+    dplyr::filter(.data$twin_total == 2) %>%
+    tidyr::drop_na(.data$ranef_twin, .data$ranef_PP) %>%
+    ggplot2::ggplot() +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_PP), size = 0.05) +
+    ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
+    ggplot2::scale_y_continuous(limits = c(-0.5, 1.55)) +
+    ggplot2::scale_x_continuous(breaks = seq(0.7, 0.95, 0.05), limits = c(0.7, 0.95)) +
+    theme_twin() +
+    ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on parity progression") -> p3
+
+  data %>%
+    dplyr::filter(.data$twin_total == 0) %>%
+    tidyr::drop_na(.data$ranef_twin, .data$ranef_IBI) %>%
+    ggplot2::ggplot() +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_IBI), size = 0.05) +
+    ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
+    ggplot2::scale_y_continuous(breaks = seq(-1.5, 1.5, 0.5), limits = c(-1.5, 1.55)) +
+    ggplot2::scale_x_continuous(breaks = seq(-0.15, 0, 0.05), limits = c(-0.15, 0)) +
+    theme_twin() +
+    ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on interbirth interval") -> p4
+
+  data %>%
+    dplyr::filter(.data$twin_total == 1) %>%
+    tidyr::drop_na(.data$ranef_twin, .data$ranef_IBI) %>%
+    ggplot2::ggplot() +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_IBI), size = 0.05) +
+    ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
+    ggplot2::scale_y_continuous(breaks = seq(-1.5, 1.5, 0.5), limits = c(-1.5, 1.55)) +
+    ggplot2::scale_x_continuous(breaks = seq(0.3, 0.5, 0.05), limits = c(0.3, 0.5)) +
+    theme_twin() +
+    ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on interbirth interval") -> p5
+
+  data %>%
+    dplyr::filter(.data$twin_total == 2) %>%
+    tidyr::drop_na(.data$ranef_twin, .data$ranef_IBI) %>%
+    ggplot2::ggplot() +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_IBI), size = 0.05) +
+    ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
+    ggplot2::scale_y_continuous(breaks = seq(-1.5, 1.5, 0.5), limits = c(-1.5, 1.55)) +
+    ggplot2::scale_x_continuous(breaks = seq(0.7, 0.95, 0.05), limits = c(0.7, 0.95)) +
+    theme_twin() +
+    ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on interbirth interval") -> p6
+
+  cowplot::plot_grid(p1, p2, p3, p4, p5, p6, labels = "AUTO", label_size = 12, nrow = 2)
 }
