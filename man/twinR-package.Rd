@@ -328,7 +328,8 @@ fig_1A <- draw_fig_1A(data_fig_1A)
 fig_1B <- draw_fig_1B(data_fig_1B)
 fig_1C <- draw_fig_1C(data_fig_1C)
 fig_1D <- draw_fig_1D(data_fig_1D)
-plot_grid(fig_1A, fig_1B, fig_1C, fig_1D, labels = "AUTO", label_size = 12, align = "v", axis = "l")
+plot_grid(fig_1A, fig_1B, fig_1C, fig_1D,
+          labels = "AUTO", label_size = 12, align = "v", axis = "l")
 
 ggsave(file = "figures/fig1.pdf", width = 11.4, height = 8.5, units = "cm") # export as PDF
 
@@ -341,7 +342,7 @@ data_fig_2 <- compute_predictions(fit_05,
 
 draw_fig_2(data_fig_2)
 
-ggsave(file = "figures/fig2.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm") # export as PDF
+ggsave(file = "figures/fig2.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
 
 
 ## Figure 3:
@@ -353,9 +354,10 @@ data_fig_3C <- prepare_data_fig_3C(fit_09)
 fig_3A <- draw_fig_3A(data_fig_3A)
 fig_3B <- draw_fig_3B(data_fig_3B)
 fig_3C <- draw_fig_3C(data_fig_3C)
-plot_grid(fig_3A, fig_3B, fig_3C, labels = "AUTO", nrow = 3, label_size = 12, align = "v", axis = "lr")
+plot_grid(fig_3A, fig_3B, fig_3C,
+          labels = "AUTO", nrow = 3, label_size = 12, align = "v", axis = "lr")
 
-ggsave(file = "figures/fig3.pdf", width = 8.7, height = 20, units = "cm") # export as PDF
+ggsave(file = "figures/fig3.pdf", width = 8.7, height = 20, units = "cm")
 
 
 ## Figure S1:
