@@ -58,7 +58,9 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
   data <- fit$data
 
   ## refit the model to avoid scoping issues during bootstraps:
-  fit <- spaMM::update.HLfit(fit, data = data)
+  if (nb_boot > 0) {
+    fit <- spaMM::update.HLfit(fit, data = data)
+  }
 
   ## extract the correct inverse link function:
   linkinv <- ifelse(is.null(fit$family$zero_truncated) || fit$family$zero_truncated == FALSE,
@@ -231,7 +233,9 @@ compute_predictions <- function(fit, newdata, random = TRUE, nb_boot = 1000, see
   data <- fit$data
 
   ## refit the model to avoid scoping issues during bootstraps:
-  fit <- spaMM::update.HLfit(fit, data = data)
+  if (nb_boot > 0L) {
+    fit <- spaMM::update.HLfit(fit, data = data)
+  }
 
   ## extract the correct inverse link function:
   linkinv <- ifelse(is.null(fit$family$zero_truncated) || fit$family$zero_truncated == FALSE,
