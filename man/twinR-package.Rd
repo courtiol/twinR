@@ -108,9 +108,14 @@ fit_14 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L,
                               maternal_ID_as.predictor = FALSE)
 
 
+
 #------------------------------------------------------------------------------------------------
 #---------------------------------- Saving fitted models ----------------------------------------
 #------------------------------------------------------------------------------------------------
+
+   #### Note: this is how we saved the models.
+   #### To directly load them, just download them from our Github repository
+   #### (folder "fitted_models") and open them in RStudio.
 
 dir.create("fitted_models") # create a folder to store the fitted models
 save(fit_01, file = "fitted_models/fit_01.rda", compress = "xz")
@@ -128,6 +133,7 @@ save(fit_11, file = "fitted_models/fit_11.rda", compress = "xz")
 save(fit_12, file = "fitted_models/fit_12.rda", compress = "xz")
 save(fit_13, file = "fitted_models/fit_13.rda", compress = "xz")
 save(fit_14, file = "fitted_models/fit_14.rda", compress = "xz")
+
 
 
 #------------------------------------------------------------------------------------------------
@@ -297,11 +303,12 @@ effect_twinner_on_AFB_2_births <- compare_predictions(fit_06,
 #1     17.9 6.55 29.4
 
 
+
 #------------------------------------------------------------------------------------------------
 #---------------------------------- Plotting predictions from model fits ------------------------
 #------------------------------------------------------------------------------------------------
 
-   #### Note: see ?figures for details on the underlying functions doing the job
+   #### Note: see ?figures for details on the underlying functions doing the job.
 
 dir.create("figures") # create a folder to store the figures
 
