@@ -397,6 +397,32 @@
 #'
 #' ggsave(file = "figures/figS5.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
 #'
+#'
+#'
+#' #------------------------------------------------------------------------------------------------
+#' #---------------------------------- Simulating the life history of mothers ----------------------
+#' #------------------------------------------------------------------------------------------------
+#'
+#' ## Example of how to run one simulation
+#' ## (here considering the full models for PP, IBI and the per-birth twinning probability):
+#'
+#' simu_test <- life_histories$new(fit_PP = fit_07,           # prepare the simulation
+#'                                 fit_IBI = fit_08,
+#'                                 fit_twinning.binary = fit_09,
+#'                                 birth_level_data = data_births_monthly.complete)
+#'
+#' set.seed(123) # fix the seed of the random generator for reproducibility
+#'
+#' simu_test$run() # run the simulation (here takes < 10 sec but timing depends on fitted models)
+#'
+#' simu_test$data_birth_level # check the simulated data
+#'
+#' simu_test$slope # check the slope of interest as measured on the simulated data
+#'
+#'
+#'
+#'
+#'
 #' }
 #'
 NULL

@@ -24,6 +24,7 @@ Imports:
     magrittr,
     pracma,
     progress,
+    R6,
     rlang,
     spaMM (>= 3.5.0),
     tibble,
