@@ -661,3 +661,15 @@ draw_fig_S2 <- function(data) {
 
   cowplot::plot_grid(p1, p2, p3, p4, p5, p6, labels = "AUTO", label_size = 12, nrow = 2)
 }
+
+
+#' @describeIn figures draw fig. S5
+#' @export
+#'
+draw_fig_S5 <- function(data) {
+
+  draw_fig_2(data$data_fig_2) +
+    ggplot2::geom_line(data = data$data_fig_S5, linetype = "dashed", lwd = 1) +
+    ggplot2::geom_line(data = data$data_fig_S5, ggplot2::aes(y = .data$lwr), linetype = "dotted", lwd = 1) +
+    ggplot2::geom_line(data = data$data_fig_S5, ggplot2::aes(y = .data$upr), linetype = "dotted", lwd = 1)
+}

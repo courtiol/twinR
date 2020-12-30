@@ -380,9 +380,16 @@ draw_fig_S2(data_fig_S2)
 ggsave(file = "figures/figS2.pdf", width = 17.8, height = 10, units = "cm", scale = 1.3)
 
 
+
 ## Figure S5:
 
+data_fig_S5 <- compute_predictions(fit_05bis,
+                                   newdata = data.frame(births_total = min_births:max_births),
+                                   nb_boot = nb_boot)
 
+draw_fig_S5(list(data_fig_2 = data_fig_2$results, data_fig_S5 = data_fig_S5$results))
+
+ggsave(file = "figures/figS5.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
 
 }
 
