@@ -46,7 +46,7 @@ distribution of such effects. In such a case, the predictions produced thus corr
 marginal predictions.
 }
 \details{
-We recommend to look at the raw R code of these functions on GitHub (file
+We recommend you to look at the raw R code of these functions on GitHub (file
 '/R/predictions_and_CI.R') to understand how they work. We commented the code to make this clear.
 While you could directly look at the code of these functions while using the package, mind that
 the comments will have been stripped away during the installation process. We kept all the code

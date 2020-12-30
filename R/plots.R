@@ -63,7 +63,7 @@ NULL
 #' These functions are used to prepare the data required to draw the figures.
 #' They allow for the computation of predictions averaged over the non focal fixed predictors.
 #'
-#' We recommend to look at the raw R code of these functions on GitHub (file
+#' We recommend you to look at the raw R code of these functions on GitHub (file
 #' '/R/plots.R') to understand how they work. We commented the code to make this clear.
 #' While you could directly look at the code of these functions while using the package, mind that
 #' the comments will have been stripped away during the installation process.
