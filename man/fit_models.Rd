@@ -10,6 +10,7 @@
 \alias{fit_PP}
 \alias{fit_IBI}
 \alias{fit_twinning.binary}
+\alias{fit_life_histories}
 \title{Fit the models}
 \usage{
 fit_totalbirths(
@@ -51,7 +52,12 @@ fit_twinning.binary(
   verbose = TRUE
 )
 
-refit_all(scenario, birth_level_data, verbose = TRUE)
+fit_life_histories(
+  scenario,
+  birth_level_data,
+  args_spaMM = list(),
+  verbose = TRUE
+)
 }
 \arguments{
 \item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}
@@ -97,6 +103,12 @@ See \strong{Functions}, below, for details on each function.
 \item \code{fit_IBI}: fit the model predicting the duration of the interbirth interval (minus 6 months)
 
 \item \code{fit_twinning.binary}: fit the model predicting the probability of twinning for a given birth event
+
+\item \code{fit_life_histories}: fit all three life history models according to the simulation scenario
+
+This function fits all three life history models according to the simulation scenario provided.
+The polynomial orders are estimated, which is why each of the three models has to be fitted seven
+times (order 0->6). It also returns the total time elapsed by the function.
 }}
 
 \examples{

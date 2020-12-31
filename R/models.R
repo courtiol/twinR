@@ -326,3 +326,38 @@ fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_a
 
   fit
 }
+
+
+#' @describeIn fit_models fit all three life history models according to the simulation scenario
+#'
+#' This function fits all three life history models according to the simulation scenario provided.
+#' The polynomial orders are estimated, which is why each of the three models has to be fitted seven
+#' times (order 0->6). It also returns the total time elapsed by the function.
+#'
+#' @export
+#'
+fit_life_histories <- function(scenario, birth_level_data, args_spaMM = list(), verbose = TRUE) {
+
+  ## start stopwatch:
+  time_begin <- Sys.time()
+
+  ## fit parity progression with or without twin as predictor:
+  fit_PP <- fit_PP(birth_level_data = birth_level_data, poly_order = NA, twin_as.predictor = grepl("A", scenario), args_spaMM = args_spaMM, verbose = verbose)
+
+  ## fit IBI with or without twin as predictor:
+  fit_IBI <- fit_IBI(birth_level_data = birth_level_data, poly_order = NA, twin_as.predictor = grepl("B", scenario), args_spaMM = args_spaMM, verbose = verbose)
+
+  ## fit the probability of twinning for a given birth event with or without parity/age as fixed effects, and with and without maternal_id as random effect:
+  fit_twinning.binary <- fit_twinning.binary(birth_level_data = birth_level_data, poly_order = ifelse(grepl("C", scenario), NA, 0L), maternal_ID_as.predictor = grepl("D", scenario),  args_spaMM = args_spaMM, verbose = verbose)
+
+  ## stop stopwatch:
+  time_end <- Sys.time()
+
+  ## compute time elapsed:
+  time_elapsed <- as.numeric(time_end - time_begin, units = "secs")
+
+  ## return all 3 fits:
+  list(fit_PP = fit_PP, fit_IBI = fit_IBI, fit_twinning.binary = fit_twinning.binary,
+       time_elapsed = time_elapsed)
+}
+
