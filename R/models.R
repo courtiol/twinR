@@ -7,11 +7,12 @@
 #' @name fit_models
 #' @param mother_level_data a `tibble` or `data.frame` with mother level data
 #' @param birth_level_data a `tibble` or `data.frame` with (expanded) birth level data
-#' @param poly_order an integer value defining the polynomial order when considering the effect of age and parity (default = `0`, do not fit this effect)
+#' @param poly_order an integer value defining the polynomial order when considering the effect of age and parity (default = `NA`, find best value between 0 and 6)
 #' @param twin_as.predictor whether to include the variable `twin` as a predictor or not in some models (default = `TRUE`)
 #' @param maternal_ID_as.predictor whether to include the variable `maternal_ID` as a random effect predictor or not in some models (default = `TRUE`)
 #' @param args_spaMM list of additional arguments to pass to the function [`fitme`][`spaMM::fitme`]
 #' @param verbose whether to display the formula of the fit during the fitting procedure
+#' @param scenario the scenario defining which models to be fitted: e.g. "ABCD", "AC"... (see paper for explanations)
 #'
 #' @return the fitted model
 #' @examples
@@ -125,8 +126,30 @@ fit_AFB <- function(mother_level_data, args_spaMM = list(), verbose = TRUE) {
 #' @describeIn fit_models fit the model predicting the probability of parity progression
 #' @export
 #'
-fit_PP <- function(birth_level_data, poly_order = 0, twin_as.predictor = TRUE, args_spaMM = list(), verbose = TRUE) {
+fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, args_spaMM = list(), verbose = TRUE) {
 
+  ## if poly_order is NA, the order will be estimated as the one leading to best fit between 0 and 6:
+  if (is.na(poly_order)) {
+
+    possible_orders <- 0L:6L
+    if (verbose) print("The polynomial order for the model has not been set and will thus been estimated through the refitting of the same models for different polynomial orders (be patient...)")
+
+    ## we recall the function trying all polynomial orders between 0 and 6:
+    all_fits <- lapply(possible_orders, function(order) {
+      fit_order_0 <- fit_PP(birth_level_data = birth_level_data,
+             poly_order = order,
+             twin_as.predictor = twin_as.predictor,
+             args_spaMM = args_spaMM,
+             verbose = verbose)
+    })
+
+    ## we extract the marginal AIC for all fits:
+    all_AICs <- lapply(all_fits, function(fit) spaMM::AIC.HLfit(fit, also_cAIC = FALSE, verbose = FALSE)[1])
+
+    ## we identify the best fit and return the corresponding model:
+    best_fit <- which.min(all_AICs)
+    return(all_fits[best_fit][[1]])
+  }
 
   if (poly_order > 0 && any(is.na(birth_level_data$age))) {
     birth_level_data <- birth_level_data[!is.na(birth_level_data$age), ]
@@ -168,8 +191,31 @@ fit_PP <- function(birth_level_data, poly_order = 0, twin_as.predictor = TRUE, a
 #' @describeIn fit_models fit the model predicting the duration of the interbirth interval (minus 6 months)
 #' @export
 #'
-fit_IBI <- function(birth_level_data, poly_order = 0, twin_as.predictor = TRUE, args_spaMM = list(), verbose = TRUE) {
+fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, args_spaMM = list(), verbose = TRUE) {
 
+
+  ## if poly_order is NA, the order will be estimated as the one leading to best fit between 0 and 6:
+  if (is.na(poly_order)) {
+
+    possible_orders <- 0L:6L
+    if (verbose) print("The polynomial order for the model has not been set and will thus been estimated through the refitting of the same models for different polynomial orders (be patient...)")
+
+    ## we recall the function trying all polynomial orders between 0 and 6:
+    all_fits <- lapply(possible_orders, function(order) {
+      fit_order_0 <- fit_IBI(birth_level_data = birth_level_data,
+                             poly_order = order,
+                             twin_as.predictor = twin_as.predictor,
+                             args_spaMM = args_spaMM,
+                             verbose = verbose)
+    })
+
+    ## we extract the marginal AIC for all fits:
+    all_AICs <- lapply(all_fits, function(fit) spaMM::AIC.HLfit(fit, also_cAIC = FALSE, verbose = FALSE)[1])
+
+    ## we identify the best fit and return the corresponding model:
+    best_fit <- which.min(all_AICs)
+    return(all_fits[best_fit][[1]])
+  }
 
   if (poly_order > 0 && any(is.na(birth_level_data$age))) {
     birth_level_data <- birth_level_data[!is.na(birth_level_data$age), ]
@@ -220,8 +266,30 @@ fit_IBI <- function(birth_level_data, poly_order = 0, twin_as.predictor = TRUE, 
 #' @describeIn fit_models fit the model predicting the probability of twinning for a given birth event
 #' @export
 #'
-fit_twinning.binary <- function(birth_level_data, poly_order = 0, maternal_ID_as.predictor = TRUE, args_spaMM = list(), verbose = TRUE) {
+fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_as.predictor = TRUE, args_spaMM = list(), verbose = TRUE) {
 
+  ## if poly_order is NA, the order will be estimated as the one leading to best fit between 0 and 6:
+  if (is.na(poly_order)) {
+
+    possible_orders <- 0L:6L
+    if (verbose) print("The polynomial order for the model has not been set and will thus been estimated through the refitting of the same models for different polynomial orders (be patient...)")
+
+    ## we recall the function trying all polynomial orders between 0 and 6:
+    all_fits <- lapply(possible_orders, function(order) {
+      fit_order_0 <- fit_twinning.binary(birth_level_data = birth_level_data,
+                                         poly_order = order,
+                                         maternal_ID_as.predictor = maternal_ID_as.predictor,
+                                         args_spaMM = args_spaMM,
+                                         verbose = verbose)
+    })
+
+    ## we extract the marginal AIC for all fits:
+    all_AICs <- lapply(all_fits, function(fit) spaMM::AIC.HLfit(fit, also_cAIC = FALSE, verbose = FALSE)[1])
+
+    ## we identify the best fit and return the corresponding model:
+    best_fit <- which.min(all_AICs)
+    return(all_fits[best_fit][[1]])
+  }
 
   if (poly_order > 0 && any(is.na(birth_level_data$age))) {
     birth_level_data <- birth_level_data[!is.na(birth_level_data$age), ]

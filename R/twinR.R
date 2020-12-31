@@ -96,15 +96,15 @@
 #' fit_05bis <- fit_twinning.binomial(data_mothers_all) # for Fig S5
 #'
 #' fit_06 <- fit_AFB(data_mothers_monthly)
-#' fit_07 <- fit_PP(data_births_monthly.complete, poly_order = 5L) # use best polynomial order
-#' fit_08 <- fit_IBI(data_births_monthly.complete, poly_order = 6L)
-#' fit_09 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L)
-#' fit_10 <- fit_PP(data_births_monthly.complete, twin_as.predictor = FALSE, poly_order = 5L)
-#' fit_11 <- fit_IBI(data_births_monthly.complete, twin_as.predictor = FALSE, poly_order = 6L)
-#' fit_12 <- fit_twinning.binary(data_births_monthly.complete) # no age and parity
-#' fit_13 <- fit_twinning.binary(data_births_monthly.complete, maternal_ID_as.predictor = FALSE)
-#' fit_14 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 3L,
+#' fit_07 <- fit_PP(data_births_monthly.complete)
+#' fit_08 <- fit_IBI(data_births_monthly.complete)
+#' fit_09 <- fit_twinning.binary(data_births_monthly.complete)
+#' fit_10 <- fit_PP(data_births_monthly.complete, twin_as.predictor = FALSE)
+#' fit_11 <- fit_IBI(data_births_monthly.complete, twin_as.predictor = FALSE)
+#' fit_12 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 0L) # no age and parity
+#' fit_13 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 0L, # no age and parity
 #'                               maternal_ID_as.predictor = FALSE)
+#' fit_14 <- fit_twinning.binary(data_births_monthly.complete, maternal_ID_as.predictor = FALSE)
 #'
 #'
 #'

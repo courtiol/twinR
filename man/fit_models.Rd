@@ -29,7 +29,7 @@ fit_AFB(mother_level_data, args_spaMM = list(), verbose = TRUE)
 
 fit_PP(
   birth_level_data,
-  poly_order = 0,
+  poly_order = NA,
   twin_as.predictor = TRUE,
   args_spaMM = list(),
   verbose = TRUE
@@ -37,7 +37,7 @@ fit_PP(
 
 fit_IBI(
   birth_level_data,
-  poly_order = 0,
+  poly_order = NA,
   twin_as.predictor = TRUE,
   args_spaMM = list(),
   verbose = TRUE
@@ -45,11 +45,13 @@ fit_IBI(
 
 fit_twinning.binary(
   birth_level_data,
-  poly_order = 0,
+  poly_order = NA,
   maternal_ID_as.predictor = TRUE,
   args_spaMM = list(),
   verbose = TRUE
 )
+
+refit_all(scenario, birth_level_data, verbose = TRUE)
 }
 \arguments{
 \item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}
@@ -62,11 +64,13 @@ fit_twinning.binary(
 
 \item{birth_level_data}{a \code{tibble} or \code{data.frame} with (expanded) birth level data}
 
-\item{poly_order}{an integer value defining the polynomial order when considering the effect of age and parity (default = \code{0}, do not fit this effect)}
+\item{poly_order}{an integer value defining the polynomial order when considering the effect of age and parity (default = \code{NA}, find best value between 0 and 6)}
 
 \item{twin_as.predictor}{whether to include the variable \code{twin} as a predictor or not in some models (default = \code{TRUE})}
 
 \item{maternal_ID_as.predictor}{whether to include the variable \code{maternal_ID} as a random effect predictor or not in some models (default = \code{TRUE})}
+
+\item{scenario}{the scenario defining which models to be fitted: e.g. "ABCD", "AC"... (see paper for explanations)}
 }
 \value{
 the fitted model
