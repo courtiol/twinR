@@ -59,9 +59,9 @@ exactly how we performed our simulations.
 
 \item{\code{data_simulated}}{a \code{tibble} containing the complete simulated dataset (generated automatically)}
 
-\item{\code{data_birth_level}}{a \code{tibble} containing the simulated data expressed as birth-level data (generated automatically)}
+\item{\code{birth_level_data.simulated}}{a \code{tibble} containing the simulated data expressed as birth-level data (generated automatically)}
 
-\item{\code{data_mother_level}}{a \code{tibble} containing the simulated data expressed as mother-level data (generated automatically)}
+\item{\code{mother_level_data.simulated}}{a \code{tibble} containing the simulated data expressed as mother-level data (generated automatically)}
 
 \item{\code{fit_twinning.binomial}}{the fitted model producing the main slope of interest (see \code{\link{fit_models}}) (generated automatically)}
 

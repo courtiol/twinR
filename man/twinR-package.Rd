@@ -404,8 +404,9 @@ ggsave(file = "figures/figS5.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "
 #---------------------------------- Simulating the life history of mothers ----------------------
 #------------------------------------------------------------------------------------------------
 
-## Example of how to run one simulation,
-## (here considering the full models for PP, IBI and the per-birth twinning probability):
+## Example of how to run one simulation using directly the R6 class,
+## (here considering the full models for PP, IBI and the per-birth twinning probability, i.e.
+## the scenario ABCD):
 
 simu_test <- life_histories$new(fit_PP = fit_07,           # prepare the simulation
                                 fit_IBI = fit_08,
@@ -416,7 +417,7 @@ set.seed(123) # fix the seed of the random generator for reproducibility
 
 simu_test$run() # run the simulation (here takes < 10 sec but timing depends on fitted models)
 
-simu_test$data_birth_level # check the simulated data
+simu_test$birth_level_data.simulated # check the simulated data
 
 simu_test$slope # check the slope of interest as measured on the simulated data
 
@@ -424,8 +425,17 @@ simu_test$slope # check the slope of interest as measured on the simulated data
 ## Example of how to fit the three life history models to the observed data according to a
 ## scenario (here AC, which takes around 20 min on a single core):
 
-fits_AC <- fit_life_histories(scenario = "AC", birth_level_data = data_births_monthly.complete)
+fits_AC_obs <- fit_life_histories(scenario = "AC", birth_level_data = data_births_monthly.complete)
 
+
+## Example of how to run one simulation using the wrapper:
+
+simu_test2 <- run_simulation(birth_level_data = data_births_monthly.complete,
+                             scenario = "AC",
+                             life_history_fits = fits_AC_obs,
+                             output = list(birth_level_data.simulated = TRUE,
+                                           slope = TRUE,
+                                           fits = TRUE))
 
 
 
