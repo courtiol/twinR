@@ -30,7 +30,7 @@ simulate_slopes(
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
 }
 \value{
-a list containing the simulated slopes and the time elapsed to do the job
+a list containing the simulated slopes, the input seed, and the time elapsed to do the job
 }
 \description{
 This functions allows for the production of slopes of interest (the one quantifying effect of

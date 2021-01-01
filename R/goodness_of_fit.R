@@ -14,7 +14,7 @@
 #' @param N_replicates the number of simulation replicates to run
 #' @seealso run_simulation
 #'
-#' @return a list containing the simulated slopes and the time elapsed to do the job
+#' @return a list containing the simulated slopes, the input seed, and the time elapsed to do the job
 #' @export
 #' @examples
 #' ## See ?twinR
@@ -56,7 +56,7 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
   time_end <- Sys.time()
 
   ## return:
-  list_output <- list(slope_level1 = simu_level1$slope, slopes_level2 = slopes_level2, time_elapsed = as.numeric(time_end - time_begin, units = "secs"))
+  list_output <- list(slope_level1 = simu_level1$slope, slopes_level2 = slopes_level2, seed = seed, time_elapsed = as.numeric(time_end - time_begin, units = "secs"))
 
   return(list_output)
 }
