@@ -20,3 +20,24 @@ This is the repository providing the code and the data associated with the paper
 
 Please address any correspondence to Alexandre Courtiol: courtiol@izw-berlin.de
 
+
+## Installation
+
+To install this R package, make sure the first install the package **{remotes}** if it is not already installed on your system, then simply type the following in your R Console:
+
+```r
+remotes::install_github("courtiol/twinR", dependencies = TRUE)
+```
+
+Then, load the installed package, as follows, and follow the instructions that will appear in your R Console:
+
+```r
+library(twinR)
+```
+
+
+## Exploration of the source code
+
+Since comments embedded within the source code disappear upon installation of R packages, we recommend you to direclty explore the source of the R code here in GitHub.
+
+The R files are located within the folder "/R" shown above.
