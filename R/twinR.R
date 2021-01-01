@@ -425,7 +425,7 @@
 #' ## scenario (here AC, which takes around 20 min on a single core):
 #'
 #' fits_AC_obs <- fit_life_histories(scenario = "AC", birth_level_data = data_births_monthly.complete)
-#' save(fits_AC_obs, file = "fitted_models/fit_AC_obs.rda", compress = "xz")
+#' save(fits_AC_obs, file = "fitted_models/fits_AC_obs.rda", compress = "xz")
 #'
 #'
 #' ## Example of how to run one simulation using the wrapper:
