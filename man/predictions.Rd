@@ -11,11 +11,11 @@ compare_predictions(
   newdata,
   oddsratio = FALSE,
   random = TRUE,
-  nb_boot = 1000,
-  seed = 123
+  nb_boot = 1000L,
+  seed = 123L
 )
 
-compute_predictions(fit, newdata, random = TRUE, nb_boot = 1000, seed = 123)
+compute_predictions(fit, newdata, random = TRUE, nb_boot = 1000L, seed = 123L)
 }
 \arguments{
 \item{fit}{a model fitted (directly or indirectly) with \code{\link[spaMM:fitme]{fitme}} or any \code{\link[=fit_models]{fit_xx}} function from this package}

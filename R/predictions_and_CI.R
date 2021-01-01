@@ -34,15 +34,15 @@ NULL
 #' @describeIn predictions compute differences or odds ratio between two predictions
 #' @export
 #'
-compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, nb_boot = 1000, seed = 123) {
+compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, nb_boot = 1000L, seed = 123L) {
 
   set.seed(seed)
 
-  if (nb_boot < 1000) warnings("The number of bootstrap simulations used is lower than 1000. You should increase 'nb_boot' for reliable results!")
+  if (nb_boot < 1000L) warnings("The number of bootstrap simulations used is lower than 1000. You should increase 'nb_boot' for reliable results!")
 
-  if (length(fit$lambda) > 2) stop("This function can only handle up to 2 random effects.")
+  if (length(fit$lambda) > 2L) stop("This function can only handle up to 2 random effects.")
 
-  if (nrow(newdata) != 2) stop("The dataset provided via the argument `newdata` should contain 2 rows.")
+  if (nrow(newdata) != 2L) stop("The dataset provided via the argument `newdata` should contain 2 rows.")
 
   ## identify the response variable:
   response_var_raw <- paste(fit$call[[2]][[2]])
@@ -56,7 +56,7 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
   data <- fit$data
 
   ## refit the model to avoid scoping issues during bootstraps:
-  if (nb_boot > 0) {
+  if (nb_boot > 0L) {
     fit <- spaMM::update.HLfit(fit, data = data)
   }
 
@@ -144,7 +144,7 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
 
 
   ## select the appropriate compute_diff_xx function based on the number of random effects:
-  compute_comparison <- ifelse(random, ifelse(length(fit$lambda) == 1,
+  compute_comparison <- ifelse(random, ifelse(length(fit$lambda) == 1L,
                                                 compute_comparison_1_random,
                                                 compute_comparison_2_random),
                                  compute_comparison_0_random)
@@ -158,7 +158,7 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
   }
 
   ## run the parametric bootstrap (or not depending on nb_boot):
-  if (nb_boot == 0) {
+  if (nb_boot == 0L) {
     return(list(results = estimate))
   } else {
     ## compute the distribution of the focal statistic by bootstrap using {spaMM}:
@@ -188,19 +188,19 @@ compare_predictions <- function(fit, newdata, oddsratio = FALSE, random = TRUE, 
 
 #' @describeIn predictions compute multiple predictions
 #' @export
-compute_predictions <- function(fit, newdata, random = TRUE, nb_boot = 1000, seed = 123) {
+compute_predictions <- function(fit, newdata, random = TRUE, nb_boot = 1000L, seed = 123L) {
 
   set.seed(seed)
 
-  if (nb_boot < 1000) warnings("The number of bootstrap simulations used is lower than 1000. You should increase 'nb_boot' for reliable results!")
+  if (nb_boot < 1000L) warnings("The number of bootstrap simulations used is lower than 1000. You should increase 'nb_boot' for reliable results!")
 
-  if (length(fit$lambda) > 2) stop("This function can only handle up to 2 random effect.")
+  if (length(fit$lambda) > 2L) stop("This function can only handle up to 2 random effect.")
 
   ## identify the response variable:
   response_var_raw <- paste(fit$call[[2]][[2]])
-  if (length(response_var_raw) == 1) {
+  if (length(response_var_raw) == 1L) {
     response_var <- response_var_raw
-  } else if (length(response_var_raw) > 1) {
+  } else if (length(response_var_raw) > 1L) {
     response_var <- response_var_raw[2] ## for binomial binary
   }
 
@@ -268,7 +268,7 @@ compute_predictions <- function(fit, newdata, random = TRUE, nb_boot = 1000, see
 
     rec <- numeric(nrow(newdata))
 
-    draw_progress <- nb_boot == 0 && nrow(newdata) > 10
+    draw_progress <- nb_boot == 0L && nrow(newdata) > 10L
     if (draw_progress) pb <- progress::progress_bar$new(total = nrow(newdata)) ## add progress bar if big job
 
     for (i in seq_len(nrow(newdata))) { ## note: apply() cannot be use as it would coerce types
@@ -287,7 +287,7 @@ compute_predictions <- function(fit, newdata, random = TRUE, nb_boot = 1000, see
   }
 
   ## run the parametric bootstrap (or not depending on nb_boot):
-  if (nb_boot == 0) {
+  if (nb_boot == 0L) {
     return(list(results = cbind(newdata, estimates = estimates)))
   } else {
     ## compute the distribution of the focal statistic by bootstrap using {spaMM}:
