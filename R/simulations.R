@@ -318,7 +318,7 @@ life_histories <- R6::R6Class(
 )
 
 
-#' Run a simulation under a given scenario
+#' Run a simulation
 #'
 #' This function runs a single simulation. If the fits of the life history models are not provided,
 #' they will be fitted within the function call.
@@ -334,6 +334,7 @@ life_histories <- R6::R6Class(
 #'
 #' @return a list with the output requested
 #' @export
+#' @seealso simulate_slopes
 #' @examples
 #' # See ?twinR
 #'
@@ -380,4 +381,3 @@ run_simulation <- function(birth_level_data, scenario = NULL, life_history_fits 
 
    return(list_output)
 }
-

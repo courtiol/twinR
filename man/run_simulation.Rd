@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulations.R
 \name{run_simulation}
 \alias{run_simulation}
-\title{Run a simulation under a given scenario}
+\title{Run a simulation}
 \usage{
 run_simulation(
   birth_level_data,
@@ -43,4 +43,7 @@ needed for a given application.
 \examples{
 # See ?twinR
 
+}
+\seealso{
+simulate_slopes
 }

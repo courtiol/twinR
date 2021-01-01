@@ -424,7 +424,8 @@
 #' ## Example of how to fit the three life history models to the observed data according to a
 #' ## scenario (here AC, which takes around 20 min on a single core):
 #'
-#' fits_AC_obs <- fit_life_histories(scenario = "AC", birth_level_data = data_births_monthly.complete)
+#' fits_AC_obs <- fit_life_histories(scenario = "AC",
+#'                                   birth_level_data = data_births_monthly.complete)
 #' save(fits_AC_obs, file = "fitted_models/fits_AC_obs.rda", compress = "xz")
 #'
 #'
@@ -438,6 +439,16 @@
 #'                                            fits = TRUE))
 #'
 #'
+#'
+#' #------------------------------------------------------------------------------------------------
+#' #---------------------------------- Goodness of fit ---------------------------------------------
+#' #------------------------------------------------------------------------------------------------
+#'
+#' ## Example of how to create 20 slopes taking scenario AC as the null model:
+#'
+#' slopes_under_AC <- simulate_slopes(birth_level_data = data_births_monthly.complete,
+#'                                    scenario = "AC", life_history_fits = fits_AC_obs,
+#'                                    N_replicates = 20L)
 #'
 #' }
 #'
