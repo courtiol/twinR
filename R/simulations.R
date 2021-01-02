@@ -68,9 +68,6 @@ life_histories <- R6::R6Class(
       #'@field birth_level_data.simulated a `tibble` containing the simulated data expressed as birth-level data (generated automatically)
       birth_level_data.simulated = tibble::tibble(),
 
-      #'@field mother_level_data.simulated a `tibble` containing the simulated data expressed as mother-level data (generated automatically)
-      mother_level_data.simulated = tibble::tibble(),
-
       #'@field fit_twinning.binomial the fitted model producing the main slope of interest (see [`fit_models`]) (generated automatically)
       fit_twinning.binomial = NA,
 
@@ -262,7 +259,9 @@ life_histories <- R6::R6Class(
 
          ## format the output:
          self$format_data_outputs()
-         self$compute_slope()
+
+         ## compute the slope of interest:
+         self$slope <- compute_slope_from_birth.level.data(self$birth_level_data.simulated, verbose = self$verbose$fit)
 
          ## restore spaMM options as defined before launching the simuations:
          spaMM::spaMM.options(spaMM_options)
@@ -272,17 +271,6 @@ life_histories <- R6::R6Class(
 
 
       ### Accessory functions #########################################################################
-
-      #' @description
-      #' Compute the slope between the total number of births and the per-birth twinning probability
-      #'
-      #' This function fits the model investigating the relationship between parity and twinning probability using [`fit_twinning.binomial`] and retrieve the slope of interest.
-      #'
-      compute_slope = function() {
-         self$fit_twinning.binomial <- fit_twinning.binomial(mother_level_data = self$mother_level_data.simulated, verbose = self$verbose$fit)
-         self$slope <- spaMM::fixef(self$fit_twinning.binomial)[["births_total"]]
-         return(invisible(self))
-      },
 
       #' @description
       #' Format the simulated data as original data
@@ -304,13 +292,7 @@ life_histories <- R6::R6Class(
             dplyr::group_by(.data$maternal_id) %>%
             dplyr::mutate(birth_year = c(.data$birth_year[1], .data$birth_year[1] + (.data$maternal_age[-1] - .data$maternal_age[1])/12)) %>%
             dplyr::ungroup() %>%
-            dplyr::select(.data$pop, .data$maternal_id, .data$maternal_birthyear, .data$maternal_age, .data$birth_year, .data$twin, .data$monthly) -> data_births_simulated
-
-         ## expand the birth level data to add addition columns that would be required to fit models on the simulated data:
-         self$birth_level_data.simulated <- expand_data(data_births_simulated)
-
-         ## aggregate the birth level data into mother level data:
-         self$mother_level_data.simulated <- aggregate_data(self$birth_level_data.simulated)
+            dplyr::select(.data$pop, .data$maternal_id, .data$maternal_birthyear, .data$maternal_age, .data$birth_year, .data$twin, .data$monthly) -> self$birth_level_data.simulated
 
          return(invisible(self))
       }

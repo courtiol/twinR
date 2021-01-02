@@ -361,3 +361,29 @@ fit_life_histories <- function(scenario, birth_level_data, args_spaMM = list(), 
        time_elapsed = time_elapsed)
 }
 
+
+
+
+#' @describeIn fit_models compute the slope between the total number of births and the per-birth twinning probability from birth level data
+#'
+#' This function fits the model investigating the relationship between parity and twinning probability using [`fit_twinning.binomial`] and retrieve the slope of interest.
+#' For this, it aggregates the birth level data.
+#'
+#' @export
+#'
+compute_slope_from_birth.level.data = function(birth_level_data, verbose = TRUE) {
+
+  ## expand the data if they are not already expanded:
+  if (!"PP" %in% colnames(birth_level_data)) {
+    birth_level_data <- expand_data(birth_level_data)
+  }
+
+  ## aggregated the data:
+  mother_level_data <- aggregate_data(birth_level_data)
+
+  ## fit the model:
+  fit_twinning.binomial <- fit_twinning.binomial(mother_level_data = mother_level_data, verbose = verbose)
+
+  ## extract and return the slope:
+  spaMM::fixef(fit_twinning.binomial)[["births_total"]]
+}

@@ -61,8 +61,6 @@ exactly how we performed our simulations.
 
 \item{\code{birth_level_data.simulated}}{a \code{tibble} containing the simulated data expressed as birth-level data (generated automatically)}
 
-\item{\code{mother_level_data.simulated}}{a \code{tibble} containing the simulated data expressed as mother-level data (generated automatically)}
-
 \item{\code{fit_twinning.binomial}}{the fitted model producing the main slope of interest (see \code{\link{fit_models}}) (generated automatically)}
 
 \item{\code{slope}}{the main slope of interest quantifying effect of total_birth on the log odd of twinning (generated automatically)}
@@ -78,7 +76,6 @@ exactly how we performed our simulations.
 \item \href{#method-update_data_simulated}{\code{life_histories$update_data_simulated()}}
 \item \href{#method-filter_data_simulated}{\code{life_histories$filter_data_simulated()}}
 \item \href{#method-run}{\code{life_histories$run()}}
-\item \href{#method-compute_slope}{\code{life_histories$compute_slope()}}
 \item \href{#method-format_data_outputs}{\code{life_histories$format_data_outputs()}}
 \item \href{#method-clone}{\code{life_histories$clone()}}
 }
@@ -195,18 +192,6 @@ This is the main function used to run the simulation. It calls, in turns,
 no mother keeps reproducing.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{life_histories$run()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-compute_slope"></a>}}
-\if{latex}{\out{\hypertarget{method-compute_slope}{}}}
-\subsection{Method \code{compute_slope()}}{
-Compute the slope between the total number of births and the per-birth twinning probability
-
-This function fits the model investigating the relationship between parity and twinning probability using \code{\link{fit_twinning.binomial}} and retrieve the slope of interest.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{life_histories$compute_slope()}\if{html}{\out{</div>}}
 }
 
 }

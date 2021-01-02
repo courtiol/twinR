@@ -11,6 +11,7 @@
 \alias{fit_IBI}
 \alias{fit_twinning.binary}
 \alias{fit_life_histories}
+\alias{compute_slope_from_birth.level.data}
 \title{Fit the models}
 \usage{
 fit_totalbirths(
@@ -58,6 +59,8 @@ fit_life_histories(
   args_spaMM = list(),
   verbose = TRUE
 )
+
+compute_slope_from_birth.level.data(birth_level_data, verbose = TRUE)
 }
 \arguments{
 \item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}
@@ -109,6 +112,11 @@ See \strong{Functions}, below, for details on each function.
 This function fits all three life history models according to the simulation scenario provided.
 The polynomial orders are estimated, which is why each of the three models has to be fitted seven
 times (order 0->6). It also returns the total time elapsed by the function.
+
+\item \code{compute_slope_from_birth.level.data}: compute the slope between the total number of births and the per-birth twinning probability from birth level data
+
+This function fits the model investigating the relationship between parity and twinning probability using \code{\link{fit_twinning.binomial}} and retrieve the slope of interest.
+For this, it aggregates the birth level data.
 }}
 
 \examples{
