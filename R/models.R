@@ -338,6 +338,11 @@ fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_a
 #'
 fit_life_histories <- function(scenario, birth_level_data, args_spaMM = list(), verbose = TRUE) {
 
+  ## expand the data if they are not already expanded:
+  if (!"PP" %in% colnames(birth_level_data)) {
+    birth_level_data <- expand_data(birth_level_data)
+  }
+
   ## start stopwatch:
   time_begin <- Sys.time()
 
