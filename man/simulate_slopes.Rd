@@ -36,18 +36,13 @@ a list containing the simulated slopes, the scenario, the input seed, and the ti
 This functions allows for the production of slopes of interest (the one quantifying effect of
 total_birth on the log odd of twinning) taking a simulation scenario as true. This thus
 corresponds to the computation of the slope under the null hypothesis (see Details for more
-information).
-}
-\details{
-The function runs a first simulation according to the life history models fitted on the observed
-data (level 1). Then, the three life history models are refitted on the simulated data that has
-been produced and these new fits are used to simulated new data (level 2). The slope of interest
-is then computed using each of the simulated dataset from level 2.
+information). There is no reason to use this function directly. It is called by
+\code{\link{simulate_slopes_for_GOF}}.
 }
 \examples{
 ## See ?twinR
 
 }
 \seealso{
-run_simulation
+simulate_slopes_for_GOF
 }

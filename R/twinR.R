@@ -32,8 +32,10 @@
 #' ## Number of bootstrap replicates to perform:
 #' nb_boot <- 1000L
 #'
-#' ## Identify number of CPU cores available for parallel computing:
-#' nb_cores <- min(c(100, parallel::detectCores() - 1))
+#' ## Identify number of CPU cores available for parallel computing,
+#' ## note: using a large number may lead RAM to max out, so you may have to adjust that according
+#' ## to your infrastructure:
+#' nb_cores <- min(c(40L, parallel::detectCores() - 1))
 #'
 #' ## Set option in spaMM:
 #' spaMM.options(nb_cores = nb_cores)
@@ -436,7 +438,7 @@
 #'                              life_history_fits = fits_AC_obs,
 #'                              output = list(birth_level_data.simulated = TRUE,
 #'                                            slope = TRUE,
-#'                                            fits = TRUE))
+#'                                            fits = FALSE))
 #'
 #'
 #'
@@ -444,11 +446,14 @@
 #' #---------------------------------- Goodness of fit ---------------------------------------------
 #' #------------------------------------------------------------------------------------------------
 #'
-#' ## Example of how to create 20 slopes taking scenario AC as the null model:
+#' ## Generate data to test scenario AC:
 #'
-#' slopes_under_AC <- simulate_slopes(birth_level_data = data_births_monthly.complete,
-#'                                    scenario = "AC", life_history_fits = fits_AC_obs,
-#'                                    N_replicates = 20L)
+#' slopes_under_AC <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
+#'                                            N_replicates_level2 = 49L,
+#'                                            birth_level_data = data_births_monthly.complete,
+#'                                            scenario = "AC",
+#'                                            life_history_fits = fits_AC_obs,
+#'                                            nb_cores = nb_cores)
 #'
 #' }
 #'

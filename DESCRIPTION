@@ -21,6 +21,7 @@ Imports:
     ggplot2,
     ggnewscale,
     dplyr (>= 1.0),
+    foreach,
     magrittr,
     pracma,
     progress,
