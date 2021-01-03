@@ -321,7 +321,8 @@ life_histories <- R6::R6Class(
 #'
 run_simulation <- function(birth_level_data, scenario = NULL, life_history_fits = NULL, seed = 123L,
                            output = list(birth_level_data.simulated = FALSE, slope = TRUE, fits = FALSE),
-                           args_spaMM = list(), verbose = list(fit = FALSE, simu = FALSE)) {
+                           timeout = Inf,
+                           verbose = list(fit = FALSE, simu = FALSE)) {
 
    ## start stopwatch:
    time_begin <- Sys.time()
@@ -331,7 +332,7 @@ run_simulation <- function(birth_level_data, scenario = NULL, life_history_fits 
 
       life_history_fits <- fit_life_histories(scenario,
                                               birth_level_data = birth_level_data,
-                                              args_spaMM = args_spaMM,
+                                              timeout = timeout,
                                               verbose = verbose$fit)
    }
 

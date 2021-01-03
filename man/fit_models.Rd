@@ -20,39 +20,22 @@ fit_model_safely(timeout, .args)
 fit_totalbirths(
   mother_level_data,
   when_twinner = "allbirths",
-  args_spaMM = list(),
   timeout = Inf,
   verbose = TRUE
 )
 
-fit_twinner.allbirths(
-  mother_level_data,
-  args_spaMM = list(),
-  timeout = Inf,
-  verbose = TRUE
-)
+fit_twinner.allbirths(mother_level_data, timeout = Inf, verbose = TRUE)
 
-fit_twinner.firstbirth(
-  mother_level_data,
-  args_spaMM = list(),
-  timeout = Inf,
-  verbose = TRUE
-)
+fit_twinner.firstbirth(mother_level_data, timeout = Inf, verbose = TRUE)
 
-fit_twinning.binomial(
-  mother_level_data,
-  args_spaMM = list(),
-  timeout = Inf,
-  verbose = TRUE
-)
+fit_twinning.binomial(mother_level_data, timeout = Inf, verbose = TRUE)
 
-fit_AFB(mother_level_data, args_spaMM = list(), timeout = Inf, verbose = TRUE)
+fit_AFB(mother_level_data, timeout = Inf, verbose = TRUE)
 
 fit_PP(
   birth_level_data,
   poly_order = NA,
   twin_as.predictor = TRUE,
-  args_spaMM = list(),
   timeout = Inf,
   verbose = TRUE
 )
@@ -61,7 +44,6 @@ fit_IBI(
   birth_level_data,
   poly_order = NA,
   twin_as.predictor = TRUE,
-  args_spaMM = list(),
   timeout = Inf,
   verbose = TRUE
 )
@@ -70,18 +52,11 @@ fit_twinning.binary(
   birth_level_data,
   poly_order = NA,
   maternal_ID_as.predictor = TRUE,
-  args_spaMM = list(),
   timeout = Inf,
   verbose = TRUE
 )
 
-fit_life_histories(
-  scenario,
-  birth_level_data,
-  args_spaMM = list(),
-  timeout = Inf,
-  verbose = TRUE
-)
+fit_life_histories(scenario, birth_level_data, timeout = Inf, verbose = TRUE)
 
 compute_slope_from_birth.level.data(
   birth_level_data,
@@ -97,8 +72,6 @@ compute_slope_from_birth.level.data(
 \item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}
 
 \item{when_twinner}{a string of characters indicating if the twinning status is based on all births ('allbirths') or just on the first one ('firstbirth')}
-
-\item{args_spaMM}{list of additional arguments to pass to the function \code{\link[spaMM:fitme]{fitme}}}
 
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
 

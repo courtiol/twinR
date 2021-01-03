@@ -10,7 +10,7 @@ run_simulation(
   life_history_fits = NULL,
   seed = 123L,
   output = list(birth_level_data.simulated = FALSE, slope = TRUE, fits = FALSE),
-  args_spaMM = list(),
+  timeout = Inf,
   verbose = list(fit = FALSE, simu = FALSE)
 )
 }
@@ -25,7 +25,7 @@ run_simulation(
 
 \item{output}{a named list of booleans with elements \code{birth_level_data.simulated}, \code{slope} and \code{fit} indicating what to output}
 
-\item{args_spaMM}{list of additional arguments to pass to the function \code{\link[spaMM:fitme]{fitme}}}
+\item{timeout}{the maximal duration (in seconds) allowed for the fitting procedure (default = Inf)}
 
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
 }

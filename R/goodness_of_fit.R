@@ -18,7 +18,7 @@
 #'
 simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL, seed = 123L,
                             N_replicates = 49L,
-                            args_spaMM = list(), timeout = Inf, verbose = list(fit = FALSE, simu = FALSE)) {
+                            timeout = Inf, verbose = list(fit = FALSE, simu = FALSE)) {
 
   ## start stopwatch:
   time_begin <- Sys.time()
@@ -29,13 +29,12 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
                                 life_history_fits = life_history_fits,
                                 seed = seed,
                                 output = list(birth_level_data.simulated = TRUE, slope = TRUE, fits = FALSE),
-                                args_spaMM = args_spaMM,
+                                timeout = timeout,
                                 verbose = verbose)
 
   ## refit the life history models on the simulated data:
   life_history_fits.simulated <- fit_life_histories(scenario = scenario,
                                                     birth_level_data = simu_level1$birth_level_data,
-                                                    args_spaMM = args_spaMM,
                                                     timeout = timeout,
                                                     verbose = verbose$fit)
 
@@ -46,7 +45,6 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
                            life_history_fits = life_history_fits.simulated,
                            seed = i,
                            output = list(birth_level_data.simulated = FALSE, slope = TRUE, fits = FALSE),
-                           args_spaMM = args_spaMM,
                            verbose = verbose)
     simu$slope})
 
@@ -96,7 +94,6 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
                                     birth_level_data,
                                     scenario,
                                     life_history_fits = NULL,
-                                    args_spaMM = list(),
                                     timeout = Inf,
                                     verbose = list(fit = FALSE, simu = FALSE)) {
 
@@ -110,7 +107,6 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
 
     life_history_fits <- fit_life_histories(scenario,
                                             birth_level_data = birth_level_data,
-                                            args_spaMM = args_spaMM,
                                             timeout = timeout,
                                             verbose = verbose$fit)
   }
@@ -137,7 +133,6 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
                             life_history_fits = life_history_fits,
                             seed = it,
                             N_replicates = N_replicates_level2,
-                            args_spaMM = args_spaMM,
                             timeout = timeout,
                             verbose = verbose)
 

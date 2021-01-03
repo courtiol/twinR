@@ -10,7 +10,6 @@
 #' @param poly_order an integer value defining the polynomial order when considering the effect of age and parity (default = `NA`, find best value between 0 and 6)
 #' @param twin_as.predictor whether to include the variable `twin` as a predictor or not in some models (default = `TRUE`)
 #' @param maternal_ID_as.predictor whether to include the variable `maternal_ID` as a random effect predictor or not in some models (default = `TRUE`)
-#' @param args_spaMM list of additional arguments to pass to the function [`fitme`][`spaMM::fitme`]
 #' @param timeout the maximal duration (in seconds) allowed for the fitting procedure (default = Inf)
 #' @param verbose whether to display the formula of the fit during the fitting procedure
 #' @param scenario the scenario defining which models to be fitted: e.g. "ABCD", "AC"... (see paper for explanations)
@@ -54,7 +53,7 @@ fit_model_safely <- function(timeout, .args) {
 #' @param when_twinner a string of characters indicating if the twinning status is based on all births ('allbirths') or just on the first one ('firstbirth')
 #' @export
 #'
-fit_totalbirths <- function(mother_level_data, when_twinner = "allbirths", args_spaMM = list(), timeout = Inf, verbose = TRUE) {
+fit_totalbirths <- function(mother_level_data, when_twinner = "allbirths", timeout = Inf, verbose = TRUE) {
 
   if (when_twinner == "allbirths") {
     formula <- "births_total ~ 1 + twinner + (1|pop)"
@@ -65,7 +64,6 @@ fit_totalbirths <- function(mother_level_data, when_twinner = "allbirths", args_
   if (verbose) print(paste0("Fitting model '", formula, "'..."))
 
   args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = spaMM::Tnegbin(link = "log"), method = "PQL/L")
-  args <- c(args, args_spaMM)
 
   ## fit the model:
   fit_model_safely(timeout = timeout, .args = args)
@@ -75,14 +73,13 @@ fit_totalbirths <- function(mother_level_data, when_twinner = "allbirths", args_
 #' @describeIn fit_models fit the model predicting the twinning status of the mother at any birth during her life from her total number of births
 #' @export
 #'
-fit_twinner.allbirths <- function(mother_level_data, args_spaMM = list(), timeout = Inf, verbose = TRUE) {
+fit_twinner.allbirths <- function(mother_level_data, timeout = Inf, verbose = TRUE) {
 
   formula <- "twinner ~ 1 + births_total + (1|pop)"
 
   if (verbose) print(paste0("Fitting model '", formula, "'..."))
 
   args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
-  args <- c(args, args_spaMM)
 
   ## fit the model:
   fit_model_safely(timeout = timeout, .args = args)
@@ -92,14 +89,13 @@ fit_twinner.allbirths <- function(mother_level_data, args_spaMM = list(), timeou
 #' @describeIn fit_models fit the model predicting the twinning status of the mother at first birth from her total number of births
 #' @export
 #'
-fit_twinner.firstbirth <- function(mother_level_data, args_spaMM = list(), timeout = Inf, verbose = TRUE) {
+fit_twinner.firstbirth <- function(mother_level_data, timeout = Inf, verbose = TRUE) {
 
   formula <- "first_twinner ~ 1 + births_total + (1|pop)"
 
   if (verbose) print(paste0("Fitting model '", formula, "'..."))
 
   args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
-  args <- c(args, args_spaMM)
 
   ## fit the model:
   fit_model_safely(timeout = timeout, .args = args)
@@ -109,14 +105,13 @@ fit_twinner.firstbirth <- function(mother_level_data, args_spaMM = list(), timeo
 #' @describeIn fit_models fit the model predicting the probability of a birth to result in twins from the total number of births
 #' @export
 #'
-fit_twinning.binomial <- function(mother_level_data, args_spaMM = list(), timeout = Inf, verbose = TRUE) {
+fit_twinning.binomial <- function(mother_level_data, timeout = Inf, verbose = TRUE) {
 
   formula <- "cbind(twin_total, singleton_total) ~ 1 + births_total + (1|pop)"
 
   if (verbose) print(paste0("Fitting model '", formula, "'..."))
 
   args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
-  args <- c(args, args_spaMM)
 
   ## fit the model:
   fit_model_safely(timeout = timeout, .args = args)
@@ -126,14 +121,13 @@ fit_twinning.binomial <- function(mother_level_data, args_spaMM = list(), timeou
 #' @describeIn fit_models fit the model predicting the age at first birth from the twinning status and the total number of births
 #' @export
 #'
-fit_AFB <- function(mother_level_data, args_spaMM = list(), timeout = Inf, verbose = TRUE) {
+fit_AFB <- function(mother_level_data, timeout = Inf, verbose = TRUE) {
 
   formula <- "AFB ~ 1 + twinner * births_total_fac + (1|pop)"
 
   if (verbose) print(paste0("Fitting model '", formula, "'..."))
 
   args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = spaMM::negbin(link = "log"), method = "PQL/L")
-  args <- c(args, args_spaMM)
 
   ## fit the model:
   fit_model_safely(timeout = timeout, .args = args)
@@ -143,7 +137,7 @@ fit_AFB <- function(mother_level_data, args_spaMM = list(), timeout = Inf, verbo
 #' @describeIn fit_models fit the model predicting the probability of parity progression
 #' @export
 #'
-fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, args_spaMM = list(), timeout = Inf, verbose = TRUE) {
+fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, timeout = Inf, verbose = TRUE) {
 
   ## if poly_order is NA, the order will be estimated as the one leading to best fit between 0 and 6:
   if (is.na(poly_order)) {
@@ -156,7 +150,6 @@ fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, 
       fit_PP(birth_level_data = birth_level_data,
              poly_order = order,
              twin_as.predictor = twin_as.predictor,
-             args_spaMM = args_spaMM,
              timeout = timeout,
              verbose = verbose)
     })
@@ -198,7 +191,6 @@ fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, 
   }
 
   args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
-  args <- c(args, args_spaMM)
 
   ## fit the model:
   fit_model_safely(timeout = timeout, .args = args)
@@ -208,7 +200,7 @@ fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, 
 #' @describeIn fit_models fit the model predicting the duration of the interbirth interval (minus 6 months)
 #' @export
 #'
-fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, args_spaMM = list(), timeout = Inf, verbose = TRUE) {
+fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, timeout = Inf, verbose = TRUE) {
 
 
   ## if poly_order is NA, the order will be estimated as the one leading to best fit between 0 and 6:
@@ -222,7 +214,6 @@ fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE,
       fit_IBI(birth_level_data = birth_level_data,
               poly_order = order,
               twin_as.predictor = twin_as.predictor,
-              args_spaMM = args_spaMM,
               timeout = timeout,
               verbose = verbose)
     })
@@ -273,7 +264,6 @@ fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE,
   birth_level_data$IBI <- as.integer(birth_level_data$IBI - 5.5)
 
   args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = spaMM::negbin(link = "log"), method = "PQL/L")
-  args <- c(args, args_spaMM)
 
   ## fit the model:
   fit_model_safely(timeout = timeout, .args = args)
@@ -283,7 +273,7 @@ fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE,
 #' @describeIn fit_models fit the model predicting the probability of twinning for a given birth event
 #' @export
 #'
-fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_as.predictor = TRUE, args_spaMM = list(), timeout = Inf, verbose = TRUE) {
+fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_as.predictor = TRUE, timeout = Inf, verbose = TRUE) {
 
   ## if poly_order is NA, the order will be estimated as the one leading to best fit between 0 and 6:
   if (is.na(poly_order)) {
@@ -296,7 +286,6 @@ fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_a
       fit_twinning.binary(birth_level_data = birth_level_data,
                           poly_order = order,
                           maternal_ID_as.predictor = maternal_ID_as.predictor,
-                          args_spaMM = args_spaMM,
                           timeout = timeout,
                           verbose = verbose)
     })
@@ -338,7 +327,6 @@ fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_a
   }
 
   args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
-  args <- c(args, args_spaMM)
 
   ## fit the model:
   fit_model_safely(timeout = timeout, .args = args)
@@ -353,7 +341,7 @@ fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_a
 #'
 #' @export
 #'
-fit_life_histories <- function(scenario, birth_level_data, args_spaMM = list(), timeout = Inf, verbose = TRUE) {
+fit_life_histories <- function(scenario, birth_level_data, timeout = Inf, verbose = TRUE) {
 
   ## expand the data:
   birth_level_data <- expand_data(birth_level_data)
@@ -362,13 +350,13 @@ fit_life_histories <- function(scenario, birth_level_data, args_spaMM = list(), 
   time_begin <- Sys.time()
 
   ## fit parity progression with or without twin as predictor:
-  fit_PP <- fit_PP(birth_level_data = birth_level_data, poly_order = NA, twin_as.predictor = grepl("A", scenario), args_spaMM = args_spaMM, timeout = timeout, verbose = verbose)
+  fit_PP <- fit_PP(birth_level_data = birth_level_data, poly_order = NA, twin_as.predictor = grepl("A", scenario), timeout = timeout, verbose = verbose)
 
   ## fit IBI with or without twin as predictor:
-  fit_IBI <- fit_IBI(birth_level_data = birth_level_data, poly_order = NA, twin_as.predictor = grepl("B", scenario), args_spaMM = args_spaMM, timeout = timeout, verbose = verbose)
+  fit_IBI <- fit_IBI(birth_level_data = birth_level_data, poly_order = NA, twin_as.predictor = grepl("B", scenario), timeout = timeout, verbose = verbose)
 
   ## fit the probability of twinning for a given birth event with or without parity/age as fixed effects, and with and without maternal_id as random effect:
-  fit_twinning.binary <- fit_twinning.binary(birth_level_data = birth_level_data, poly_order = ifelse(grepl("C", scenario), NA, 0L), maternal_ID_as.predictor = grepl("D", scenario),  args_spaMM = args_spaMM, timeout = timeout, verbose = verbose)
+  fit_twinning.binary <- fit_twinning.binary(birth_level_data = birth_level_data, poly_order = ifelse(grepl("C", scenario), NA, 0L), maternal_ID_as.predictor = grepl("D", scenario),  timeout = timeout, verbose = verbose)
 
   ## stop stopwatch:
   time_end <- Sys.time()

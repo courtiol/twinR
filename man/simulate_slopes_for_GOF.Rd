@@ -10,7 +10,6 @@ simulate_slopes_for_GOF(
   birth_level_data,
   scenario,
   life_history_fits = NULL,
-  args_spaMM = list(),
   timeout = Inf,
   verbose = list(fit = FALSE, simu = FALSE)
 )
@@ -27,8 +26,6 @@ simulate_slopes_for_GOF(
 \item{scenario}{the scenario defining which models to be fitted: e.g. "ABCD", "AC"... (see paper for explanations)}
 
 \item{life_history_fits}{a named list containing the fits of each three life history models}
-
-\item{args_spaMM}{list of additional arguments to pass to the function \code{\link[spaMM:fitme]{fitme}}}
 
 \item{timeout}{the maximal duration (in seconds) allowed for the fitting procedure (default = Inf)}
 
