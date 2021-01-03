@@ -99,7 +99,7 @@ life_histories <- R6::R6Class(
                             birth_level_data,
                             verbose = list(fit = FALSE, simu = FALSE)) {
 
-         self$birth_level_data <- birth_level_data
+         self$birth_level_data <- expand_data(birth_level_data)
          self$fit_twinning.binary <- fit_twinning.binary
          self$fit_PP <- fit_PP
          self$fit_IBI <- fit_IBI
@@ -232,8 +232,7 @@ life_histories <- R6::R6Class(
 
          self$data_iteration %>%
             dplyr::filter(.data$PP,
-                          .data$age < 100
-            ) -> self$data_iteration
+                          .data$age < 100) -> self$data_iteration
 
          return(invisible(self))
       },

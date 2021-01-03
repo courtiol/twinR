@@ -93,10 +93,16 @@ aggregate_data <- function(birth_level_data) {
 #' expand_data(data_births_all)
 #'
 expand_data <- function(birth_level_data) {
+
+  ## do nothing if data already expanded:
+  if (all(c("PP", "IBI", "age", "parity") %in% colnames(birth_level_data))) {
+    return(birth_level_data)
+  }
+
+  ## perform expansion:
   birth_level_data %>%
     dplyr::mutate(age = .data$maternal_age/12L, .after = .data$maternal_age) %>% ## turn the age in years
     dplyr::group_by(.data$maternal_id) %>%
-    #dplyr::mutate(twin_prev = ifelse(dplyr::row_number() == 1, FALSE, dplyr::lag(twin)), .after = .data$twin) %>% ## whether previous birth was twin
     dplyr::mutate(parity = 1:dplyr::n(), ## birth rank
                   PP = dplyr::row_number() != dplyr::n(), ## parity progression Boolean
                   IBI = dplyr::lead(.data$maternal_age) - .data$maternal_age) %>%

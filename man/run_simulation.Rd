@@ -15,7 +15,7 @@ run_simulation(
 )
 }
 \arguments{
-\item{birth_level_data}{a \code{tibble} or \code{data.frame} with (expanded) birth level data}
+\item{birth_level_data}{a \code{tibble} or \code{data.frame} with birth level data (expanded or not)}
 
 \item{scenario}{the scenario defining which models to be fitted: e.g. "ABCD", "AC"... (see paper for explanations)}
 

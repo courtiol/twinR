@@ -26,7 +26,7 @@ prepare_data_fig_S1(fit_AFB, nb_boot = 1000)
 prepare_data_fig_S2(fit_PP, fit_IBI, fit_twin, mother_level_data)
 }
 \arguments{
-\item{birth_level_data}{a \code{tibble} or \code{data.frame} with (expanded) birth level data}
+\item{birth_level_data}{a \code{tibble} or \code{data.frame} with birth level data (expanded or not)}
 
 \item{xaxis}{a \code{character} indicating whether \code{"age"} or \code{"parity"} must be considered as the x-axis}
 
