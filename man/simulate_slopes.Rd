@@ -11,6 +11,7 @@ simulate_slopes(
   seed = 123L,
   N_replicates = 49L,
   args_spaMM = list(),
+  timeout = Inf,
   verbose = list(fit = FALSE, simu = FALSE)
 )
 }
@@ -26,6 +27,8 @@ simulate_slopes(
 \item{N_replicates}{the number of simulation replicates to run}
 
 \item{args_spaMM}{list of additional arguments to pass to the function \code{\link[spaMM:fitme]{fitme}}}
+
+\item{timeout}{the maximal duration (in seconds) allowed for the fitting procedure (default = Inf)}
 
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
 }

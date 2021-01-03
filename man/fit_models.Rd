@@ -2,6 +2,7 @@
 % Please edit documentation in R/models.R
 \name{fit_models}
 \alias{fit_models}
+\alias{fit_model_safely}
 \alias{fit_totalbirths}
 \alias{fit_twinner.allbirths}
 \alias{fit_twinner.firstbirth}
@@ -14,26 +15,45 @@
 \alias{compute_slope_from_birth.level.data}
 \title{Fit the models}
 \usage{
+fit_model_safely(timeout, .args)
+
 fit_totalbirths(
   mother_level_data,
   when_twinner = "allbirths",
   args_spaMM = list(),
+  timeout = Inf,
   verbose = TRUE
 )
 
-fit_twinner.allbirths(mother_level_data, args_spaMM = list(), verbose = TRUE)
+fit_twinner.allbirths(
+  mother_level_data,
+  args_spaMM = list(),
+  timeout = Inf,
+  verbose = TRUE
+)
 
-fit_twinner.firstbirth(mother_level_data, args_spaMM = list(), verbose = TRUE)
+fit_twinner.firstbirth(
+  mother_level_data,
+  args_spaMM = list(),
+  timeout = Inf,
+  verbose = TRUE
+)
 
-fit_twinning.binomial(mother_level_data, args_spaMM = list(), verbose = TRUE)
+fit_twinning.binomial(
+  mother_level_data,
+  args_spaMM = list(),
+  timeout = Inf,
+  verbose = TRUE
+)
 
-fit_AFB(mother_level_data, args_spaMM = list(), verbose = TRUE)
+fit_AFB(mother_level_data, args_spaMM = list(), timeout = Inf, verbose = TRUE)
 
 fit_PP(
   birth_level_data,
   poly_order = NA,
   twin_as.predictor = TRUE,
   args_spaMM = list(),
+  timeout = Inf,
   verbose = TRUE
 )
 
@@ -42,6 +62,7 @@ fit_IBI(
   poly_order = NA,
   twin_as.predictor = TRUE,
   args_spaMM = list(),
+  timeout = Inf,
   verbose = TRUE
 )
 
@@ -50,6 +71,7 @@ fit_twinning.binary(
   poly_order = NA,
   maternal_ID_as.predictor = TRUE,
   args_spaMM = list(),
+  timeout = Inf,
   verbose = TRUE
 )
 
@@ -57,12 +79,21 @@ fit_life_histories(
   scenario,
   birth_level_data,
   args_spaMM = list(),
+  timeout = Inf,
   verbose = TRUE
 )
 
-compute_slope_from_birth.level.data(birth_level_data, verbose = TRUE)
+compute_slope_from_birth.level.data(
+  birth_level_data,
+  timeout = Inf,
+  verbose = TRUE
+)
 }
 \arguments{
+\item{timeout}{the maximal duration (in seconds) allowed for the fitting procedure (default = Inf)}
+
+\item{.args}{an internal list used to pass the argument to the function \code{\link[spaMM:fitme]{fitme}}}
+
 \item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}
 
 \item{when_twinner}{a string of characters indicating if the twinning status is based on all births ('allbirths') or just on the first one ('firstbirth')}
@@ -71,7 +102,7 @@ compute_slope_from_birth.level.data(birth_level_data, verbose = TRUE)
 
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
 
-\item{birth_level_data}{a \code{tibble} or \code{data.frame} with (expanded) birth level data}
+\item{birth_level_data}{a \code{tibble} or \code{data.frame} with birth level data (expanded or not)}
 
 \item{poly_order}{an integer value defining the polynomial order when considering the effect of age and parity (default = \code{NA}, find best value between 0 and 6)}
 
@@ -91,6 +122,11 @@ See \strong{Functions}, below, for details on each function.
 }
 \section{Functions}{
 \itemize{
+\item \code{fit_model_safely}: internal function calling the fitting function from spaMM
+
+This internal function allows for the handling of messages and timeout threshold.
+It is called by all the other fitting functions.
+
 \item \code{fit_totalbirths}: fit the model predicting the total number of births per mother from her twinning status
 
 \item \code{fit_twinner.allbirths}: fit the model predicting the twinning status of the mother at any birth during her life from her total number of births
