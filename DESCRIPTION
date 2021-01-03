@@ -17,22 +17,24 @@ Depends:
 Imports:
     boot,
     cowplot,
-    doSNOW,
+    future,
+    future.apply,
     ggplot2,
     ggnewscale,
     dplyr (>= 1.0),
-    foreach,
     magrittr,
     pracma,
     progress,
+    progressr,
     R6,
     rlang,
     spaMM (>= 3.5.0),
     tibble,
     tidyr,
-    tidyselect
+    tidyselect,
     utils
 Suggests:
+    doSNOW,
+    digest,
     openxlsx,
-    testthat,
-    digest
+    testthat

@@ -7,6 +7,7 @@
 #' [`simulate_slopes_for_GOF`].
 #'
 #' @inheritParams run_simulation
+#' @inheritParams fit_models
 #' @param N_replicates the number of simulation replicates to run
 #' @seealso simulate_slopes_for_GOF
 #'
@@ -17,7 +18,7 @@
 #'
 simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL, seed = 123L,
                             N_replicates = 49L,
-                            args_spaMM = list(), verbose = list(fit = FALSE, simu = FALSE)) {
+                            args_spaMM = list(), timeout = Inf, verbose = list(fit = FALSE, simu = FALSE)) {
 
   ## start stopwatch:
   time_begin <- Sys.time()
@@ -35,6 +36,7 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
   life_history_fits.simulated <- fit_life_histories(scenario = scenario,
                                                     birth_level_data = simu_level1$birth_level_data,
                                                     args_spaMM = args_spaMM,
+                                                    timeout = timeout,
                                                     verbose = verbose$fit)
 
   ## run N_replicates simulations based on models fitted on simulated data and extract slopes:
@@ -82,7 +84,6 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
 #' @param N_replicates_level2  the number of simulation replicates to run at the second level  (see
 #'   [`simulate_slopes`])
 #' @inheritParams simulate_slopes
-#' @param nb_cores the number of CPU cores to use for parallel computing
 #'
 #' @seealso simulate_slopes
 #' @return a tibble containing all the results
@@ -95,47 +96,37 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
                                     birth_level_data,
                                     scenario,
                                     life_history_fits = NULL,
-                                    nb_cores = 1L,
-                                    seed = 123L,
                                     args_spaMM = list(),
+                                    timeout = Inf,
                                     verbose = list(fit = FALSE, simu = FALSE)) {
 
-  ## reduce the number of core to what is necessary (to avoid using extra memory for nothing):
-  nb_cores <- min(c(N_replicates_level1, nb_cores))
+  ## display message:
+  if (interactive()) print("This function is very computationally demanding. It is not designed to be run on a usual laptop. If it requires more RAM than what is available on your system, it may crash your R session. In any case, be very patient...")
 
   ## fit the life history model on the observed data, if not provided:
   if (is.null(life_history_fits)) {
 
+    if (interactive()) print("Fit life history models on input data...")
+
     life_history_fits <- fit_life_histories(scenario,
                                             birth_level_data = birth_level_data,
                                             args_spaMM = args_spaMM,
+                                            timeout = timeout,
                                             verbose = verbose$fit)
   }
-
-  ##  setup for parallel computing:
-  if (nb_cores > 1L) {
-    cl <- do.call(parallel::makeCluster, list(spec = nb_cores))
-    doSNOW::registerDoSNOW(cl)
-  } else {
-    cl <- NULL
-  }
-
-  ## initialize the progress bar:
-  pb <- utils::txtProgressBar(max = N_replicates_level1, style = 3)
-  progress <- function(n) utils::setTxtProgressBar(pb, n)
-  snow_opts <- list(progress = progress)
 
   ## capture options of package spaMM:
   spaMM_options <- spaMM::spaMM.options()
 
-  ## setup loop:
-  it <- NULL # to please R CMD check
-  loop <- foreach::foreach(it = seq_len(N_replicates_level1),
-                           .inorder = FALSE, # do not constrain order, for speed up
-                           .combine = "rbind", .options.snow = snow_opts)
+  ## set progress bar:
+  progressr::handlers("progress")
+  progressr::handlers(global = TRUE)
+  pb <- progressr::progressor(along = N_replicates_level1)
 
   ## run the job:
-  job <- foreach::`%dopar%`(loop, {
+  if (interactive()) print("Perform the double bootstraping procedure...")
+
+  job <- future.apply::future_lapply(X = seq_len(N_replicates_level1), function(it) {
 
     ## activate spaMM options in each child node:
     spaMM::spaMM.options(spaMM_options, warn = FALSE)
@@ -147,24 +138,24 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
                             seed = it,
                             N_replicates = N_replicates_level2,
                             args_spaMM = args_spaMM,
+                            timeout = timeout,
                             verbose = verbose)
+
+    ## update progress bar:
+    pb(sprintf("replicate level 1 = %g", it))
 
     ## format the output as tibble:
     tibble::as_tibble(simu)
-  })
 
-  ## add the slope measured on the observed data and sort the output,
-  ## note: sorting allows for the production of reproducible results despite using ".inorder = FALSE" in foreach:
+    }, future.seed = NULL)
+
+  ## combine all outputs into a single tibble:
+  if (interactive()) print("Process the output...")
+  job <- do.call(rbind, job)
+
+  ## add the slope measured on the observed data and sort the output:
   job %>%
     dplyr::mutate(slope_observed = compute_slope_from_birth.level.data(birth_level_data), .before = 1L) %>%
-    dplyr::arrange(.data$scenario, .data$seed, .data$slopes_level1, .data$slopes_level2) -> job
-
-  ##  stop parallel computing properly:
-  if (nb_cores > 1L) {
-    foreach::registerDoSEQ()
-    parallel::stopCluster(cl)
-  }
-
-  job
+    dplyr::arrange(.data$scenario, .data$seed, .data$slopes_level1, .data$slopes_level2)
 }
 

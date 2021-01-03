@@ -10,9 +10,8 @@ simulate_slopes_for_GOF(
   birth_level_data,
   scenario,
   life_history_fits = NULL,
-  nb_cores = 1L,
-  seed = 123L,
   args_spaMM = list(),
+  timeout = Inf,
   verbose = list(fit = FALSE, simu = FALSE)
 )
 }
@@ -29,11 +28,9 @@ simulate_slopes_for_GOF(
 
 \item{life_history_fits}{a named list containing the fits of each three life history models}
 
-\item{nb_cores}{the number of CPU cores to use for parallel computing}
-
-\item{seed}{an \code{integer} providing the seed for the random generator}
-
 \item{args_spaMM}{list of additional arguments to pass to the function \code{\link[spaMM:fitme]{fitme}}}
+
+\item{timeout}{the maximal duration (in seconds) allowed for the fitting procedure (default = Inf)}
 
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
 }

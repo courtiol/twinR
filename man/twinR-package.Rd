@@ -21,7 +21,8 @@ the results of the paper.
 #---------------------------------- Loading packages --------------------------------------------
 #------------------------------------------------------------------------------------------------
 
-library(doSNOW) ## for better load balancing in parallel computing done with spaMM
+requireNamespace(doSNOW, quietly = TRUE) # load doSNOW if install, for better load balancing in
+                                         # parallel computing done with spaMM (optional)
 library(spaMM)  ## for manipulating mixed effects models
 
 
@@ -36,7 +37,7 @@ nb_boot <- 1000L
 ## Identify number of CPU cores available for parallel computing,
 ## note: using a large number may lead RAM to max out, so you may have to adjust that according
 ## to your infrastructure:
-nb_cores <- min(c(40L, parallel::detectCores() - 1))
+nb_cores <- min(c(50L, parallel::detectCores() - 1))
 
 ## Set option in spaMM:
 spaMM.options(nb_cores = nb_cores)
@@ -449,12 +450,31 @@ simu_test2 <- run_simulation(birth_level_data = data_births_monthly.complete,
 
 ## Generate data to test scenario AC:
 
+### We start by information the system how to perform the parallel computation.
+### This is done using the R package {future}, see ?future.plan for more information.
+### Note: we use "multicore" here, which relies on forking -- a evaluation strategy allowing for
+### saving memory during parallel computing. Unfortunately, this strategy only works in
+### unix-based systems and it does not play well with graphical interfaces.
+###
+### If you use Windows, try using  the evaluation strategy called "multisession" instead.
+###
+### While we did everything else in RStudio, it is advised to run this parallel computation job
+### directly in a terminal as using any graphic interface is generally known to interfere with
+### parallel processing (after many trials leading to no results or crashes, we concluded the
+### same).
+###
+### If you are very patient, you may used the evaluation strategy called "sequential" to prevent
+### the computation from running in parallel which should work in RStudio and with any operating
+### system.
+
+future::plan("multicore", workers = nb_cores)
+
+### We run the double bootstrap:
 slopes_under_AC <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
                                            N_replicates_level2 = 49L,
-                                           birth_level_data = data_births_monthly.complete,
+                                           birth_level_data = data_births_monthly,
                                            scenario = "AC",
-                                           life_history_fits = fits_AC_obs,
-                                           nb_cores = nb_cores)
+                                           life_history_fits = fits_AC_obs)
 
 }
 
