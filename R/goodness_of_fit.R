@@ -167,3 +167,53 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
     dplyr::arrange(.data$scenario, .data$seed, .data$slopes_level1, .data$slopes_level2)
 }
 
+
+#' Perform the goodness of fit test of a simulation scenario
+#'
+#' This functions perform the goodness of fit test on the data created by the function
+#' [`simulate_slopes_for_GOF`]. The justification and formal description of the test are given
+#' in the Appendix S1 of our Supplementary Material.
+#'
+#' @param slopes_obj an object returned by [`simulate_slopes_for_GOF`]
+#'
+#' @return a tibble with the information about the scenario and the computed p-values
+#' @export
+#' @seealso simulate_slopes_for_GOF
+#' @examples
+#' # See ?twinR
+#'
+goodness_of_fit <- function(slopes_obj) {
+
+  slopes_obj %>%
+    dplyr::group_by(.data$scenario, .data$seed) %>%
+    dplyr::summarize(
+      slope_observed = unique(.data$slope_observed),
+      slopes_level1 = unique(.data$slopes_level1),
+      mean_slopes_level2 = mean(.data$slopes_level2)) %>%
+    dplyr::ungroup() -> slopes_obj_aggregated
+
+  ## fit a model predicting slopes of first bootstrap based on the slopes at second bootstrap:
+  fit <- stats::lm(slopes_level1 ~ mean_slopes_level2, data = slopes_obj_aggregated)
+
+  ## compute residuals
+  var_error <- summary(fit)$sigma
+  residuals_slopes_level1 <- var_error*stats::rstudent(fit) # very similar to using residuals(fit)
+
+  ## predict bias introduced by bootstrapping (based on the difference between the two levels):
+  mean_slopes_level1 <- mean(slopes_obj_aggregated$slopes_level1)
+  bootstrap_bias <- stats::predict(fit, newdata = data.frame(mean_slopes_level2 = mean_slopes_level1))[[1]]
+
+  ## remove bias to observed slope:
+  slope_observed <- unique(slopes_obj_aggregated$slope_observed)
+  slope_observed_unbiased <- slope_observed - bootstrap_bias
+
+  ## compute p-value (unilateral)
+  pv_gof <- (1 + sum(residuals_slopes_level1 < slope_observed_unbiased)) / (1 + nrow(slopes_obj_aggregated))
+
+  ## raw computation of p-value based on single bootstrap only (for comparison):
+  pv_raw <- (1 + sum(slopes_obj_aggregated$slopes_level1 < slope_observed)) / (1 + nrow(slopes_obj_aggregated))
+
+  ## output:
+  tibble::tibble(scenario = unique(slopes_obj_aggregated$scenario), pv_gof = pv_gof, pv_raw = pv_raw)
+
+}
