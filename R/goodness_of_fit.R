@@ -32,6 +32,9 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
                                 timeout = timeout,
                                 verbose = verbose)
 
+  ## remove first set of models to save memory:
+  rm(life_history_fits)
+
   ## refit the life history models on the simulated data:
   life_history_fits.simulated <- fit_life_histories(scenario = scenario,
                                                     birth_level_data = simu_level1$birth_level_data,
@@ -48,6 +51,9 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
                            verbose = verbose)
     simu$slope})
 
+  ## remove second set of models to save memory:
+  rm(life_history_fits.simulated)
+
   ## stop stopwatch:
   time_end <- Sys.time()
 
@@ -61,9 +67,11 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
 
 #' Simulate slopes for the goodness of fit test
 #'
-#' This function creates the data required to apply a goodness of fit test. It it the function of
-#' this package that is the most computationally demanding. Depending on the number of cores CPU you
-#' use, the function call may lead to many days of computation time or a large memory requirement.
+#' This function creates the data required to apply a goodness of fit test (see
+#' [`goodness_of_fit`]). It it the function of this package that is the most computationally
+#' demanding. Depending on the number of cores CPU you use, the function call may lead to many days
+#' of computation time or a large memory requirement.
+#'
 #' The function performs the double bootstrapping procedure and proceeds as follow:
 #' 1. if `life_history_fits` is not provided, the function starts by fitting the life history
 #' models (see [`fit_life_histories`]) on the input data (i.e. `birth_level_data` which unless
@@ -76,14 +84,18 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
 #' 4. the function then run a second series of simulation using the models fitted during step 3 by
 #' calling [`simulate_slopes`] `N_replicates_level2` times.
 #'
+#' For details on the implementation used for the parallel computing, see [`test_parallel_computation`]
+#'
 #'
 #' @param N_replicates_level1  the number of simulation replicates to run at the first level (see
 #'   [`simulate_slopes`])
 #' @param N_replicates_level2  the number of simulation replicates to run at the second level  (see
 #'   [`simulate_slopes`])
+#' @param seed a seed for the random number generator that will be added to the seed for individual simulations; with the latters corresponding to `1:N_replicates_level1`
 #' @inheritParams simulate_slopes
+#' @inheritParams test_parallel_computation
 #'
-#' @seealso simulate_slopes
+#' @seealso simulate_slopes goodness_of_fit test_parallel_computation
 #' @return a tibble containing all the results
 #' @export
 #' @examples
@@ -94,6 +106,8 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
                                     birth_level_data,
                                     scenario,
                                     life_history_fits = NULL,
+                                    nb_cores = 2L,
+                                    seed = 0L,
                                     timeout = Inf,
                                     verbose = list(fit = FALSE, simu = FALSE)) {
 
@@ -114,15 +128,14 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
   ## capture options of package spaMM:
   spaMM_options <- spaMM::spaMM.options()
 
-  ## set progress bar:
-  progressr::handlers("progress")
-  progressr::handlers(global = TRUE)
-  pb <- progressr::progressor(along = N_replicates_level1)
-
   ## run the job:
   if (interactive()) print("Perform the double bootstraping procedure...")
 
-  job <- future.apply::future_lapply(X = seq_len(N_replicates_level1), function(it) {
+  job <- parallel::mclapply(seq_len(N_replicates_level1), function(it) {
+
+    ## display progress:
+    cat("\r", "work in progress...  (iteration ", it, "/", N_replicates_level1, ")", sep = "")
+    utils::flush.console()
 
     ## activate spaMM options in each child node:
     spaMM::spaMM.options(spaMM_options, warn = FALSE)
@@ -131,18 +144,18 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
     simu <- simulate_slopes(birth_level_data = birth_level_data,
                             scenario = scenario,
                             life_history_fits = life_history_fits,
-                            seed = it,
+                            seed = seed + it,
                             N_replicates = N_replicates_level2,
                             timeout = timeout,
                             verbose = verbose)
 
-    ## update progress bar:
-    pb(sprintf("replicate level 1 = %g", it))
-
     ## format the output as tibble:
     tibble::as_tibble(simu)
 
-    }, future.seed = NULL)
+    }, mc.cores = nb_cores, mc.preschedule = FALSE)
+
+   ## add newline in console:
+   cat("\n")
 
   ## combine all outputs into a single tibble:
   if (interactive()) print("Process the output...")

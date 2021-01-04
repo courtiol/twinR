@@ -10,6 +10,8 @@ simulate_slopes_for_GOF(
   birth_level_data,
   scenario,
   life_history_fits = NULL,
+  nb_cores = 2L,
+  seed = 0L,
   timeout = Inf,
   verbose = list(fit = FALSE, simu = FALSE)
 )
@@ -27,6 +29,10 @@ simulate_slopes_for_GOF(
 
 \item{life_history_fits}{a named list containing the fits of each three life history models}
 
+\item{nb_cores}{the number of CPU core(s) to use}
+
+\item{seed}{a seed for the random number generator that will be added to the seed for individual simulations; with the latters corresponding to \code{1:N_replicates_level1}}
+
 \item{timeout}{the maximal duration (in seconds) allowed for the fitting procedure (default = Inf)}
 
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
@@ -35,9 +41,12 @@ simulate_slopes_for_GOF(
 a tibble containing all the results
 }
 \description{
-This function creates the data required to apply a goodness of fit test. It it the function of
-this package that is the most computationally demanding. Depending on the number of cores CPU you
-use, the function call may lead to many days of computation time or a large memory requirement.
+This function creates the data required to apply a goodness of fit test (see
+\code{\link{goodness_of_fit}}). It it the function of this package that is the most computationally
+demanding. Depending on the number of cores CPU you use, the function call may lead to many days
+of computation time or a large memory requirement.
+}
+\details{
 The function performs the double bootstrapping procedure and proceeds as follow:
 \enumerate{
 \item if \code{life_history_fits} is not provided, the function starts by fitting the life history
@@ -51,11 +60,13 @@ set provided as an input using the argument \code{life_history_fits}) by calling
 \item the function then run a second series of simulation using the models fitted during step 3 by
 calling \code{\link{simulate_slopes}} \code{N_replicates_level2} times.
 }
+
+For details on the implementation used for the parallel computing, see \code{\link{test_parallel_computation}}
 }
 \examples{
 #See ?twinR
 
 }
 \seealso{
-simulate_slopes
+simulate_slopes goodness_of_fit test_parallel_computation
 }
