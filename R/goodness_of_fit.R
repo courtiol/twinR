@@ -195,6 +195,8 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
 #'
 goodness_of_fit <- function(slopes_obj) {
 
+  ## we do not need the individual slopes for the 2nd level of bootstrapping but only their means,
+  ## so we aggregate the data:
   slopes_obj %>%
     dplyr::group_by(.data$scenario, .data$seed) %>%
     dplyr::summarize(
@@ -208,7 +210,7 @@ goodness_of_fit <- function(slopes_obj) {
 
   ## compute residuals
   var_error <- summary(fit)$sigma
-  residuals_slopes_level1 <- var_error*stats::rstudent(fit) # very similar to using residuals(fit)
+  residuals_slopes_level1 <- var_error*stats::rstudent(fit) # gives similar results than simply using residuals(fit) but more theoretically sound
 
   ## predict bias introduced by bootstrapping (based on the difference between the two levels):
   mean_slopes_level1 <- mean(slopes_obj_aggregated$slopes_level1)
@@ -218,7 +220,7 @@ goodness_of_fit <- function(slopes_obj) {
   slope_observed <- unique(slopes_obj_aggregated$slope_observed)
   slope_observed_unbiased <- slope_observed - bootstrap_bias
 
-  ## compute p-value (unilateral)
+  ## compute p-value (unilateral -> following the idea of the flower plot: we aim at predicting a negative slope, so scenario producing large positive plots should be rejected)
   pv_gof <- (1 + sum(residuals_slopes_level1 < slope_observed_unbiased)) / (1 + nrow(slopes_obj_aggregated))
 
   ## raw computation of p-value based on single bootstrap only (for comparison):
