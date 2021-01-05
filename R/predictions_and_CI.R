@@ -269,11 +269,11 @@ compute_predictions <- function(fit, newdata, random = TRUE, nb_boot = 1000L, se
     rec <- numeric(nrow(newdata))
 
     draw_progress <- nb_boot == 0L && nrow(newdata) > 10L
-    if (draw_progress) pb <- progress::progress_bar$new(total = nrow(newdata)) ## add progress bar if big job
+    if (draw_progress) pb <- utils::txtProgressBar(max = nrow(newdata), width = 100, style = 3) ## add progress bar if big job
 
     for (i in seq_len(nrow(newdata))) { ## note: apply() cannot be use as it would coerce types
       rec[i] <- compute_prediction(fit, newdata[i, , drop = FALSE])
-      if (draw_progress) pb$tick()
+      if (draw_progress) utils::setTxtProgressBar(pb, i)
     }
     rec
   }

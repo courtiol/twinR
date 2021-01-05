@@ -130,7 +130,7 @@ test_parallel_computation <- function(iter = 20L,
 
   lapply_fn <- switch(lapply_pkg,
                       parallel = function(...) parallel::mclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE),
-                      pbmcapply = function(...) pbmcapply::pbmclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE),
+                      pbmcapply = function(...) pbmcapply::pbmclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE, mc.style = "txt", mc.substyle = 3),
                       base = function(...) lapply(...)
                       )
 

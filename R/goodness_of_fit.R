@@ -138,7 +138,7 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
 
   lapply_fn <- switch(lapply_pkg,
                       parallel = function(...) parallel::mclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE),
-                      pbmcapply = function(...) pbmcapply::pbmclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE),
+                      pbmcapply = function(...) pbmcapply::pbmclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE, mc.style = "txt", mc.substyle = 3),
                       base = function(...) lapply(...)
                       )
 
