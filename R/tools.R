@@ -72,45 +72,75 @@ globalVariables("str_temp")
 #' We tried many implementation (using the R packages parallel, furrr, future.apply and foreach;
 #' combined with the backends doSnow, doParallel, or doFuture; using either multi-threading or
 #' multi-processing). At least on our linux system, the implementation used here simply using
-#' [`mclapply`][`parallel::mclapply`] outperformed all these alternatives. The function must run under
-#' a Unix based system and directly in a terminal (as opposed within R-GUI or RStudio) but it does
-#' combine the different features:
+#' [`mclapply`][`parallel::mclapply`] outperformed all these alternatives. Using this function
+#' introduces some restrictions: you must run it under a Unix based system and it is best to run it
+#' directly in a terminal (as opposed within R-GUI or RStudio). Yet, it does combine keys features
+#' suiting our purpose:
 #' - no time seems wasted doing heavy handed communication between tasks
-#' - the handling of the memory is best: objects that can be shared between tasks are indeed shared and when a job
-#' is done, the memory is immediately released
-#' - progress can be displayed (not in GUI)
+#' - the handling of the memory is best: objects that can be shared between tasks are indeed shared
+#' and when a job is done, the memory is immediately released
+#' - it does not require any additional package.
 #'
-#' And all of these nice features come without the need for any additional package!
+#' Yet, since it is a little difficult to display progress properly using
+#' [`mclapply`][`parallel::mclapply`], we used a small wrapper around it provided by
+#' [`pbmclapply`][`pbmcapply::pbmclapply`]. You can alternate between these two implementations by
+#' setting the argument `lapply_pkg` to either `"parallel"` or `"pbmcapply"`. To use the function
+#' sequentially you can also set the argument `lapply_pkg` to  `"base"`. This latter possibility
+#' will run fine under Windows, but won't perform parallel computing.
 #'
 #' @param iter the number of iteration to perform
 #' @param nb_cores the number of CPU core(s) to use
 #' @param list a list which length will be measured (optional)
-#' @param cost the cost for the time threshold (default = 1; increase to speed up test, decrease to lengthen it)
+#' @param cost the cost for the time threshold (default = 1; increase to speed up test, decrease to
+#'   lengthen it)
+#' @param lapply_pkg the R package used to implement a `lapply()` kind of function (default =
+#'   "pbmcapply"; see Details)
 #' @export
 #' @examples
-#' test_parallel_computation(iter = 4L, nb_cores = 2L)
+#' ## sequential version, for reference:
+#' test_parallel_computation(iter = 4L, nb_cores = 2L, lapply_pkg = "base")
+#'
+#' ## parallel version, using the R package parallel:
+#' test_parallel_computation(iter = 4L, nb_cores = 2L, lapply_pkg = "parallel")
+#'
+#' ## parallel version, using the R package pbmcapply (if available):
+#' ## same with progression bar if pkg pbmcapply installed:
+#' if (requireNamespace("pbmcapply", quietly = TRUE)){
+#'   test_parallel_computation(iter = 4L, nb_cores = 2L)
+#' }
 #'
 test_parallel_computation <- function(iter = 20L,
                                       nb_cores = 1L,
                                       list = NULL,
-                                      cost = 1) {
+                                      cost = 1,
+                                      lapply_pkg = "pbmcapply") {
 
   if (cost < 0) stop("the argument cost must be positive")
 
   ## start stopwatch for whole job:
   time_begin <- Sys.time()
 
-  job <- parallel::mclapply(seq_len(iter), function(it) {
+  ## selecting function for lapply:
+  if (nb_cores > 1L && lapply_pkg == "base") message("using the 'base' package does not allow for parallel computing; only 1 CPU core will be used.")
 
-    ## display progress:
-    cat("\r", "work in progress...  (iteration ", it, "/", iter, ")", sep = "")
-    utils::flush.console()
+  if (lapply_pkg == "pbmcapply" && !requireNamespace("pbmcapply", quietly = TRUE)) {
+    message("to run parallel computing using the package {pbmcapply} you need to install this package; since you did not {parallel} will be used instead.")
+    lapply_pkg <- "parallel"
+  }
+
+  lapply_fn <- switch(lapply_pkg,
+                      parallel = function(...) parallel::mclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE),
+                      pbmcapply = function(...) pbmcapply::pbmclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE),
+                      base = function(...) lapply(...)
+                      )
+
+  job <- lapply_fn(seq_len(iter), function(it) {
 
     ## start stopwatch for iteration:
     time_begin <- Sys.time()
 
     ## the job:
-    while(difftime(Sys.time(), time_begin, units ="secs") < it/cost){
+    while(difftime(Sys.time(), time_begin, units = "secs") < it/cost){
     }
 
     ## measuring the length of the large list:
@@ -123,13 +153,10 @@ test_parallel_computation <- function(iter = 20L,
     ## output of the iteration:
     c(threshold = it/cost, length_list = length_list, time_elapsed = time_elapsed)
 
-    }, mc.cores = nb_cores, mc.preschedule = FALSE)
+    })
 
    ## stop stopwatch:
    time_end <- Sys.time()
-
-   ## add newline in console:
-   cat("\n")
 
     ## combine outputs:
    output <- as.data.frame(do.call("rbind", job))

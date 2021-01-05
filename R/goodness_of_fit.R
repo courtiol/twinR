@@ -84,7 +84,8 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
 #' 4. the function then run a second series of simulation using the models fitted during step 3 by
 #' calling [`simulate_slopes`] `N_replicates_level2` times.
 #'
-#' For details on the implementation used for the parallel computing, see [`test_parallel_computation`]
+#' For details on the implementation used for the parallel computing and its settings, see
+#' [`test_parallel_computation`].
 #'
 #'
 #' @param N_replicates_level1  the number of simulation replicates to run at the first level (see
@@ -107,6 +108,7 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
                                     scenario,
                                     life_history_fits = NULL,
                                     nb_cores = 2L,
+                                    lapply_pkg = "pbmcapply",
                                     seed = 0L,
                                     timeout = Inf,
                                     verbose = list(fit = FALSE, simu = FALSE)) {
@@ -128,14 +130,29 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
   ## capture options of package spaMM:
   spaMM_options <- spaMM::spaMM.options()
 
+
+  ## selecting function for lapply:
+  if (nb_cores > 1L && lapply_pkg == "base") message("using the 'base' package does not allow for parallel computing; only 1 CPU core will be used.")
+
+  if (lapply_pkg == "pbmcapply" && !requireNamespace("pbmcapply", quietly = TRUE)) {
+    message("to run parallel computing using the package {pbmcapply} you need to install this package; since you did not {parallel} will be used instead.")
+    lapply_pkg <- "parallel"
+  }
+
+  lapply_fn <- switch(lapply_pkg,
+                      parallel = function(...) parallel::mclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE),
+                      pbmcapply = function(...) pbmcapply::pbmclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE),
+                      base = function(...) lapply(...)
+                      )
+
   ## run the job:
   if (interactive()) print("Perform the double bootstraping procedure...")
 
-  job <- parallel::mclapply(seq_len(N_replicates_level1), function(it) {
+  job <- lapply_fn(seq_len(N_replicates_level1), function(it) {
 
-    ## display progress:
-    cat("\r", "work in progress...  (iteration ", it, "/", N_replicates_level1, ")", sep = "")
-    utils::flush.console()
+    ## display progress: (results is not ordered so now automatically handled with pbmcapply if selected)
+    #cat("\r", "work in progress...  (iteration ", it, "/", N_replicates_level1, ")", sep = "")
+    #utils::flush.console()
 
     ## activate spaMM options in each child node:
     spaMM::spaMM.options(spaMM_options, warn = FALSE)
@@ -152,10 +169,7 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
     ## format the output as tibble:
     tibble::as_tibble(simu)
 
-    }, mc.cores = nb_cores, mc.preschedule = FALSE)
-
-   ## add newline in console:
-   cat("\n")
+    })
 
   ## combine all outputs into a single tibble:
   if (interactive()) print("Process the output...")

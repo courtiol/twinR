@@ -11,6 +11,7 @@ simulate_slopes_for_GOF(
   scenario,
   life_history_fits = NULL,
   nb_cores = 2L,
+  lapply_pkg = "pbmcapply",
   seed = 0L,
   timeout = Inf,
   verbose = list(fit = FALSE, simu = FALSE)
@@ -30,6 +31,9 @@ simulate_slopes_for_GOF(
 \item{life_history_fits}{a named list containing the fits of each three life history models}
 
 \item{nb_cores}{the number of CPU core(s) to use}
+
+\item{lapply_pkg}{the R package used to implement a \code{lapply()} kind of function (default =
+"pbmcapply"; see Details)}
 
 \item{seed}{a seed for the random number generator that will be added to the seed for individual simulations; with the latters corresponding to \code{1:N_replicates_level1}}
 
@@ -61,7 +65,8 @@ set provided as an input using the argument \code{life_history_fits}) by calling
 calling \code{\link{simulate_slopes}} \code{N_replicates_level2} times.
 }
 
-For details on the implementation used for the parallel computing, see \code{\link{test_parallel_computation}}
+For details on the implementation used for the parallel computing and its settings, see
+\code{\link{test_parallel_computation}}.
 }
 \examples{
 #See ?twinR

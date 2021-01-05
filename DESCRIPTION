@@ -34,4 +34,5 @@ Suggests:
     doSNOW,
     digest,
     openxlsx,
+    pbmcapply,
     testthat
