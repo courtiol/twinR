@@ -458,7 +458,7 @@ simu_test2 <- run_simulation(birth_level_data = data_births_monthly.complete,
 ### computation sequentially instead of in parallel across multiple CPU cores, which should work
 ### fine at the cost of requiring probably weeks of running time.
 
-### We run the double bootstrap:
+### We run the double bootstrap (takes ca. 7 hours using 50 core CPUs at 2.9 GHz):
 
 slopes_under_AC <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
                                            N_replicates_level2 = 49L,
@@ -493,8 +493,8 @@ for (scenario in scenarios_to_do) {
   name_obj <- paste0("slopes_under_", scenario)
   assign(name_obj, value = slopes_under_scenario)
   save(name_obj, file = paste0("slopes_under_scenarios/", name_obj, ".rda"))
-  rm(list = name_obj) # remove the object behind the name!
-  rm(slopes_under_scenario, scenario, name_obj) # remove the object directly
+  rm(list = name_obj) # remove the object behind the placeholder!
+  rm(slopes_under_scenario, scenario, name_obj)
 }
 
 

@@ -457,7 +457,7 @@
 #' ### computation sequentially instead of in parallel across multiple CPU cores, which should work
 #' ### fine at the cost of requiring probably weeks of running time.
 #'
-#' ### We run the double bootstrap (takes ca. 7 hours using 50 CPUs at 2.9 GHz):
+#' ### We run the double bootstrap (takes ca. 7 hours using 50 core CPUs at 2.9 GHz):
 #'
 #' slopes_under_AC <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
 #'                                            N_replicates_level2 = 49L,
