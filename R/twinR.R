@@ -447,7 +447,7 @@
 #' #---------------------------------- Goodness of fit ---------------------------------------------
 #' #------------------------------------------------------------------------------------------------
 #'
-#' ## Generate data to test scenario AC:
+#' ## Generate data to test scenario AC (example):
 #'
 #' ### IMPORTANT: while all the steps above should work no matter the operating system and whether
 #' ### you are using R within a GUI (e.g. RStudio) or not, the following step is very
@@ -457,16 +457,44 @@
 #' ### computation sequentially instead of in parallel across multiple CPU cores, which should work
 #' ### fine at the cost of requiring probably weeks of running time.
 #'
-#' ### We run the double bootstrap:
+#' ### We run the double bootstrap (takes ca. 7 hours using 50 CPUs at 2.9 GHz):
+#'
 #' slopes_under_AC <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
 #'                                            N_replicates_level2 = 49L,
 #'                                            birth_level_data = data_births_monthly,
 #'                                            scenario = "AC",
-#'                                            nb_cores = 50L,
+#'                                            nb_cores = nb_cores,
 #'                                            seed = 0L,
 #'                                            timeout = 5 * 60 * 60, # limit longest fit to 5 hours
 #'                                            life_history_fits = fits_AC_obs)
 #'
+#'
+#' ## Generate data to test all scenarios:
+#'
+#' scenarios_to_do <- c("base_model", "A", "B", "C", "D", "AB", "AC", "AD", "BC", "BD", "CD",
+#'                      "ABC", "ABD", "ACD", "BCD", "ABCD")
+#'
+#' dir.create("slopes_under_scenarios") # create a folder to store the simulated slopes
+#'
+#' ### Run scenarios one by one and save the output in a rda file:
+#'
+#' ### Note: contrary to the previous example, the first fit of the life history models is not
+#' ### provided here but done internally, which avoids us to store all these large objects in the
+#' ### package.
+#'
+#' for (scenario in scenarios_to_do) {
+#'   slopes_under_scenario <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
+#'                                                    N_replicates_level2 = 49L,
+#'                                                    birth_level_data = data_births_monthly,
+#'                                                    scenario = scenario,
+#'                                                    nb_cores = nb_cores,
+#'                                                    timeout = 5 * 60 * 60)
+#'   name_obj <- paste0("slopes_under_", scenario)
+#'   assign(name_obj, value = slopes_under_scenario)
+#'   save(name_obj, file = paste0("slopes_under_scenarios/", name_obj, ".rda"))
+#'   rm(list = name_obj) # remove the object behind the placeholder!
+#'   rm(slopes_under_scenario, scenario, name_obj)
+#' }
 #'
 #'
 #' }
