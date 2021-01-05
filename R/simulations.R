@@ -156,31 +156,37 @@ life_histories <- R6::R6Class(
          if (self$iteration > 1) self$data_iteration$parity <- self$data_iteration$parity + 1
 
          ## simulate the twinning status of the current parity:
-         twin <- spaMM::simulate.HLfit(self$fit_twinning.binary,
-                                       nsim = 1L,
-                                       newdata = self$data_iteration,
-                                       type = "residual",
-                                       verbose = self$verbose$simu)
+         sink_messages <- utils::capture.output( # prevents messages from spaMM
+           twin <- spaMM::simulate.HLfit(self$fit_twinning.binary,
+                                         nsim = 1L,
+                                         newdata = self$data_iteration,
+                                         type = "residual",
+                                         verbose = self$verbose$simu),
+           type = "message")
 
          ## update the current twinning status:
          self$data_iteration$twin <- as.logical(twin)
 
          ## simulate the parity progression between current and next parity:
-         PP <- spaMM::simulate.HLfit(self$fit_PP,
-                                     nsim = 1L,
-                                     newdata = self$data_iteration,
-                                     type = "residual",
-                                     verbose = self$verbose$simu)
+         sink_messages <- utils::capture.output( # prevents messages from spaMM
+           PP <- spaMM::simulate.HLfit(self$fit_PP,
+                                       nsim = 1L,
+                                       newdata = self$data_iteration,
+                                       type = "residual",
+                                       verbose = self$verbose$simu),
+         type = "message")
 
          ## update the parity progression:
          self$data_iteration$PP <- as.logical(PP)
 
          ## simulate the IBI between current and next parity:
-         IBI_minus6 <- spaMM::simulate.HLfit(self$fit_IBI,
-                                             nsim = 1L,
-                                             newdata = self$data_iteration,
-                                             type = "residual",
-                                             verbose = self$verbose$simu)
+         sink_messages <- utils::capture.output( # prevents messages from spaMM
+           IBI_minus6 <- spaMM::simulate.HLfit(self$fit_IBI,
+                                               nsim = 1L,
+                                               newdata = self$data_iteration,
+                                               type = "residual",
+                                               verbose = self$verbose$simu),
+         type = "message")
 
          ## Since fit_IBI predicts the IBI from 6 months after the onset of pregnancy, we need to add
          ## back the missing 6 months here. We also add 0.5 to be sure that as.integer()
