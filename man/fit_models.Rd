@@ -2,7 +2,6 @@
 % Please edit documentation in R/models.R
 \name{fit_models}
 \alias{fit_models}
-\alias{fit_model_safely}
 \alias{fit_totalbirths}
 \alias{fit_twinner.allbirths}
 \alias{fit_twinner.firstbirth}
@@ -13,10 +12,9 @@
 \alias{fit_twinning.binary}
 \alias{fit_life_histories}
 \alias{compute_slope_from_birth.level.data}
+\alias{fit_model_safely}
 \title{Fit the models}
 \usage{
-fit_model_safely(timeout, .args)
-
 fit_totalbirths(
   mother_level_data,
   when_twinner = "allbirths",
@@ -36,70 +34,105 @@ fit_PP(
   birth_level_data,
   poly_order = NA,
   twin_as.predictor = TRUE,
+  max_order = 6L,
   timeout = Inf,
-  verbose = TRUE
+  verbose = TRUE,
+  .simpler_fit = NULL
 )
 
 fit_IBI(
   birth_level_data,
   poly_order = NA,
   twin_as.predictor = TRUE,
+  max_order = 6L,
   timeout = Inf,
-  verbose = TRUE
+  verbose = TRUE,
+  .simpler_fit = NULL
 )
 
 fit_twinning.binary(
   birth_level_data,
   poly_order = NA,
   maternal_ID_as.predictor = TRUE,
+  max_order = 6L,
+  timeout = Inf,
+  verbose = TRUE,
+  .simpler_fit = NULL
+)
+
+fit_life_histories(
+  scenario,
+  birth_level_data,
+  max_order = 6L,
   timeout = Inf,
   verbose = TRUE
 )
-
-fit_life_histories(scenario, birth_level_data, timeout = Inf, verbose = TRUE)
 
 compute_slope_from_birth.level.data(
   birth_level_data,
   timeout = Inf,
   verbose = TRUE
 )
+
+fit_model_safely(timeout, .args)
 }
 \arguments{
-\item{timeout}{the maximal duration (in seconds) allowed for the fitting procedure (default = Inf)}
-
-\item{.args}{an internal list used to pass the argument to the function \code{\link[spaMM:fitme]{fitme}}}
-
 \item{mother_level_data}{a \code{tibble} or \code{data.frame} with mother level data}
 
 \item{when_twinner}{a string of characters indicating if the twinning status is based on all births ('allbirths') or just on the first one ('firstbirth')}
+
+\item{timeout}{the maximal duration (in seconds) allowed for the fitting procedure (default =
+Inf)}
 
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
 
 \item{birth_level_data}{a \code{tibble} or \code{data.frame} with birth level data (expanded or not)}
 
-\item{poly_order}{an integer value defining the polynomial order when considering the effect of age and parity (default = \code{NA}, find best value between 0 and 6)}
+\item{poly_order}{an integer value defining the polynomial order when considering the effect of
+age and parity (default = \code{NA}, find best value between 0 and \code{max_order})}
 
-\item{twin_as.predictor}{whether to include the variable \code{twin} as a predictor or not in some models (default = \code{TRUE})}
+\item{twin_as.predictor}{whether to include the variable \code{twin} as a predictor or not in some
+models (default = \code{TRUE})}
 
-\item{maternal_ID_as.predictor}{whether to include the variable \code{maternal_ID} as a random effect predictor or not in some models (default = \code{TRUE})}
+\item{max_order}{if \code{poly_order = NA}, the argument defines the maximum polynomial order to try
+(default = 6L)}
 
-\item{scenario}{the scenario defining which models to be fitted: e.g. "ABCD", "AC"... (see paper for explanations)}
+\item{.simpler_fit}{a simpler fit from which to extract fitted parameter values to use as initial
+parameter values in more complex fit (optional)}
+
+\item{maternal_ID_as.predictor}{whether to include the variable \code{maternal_ID} as a random effect
+predictor or not in some models (default = \code{TRUE})}
+
+\item{scenario}{the scenario defining which models to be fitted: e.g. "ABCD", "AC"... (see paper
+for explanations)}
+
+\item{.args}{an internal list used to pass the argument to the function \code{\link[spaMM:fitme]{fitme}}}
 }
 \value{
 the fitted model
 }
 \description{
-These functions fit the models used in the paper.
-They have been programmed to be used with our specific data structure.
-See \strong{Functions}, below, for details on each function.
+These functions fit the models used in the paper. They are all wrappers more or less simple
+ultimately calling the function \code{\link[spaMM:fitme]{fitme}} to fit the (G)LM(M)s we need. They have
+been programmed to be used with our specific data structure. The functions \code{fit_PP}, \code{fit_IBI}
+and \code{fit_twinning.binary} are those used to fit the three main life history traits. There are
+called repeatedly when simulating slopes of interests so to perform the goodness of fit (the most
+computationally demanding task of this project, see \code{\link{simulate_slopes_for_GOF}}). We programmed
+them specially so that the polynomial order of the term \code{ poly(cbind(age, parity), order)} can be
+automatically estimated if \code{poly_order} is set to \code{NA}. In such a case, models differing in their
+polynomial orders will be fitted, starting from an order of 0 till reaching the order defined by
+\code{max_order}, unless the \code{timeout} value is reached. When the later occurs, only the polynomial
+orders below the critical value are being compared to identify the best order. Otherwise, they
+are all compared and the model fits leading to the minimal marginal AIC values are retained. To
+speed up the estimation of parameters, the fitting of more complex models reuse the model fitted
+with the polynomial order just bellow. For example, when fitting a polynomial order of 3, the fit
+obtained for a polynomial order of 2 is used to initialized the parameter values to be estimated.
+}
+\details{
+See \strong{Functions}, below, for details on which model each function does fit.
 }
 \section{Functions}{
 \itemize{
-\item \code{fit_model_safely}: internal function calling the fitting function from spaMM
-
-This internal function allows for the handling of messages and timeout threshold.
-It is called by all the other fitting functions.
-
 \item \code{fit_totalbirths}: fit the model predicting the total number of births per mother from her twinning status
 
 \item \code{fit_twinner.allbirths}: fit the model predicting the twinning status of the mother at any birth during her life from her total number of births
@@ -120,12 +153,19 @@ It is called by all the other fitting functions.
 
 This function fits all three life history models according to the simulation scenario provided.
 The polynomial orders are estimated, which is why each of the three models has to be fitted seven
-times (order 0->6). It also returns the total time elapsed by the function.
+times under its default settings (order 0->6). It also returns the total time elapsed by the
+function.
 
 \item \code{compute_slope_from_birth.level.data}: compute the slope between the total number of births and the per-birth twinning probability from birth level data
 
-This function fits the model investigating the relationship between parity and twinning probability using \code{\link{fit_twinning.binomial}} and retrieve the slope of interest.
-For this, it aggregates the birth level data.
+This function fits the model investigating the relationship between parity and twinning
+probability using \code{\link{fit_twinning.binomial}} and retrieve the slope of interest. For this, it
+aggregates the birth level data.
+
+\item \code{fit_model_safely}: internal function calling the fitting function from spaMM
+
+This internal function allows for the handling of messages and timeout threshold.
+It is called by all the other fitting functions.
 }}
 
 \examples{

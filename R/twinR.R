@@ -449,31 +449,25 @@
 #'
 #' ## Generate data to test scenario AC:
 #'
-#' ### We start by information the system how to perform the parallel computation.
-#' ### This is done using the R package {future}, see ?future.plan for more information.
-#' ### Note: we use "multicore" here, which relies on forking -- a evaluation strategy allowing for
-#' ### saving memory during parallel computing. Unfortunately, this strategy only works in
-#' ### unix-based systems and it does not play well with graphical interfaces.
-#' ###
-#' ### If you use Windows, try using  the evaluation strategy called "multisession" instead.
-#' ###
-#' ### While we did everything else in RStudio, it is advised to run this parallel computation job
-#' ### directly in a terminal as using any graphic interface is generally known to interfere with
-#' ### parallel processing (after many trials leading to no results or crashes, we concluded the
-#' ### same).
-#' ###
-#' ### If you are very patient, you may used the evaluation strategy called "sequential" to prevent
-#' ### the computation from running in parallel which should work in RStudio and with any operating
-#' ### system.
-#'
-#' future::plan("multicore", workers = nb_cores)
+#' ### IMPORTANT: while all the steps above should work no matter the operating system and whether
+#' ### you are using R within a GUI (e.g. RStudio) or not, the following step is very
+#' ### computationally intensive and has been tailored to be used on a Unix system (e.g. Linux) and
+#' ### directly within a terminal. It may work in RStudio, but this is not guarantied, nor
+#' ### recommended. If you run this code using Windows, it should fallback to running the
+#' ### computation sequentially instead of in parallel across multiple CPU cores, which should work
+#' ### fine at the cost of requiring probably weeks of running time.
 #'
 #' ### We run the double bootstrap:
 #' slopes_under_AC <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
 #'                                            N_replicates_level2 = 49L,
 #'                                            birth_level_data = data_births_monthly,
 #'                                            scenario = "AC",
+#'                                            nb_cores = 50L,
+#'                                            seed = 0L,
+#'                                            timeout = 5 * 60 * 60, # limit longest fit to 5 hours
 #'                                            life_history_fits = fits_AC_obs)
+#'
+#'
 #'
 #' }
 #'

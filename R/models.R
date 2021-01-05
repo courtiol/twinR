@@ -1,52 +1,48 @@
 #' Fit the models
 #'
-#' These functions fit the models used in the paper.
-#' They have been programmed to be used with our specific data structure.
-#' See **Functions**, below, for details on each function.
+#' These functions fit the models used in the paper. They are all wrappers more or less simple
+#' ultimately calling the function [`fitme`][`spaMM::fitme`] to fit the (G)LM(M)s we need. They have
+#' been programmed to be used with our specific data structure. The functions `fit_PP`, `fit_IBI`
+#' and `fit_twinning.binary` are those used to fit the three main life history traits. There are
+#' called repeatedly when simulating slopes of interests so to perform the goodness of fit (the most
+#' computationally demanding task of this project, see [`simulate_slopes_for_GOF`]). We programmed
+#' them specially so that the polynomial order of the term ` poly(cbind(age, parity), order)` can be
+#' automatically estimated if `poly_order` is set to `NA`. In such a case, models differing in their
+#' polynomial orders will be fitted, starting from an order of 0 till reaching the order defined by
+#' `max_order`, unless the `timeout` value is reached. When the later occurs, only the polynomial
+#' orders below the critical value are being compared to identify the best order. Otherwise, they
+#' are all compared and the model fits leading to the minimal marginal AIC values are retained. To
+#' speed up the estimation of parameters, the fitting of more complex models reuse the model fitted
+#' with the polynomial order just bellow. For example, when fitting a polynomial order of 3, the fit
+#' obtained for a polynomial order of 2 is used to initialized the parameter values to be estimated.
+#'
+#' See **Functions**, below, for details on which model each function does fit.
 #'
 #' @name fit_models
 #' @param mother_level_data a `tibble` or `data.frame` with mother level data
 #' @param birth_level_data a `tibble` or `data.frame` with birth level data (expanded or not)
-#' @param poly_order an integer value defining the polynomial order when considering the effect of age and parity (default = `NA`, find best value between 0 and 6)
-#' @param twin_as.predictor whether to include the variable `twin` as a predictor or not in some models (default = `TRUE`)
-#' @param maternal_ID_as.predictor whether to include the variable `maternal_ID` as a random effect predictor or not in some models (default = `TRUE`)
-#' @param timeout the maximal duration (in seconds) allowed for the fitting procedure (default = Inf)
+#' @param poly_order an integer value defining the polynomial order when considering the effect of
+#'   age and parity (default = `NA`, find best value between 0 and `max_order`)
+#' @param twin_as.predictor whether to include the variable `twin` as a predictor or not in some
+#'   models (default = `TRUE`)
+#' @param maternal_ID_as.predictor whether to include the variable `maternal_ID` as a random effect
+#'   predictor or not in some models (default = `TRUE`)
+#' @param max_order if `poly_order = NA`, the argument defines the maximum polynomial order to try
+#'   (default = 6L)
+#' @param timeout the maximal duration (in seconds) allowed for the fitting procedure (default =
+#'   Inf)
 #' @param verbose whether to display the formula of the fit during the fitting procedure
-#' @param scenario the scenario defining which models to be fitted: e.g. "ABCD", "AC"... (see paper for explanations)
+#' @param scenario the scenario defining which models to be fitted: e.g. "ABCD", "AC"... (see paper
+#'   for explanations)
 #' @param .args an internal list used to pass the argument to the function [`fitme`][`spaMM::fitme`]
+#' @param .simpler_fit a simpler fit from which to extract fitted parameter values to use as initial
+#'   parameter values in more complex fit (optional)
 #'
 #' @return the fitted model
 #' @examples
 #' # See ?twinR
 #'
 NULL
-
-
-#' @describeIn fit_models internal function calling the fitting function from spaMM
-#'
-#' This internal function allows for the handling of messages and timeout threshold.
-#' It is called by all the other fitting functions.
-#'
-#' @export
-#'
-fit_model_safely <- function(timeout, .args) {
-  ## setting timeout:
-  setTimeLimit(elapsed = timeout, transient = TRUE)
-  on.exit(setTimeLimit(cpu = Inf, elapsed = Inf, transient = FALSE))
-
-  ## fit the model while capturing messages produced by spaMM to prevent various displays (e.g. about testing separation)
-  ## and displaying a message in case of fit failing:
-
-  fit <- NULL # initialize fit, in case not created due to abort
-
-  tryCatch(
-      utils::capture.output(fit <- do.call(spaMM::fitme, args = .args), type = "message"),
-      error = function(ex) {message("The fitting of model(s) has aborted. This is possibly because the fitting time has exceeded the threshold set with 'timeout'. It could also be because you are using the wrong data structure (missing predictor?).")
-                            return(NULL)})
-
-  fit
-}
-
 
 
 #' @describeIn fit_models fit the model predicting the total number of births per mother from her twinning status
@@ -135,28 +131,41 @@ fit_AFB <- function(mother_level_data, timeout = Inf, verbose = TRUE) {
 
 
 #' @describeIn fit_models fit the model predicting the probability of parity progression
+#'
 #' @export
 #'
-fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, timeout = Inf, verbose = TRUE) {
+fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, max_order = 6L, timeout = Inf, verbose = TRUE, .simpler_fit = NULL) {
 
   ## if poly_order is NA, the order will be estimated as the one leading to best fit between 0 and 6:
   if (is.na(poly_order)) {
 
-    possible_orders <- 0L:6L
     if (verbose) print("The polynomial order for the model has not been set and will thus been estimated through the refitting of the same models for different polynomial orders (be patient...)")
 
-    ## we recall the function trying all polynomial orders between 0 and 6:
-    all_fits <- lapply(possible_orders, function(order) {
-      fit_PP(birth_level_data = birth_level_data,
-             poly_order = order,
-             twin_as.predictor = twin_as.predictor,
-             timeout = timeout,
-             verbose = verbose)
-    })
+    all_fits <- list()
+    ## we fit the most simple model:
+    all_fits[[1]] <- fit_PP(birth_level_data = birth_level_data,
+                            poly_order = 0,
+                            twin_as.predictor = twin_as.predictor,
+                            timeout = Inf, ## not timeout here since we need at least this fit!
+                            verbose = verbose,
+                            .simpler_fit = NULL)
 
-    ## we extract the marginal AIC for all fits after trimming discarding fits out:
-    all_fits <- Filter(Negate(is.null), all_fits)
-    if (length(all_fits) == 0L) stop("All fit have been aborted, cannot estimate best order.")
+    ## loop on orders greater than 0:
+    for (order in seq_len(max_order)) {
+
+      ## skip more complex models if previous order has time out:
+      if (length(all_fits) < order) break()
+
+      ## we recall the function trying all remaining polynomial orders:
+      all_fits[[1 + order]] <- fit_PP(birth_level_data = birth_level_data,
+                                      poly_order = order,
+                                      twin_as.predictor = twin_as.predictor,
+                                      timeout = timeout,
+                                      verbose = verbose,
+                                      .simpler_fit =  all_fits[[order]])
+    }
+
+    ## we extract the marginal AIC for all fits:
     all_AICs <- lapply(all_fits, function(fit) spaMM::AIC.HLfit(fit, also_cAIC = FALSE, verbose = FALSE)[1])
 
     ## we identify the best fit and return the corresponding model:
@@ -180,6 +189,13 @@ fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, 
     formula <- paste0("PP ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)")
   }
 
+  ## extract initial parameter values if simpler fit provided:
+  inits <- NULL
+    if (!is.null(.simpler_fit)) {
+      inits <- spaMM::get_inits_from_fit(.simpler_fit)
+    }
+
+  ## prepare the model formula:
   if (twin_as.predictor) formula <- paste(formula, " + twin")
 
   if (verbose) {
@@ -190,7 +206,7 @@ fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, 
     }
   }
 
-  args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
+  args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = stats::binomial(link = "logit"), method = "PQL/L", init = inits$init)
 
   ## fit the model:
   fit_model_safely(timeout = timeout, .args = args)
@@ -200,27 +216,39 @@ fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, 
 #' @describeIn fit_models fit the model predicting the duration of the interbirth interval (minus 6 months)
 #' @export
 #'
-fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, timeout = Inf, verbose = TRUE) {
+fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE,  max_order = 6L, timeout = Inf, verbose = TRUE, .simpler_fit = NULL) {
 
 
   ## if poly_order is NA, the order will be estimated as the one leading to best fit between 0 and 6:
   if (is.na(poly_order)) {
 
-    possible_orders <- 0L:6L
     if (verbose) print("The polynomial order for the model has not been set and will thus been estimated through the refitting of the same models for different polynomial orders (be patient...)")
 
-    ## we recall the function trying all polynomial orders between 0 and 6:
-    all_fits <- lapply(possible_orders, function(order) {
-      fit_IBI(birth_level_data = birth_level_data,
-              poly_order = order,
-              twin_as.predictor = twin_as.predictor,
-              timeout = timeout,
-              verbose = verbose)
-    })
+    all_fits <- list()
+    ## we fit the most simple model:
+    all_fits[[1]] <- fit_IBI(birth_level_data = birth_level_data,
+                             poly_order = 0,
+                             twin_as.predictor = twin_as.predictor,
+                             timeout = Inf, ## not timeout here since we need at least this fit!
+                             verbose = verbose,
+                             .simpler_fit = NULL)
 
-    ## we extract the marginal AIC for all fits after trimming discarding fits out:
-    all_fits <- Filter(Negate(is.null), all_fits)
-    if (length(all_fits) == 0L) stop("All fit have been aborted, cannot estimate best order.")
+    ## loop on orders greater than 0:
+    for (order in seq_len(max_order)) {
+
+      ## skip more complex models if previous order has time out:
+      if (length(all_fits) < order) break()
+
+      ## we recall the function trying all remaining polynomial orders:
+      all_fits[[1 + order]] <- fit_IBI(birth_level_data = birth_level_data,
+                                       poly_order = order,
+                                       twin_as.predictor = twin_as.predictor,
+                                       timeout = timeout,
+                                       verbose = verbose,
+                                       .simpler_fit =  all_fits[[order]])
+    }
+
+    ## we extract the marginal AIC for all fits:
     all_AICs <- lapply(all_fits, function(fit) spaMM::AIC.HLfit(fit, also_cAIC = FALSE, verbose = FALSE)[1])
 
     ## we identify the best fit and return the corresponding model:
@@ -244,8 +272,14 @@ fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE,
     formula <- paste0("IBI ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|maternal_id) + (1|pop)")
   }
 
-  if (twin_as.predictor) formula <- paste(formula, " + twin")
+  ## extract initial parameter values if simpler fit provided:
+  inits <- NULL
+    if (!is.null(.simpler_fit)) {
+      inits <- spaMM::get_inits_from_fit(.simpler_fit)
+    }
 
+  ## prepare the model formula:
+  if (twin_as.predictor) formula <- paste(formula, " + twin")
 
   if (verbose) {
     if (poly_order > 1L) {
@@ -263,7 +297,7 @@ fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE,
   ## the correct way to remove 6 months is to actually remove a little less:
   birth_level_data$IBI <- as.integer(birth_level_data$IBI - 5.5)
 
-  args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = spaMM::negbin(link = "log"), method = "PQL/L")
+  args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = spaMM::negbin(link = "log"), method = "PQL/L", init = inits$init)
 
   ## fit the model:
   fit_model_safely(timeout = timeout, .args = args)
@@ -273,26 +307,38 @@ fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE,
 #' @describeIn fit_models fit the model predicting the probability of twinning for a given birth event
 #' @export
 #'
-fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_as.predictor = TRUE, timeout = Inf, verbose = TRUE) {
+fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_as.predictor = TRUE, max_order = 6L, timeout = Inf, verbose = TRUE, .simpler_fit = NULL) {
 
   ## if poly_order is NA, the order will be estimated as the one leading to best fit between 0 and 6:
   if (is.na(poly_order)) {
 
-    possible_orders <- 0L:6L
     if (verbose) print("The polynomial order for the model has not been set and will thus been estimated through the refitting of the same models for different polynomial orders (be patient...)")
 
-    ## we recall the function trying all polynomial orders between 0 and 6:
-    all_fits <- lapply(possible_orders, function(order) {
-      fit_twinning.binary(birth_level_data = birth_level_data,
-                          poly_order = order,
-                          maternal_ID_as.predictor = maternal_ID_as.predictor,
-                          timeout = timeout,
-                          verbose = verbose)
-    })
+    all_fits <- list()
+    ## we fit the most simple model:
+    all_fits[[1]] <- fit_twinning.binary(birth_level_data = birth_level_data,
+                                         poly_order = 0,
+                                         maternal_ID_as.predictor = maternal_ID_as.predictor,
+                                         timeout = Inf, ## not timeout here since we need at least this fit!
+                                         verbose = verbose,
+                                         .simpler_fit = NULL)
 
-    ## we extract the marginal AIC for all fits after trimming discarding fits out:
-    all_fits <- Filter(Negate(is.null), all_fits)
-    if (length(all_fits) == 0L) stop("All fit have been aborted, cannot estimate best order.")
+    ## loop on orders greater than 0:
+    for (order in seq_len(max_order)) {
+
+      ## skip more complex models if previous order has time out:
+      if (length(all_fits) < order) break()
+
+      ## we recall the function trying all remaining polynomial orders:
+      all_fits[[1 + order]] <- fit_twinning.binary(birth_level_data = birth_level_data,
+                                                   poly_order = order,
+                                                   maternal_ID_as.predictor = maternal_ID_as.predictor,
+                                                   timeout = timeout,
+                                                   verbose = verbose,
+                                                   .simpler_fit =  all_fits[[order]])
+    }
+
+    ## we extract the marginal AIC for all fits:
     all_AICs <- lapply(all_fits, function(fit) spaMM::AIC.HLfit(fit, also_cAIC = FALSE, verbose = FALSE)[1])
 
     ## we identify the best fit and return the corresponding model:
@@ -310,6 +356,13 @@ fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_a
     warning("the data contains missing values for parity, so such rows have not been fitted")
   }
 
+  ## extract initial parameter values if simpler fit provided:
+  inits <- NULL
+    if (!is.null(.simpler_fit)) {
+      inits <- spaMM::get_inits_from_fit(.simpler_fit)
+    }
+
+  ## prepare the model formula:
   if (poly_order == 0) {
     formula <- "twin ~ 1 + (1|pop)"
   } else {
@@ -326,7 +379,7 @@ fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_a
     }
   }
 
-  args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
+  args <- list(formula = stats::as.formula(formula), data = birth_level_data, family = stats::binomial(link = "logit"), method = "PQL/L", init = inits$init)
 
   ## fit the model:
   fit_model_safely(timeout = timeout, .args = args)
@@ -337,11 +390,12 @@ fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_a
 #'
 #' This function fits all three life history models according to the simulation scenario provided.
 #' The polynomial orders are estimated, which is why each of the three models has to be fitted seven
-#' times (order 0->6). It also returns the total time elapsed by the function.
+#' times under its default settings (order 0->6). It also returns the total time elapsed by the
+#' function.
 #'
 #' @export
 #'
-fit_life_histories <- function(scenario, birth_level_data, timeout = Inf, verbose = TRUE) {
+fit_life_histories <- function(scenario, birth_level_data, max_order = 6L, timeout = Inf, verbose = TRUE) {
 
   ## expand the data:
   birth_level_data <- expand_data(birth_level_data)
@@ -350,13 +404,13 @@ fit_life_histories <- function(scenario, birth_level_data, timeout = Inf, verbos
   time_begin <- Sys.time()
 
   ## fit parity progression with or without twin as predictor:
-  fit_PP <- fit_PP(birth_level_data = birth_level_data, poly_order = NA, twin_as.predictor = grepl("A", scenario), timeout = timeout, verbose = verbose)
+  fit_PP <- fit_PP(birth_level_data = birth_level_data, poly_order = NA, twin_as.predictor = grepl("A", scenario), max_order = max_order, timeout = timeout, verbose = verbose)
 
   ## fit IBI with or without twin as predictor:
-  fit_IBI <- fit_IBI(birth_level_data = birth_level_data, poly_order = NA, twin_as.predictor = grepl("B", scenario), timeout = timeout, verbose = verbose)
+  fit_IBI <- fit_IBI(birth_level_data = birth_level_data, poly_order = NA, twin_as.predictor = grepl("B", scenario), max_order = max_order, timeout = timeout, verbose = verbose)
 
   ## fit the probability of twinning for a given birth event with or without parity/age as fixed effects, and with and without maternal_id as random effect:
-  fit_twinning.binary <- fit_twinning.binary(birth_level_data = birth_level_data, poly_order = ifelse(grepl("C", scenario), NA, 0L), maternal_ID_as.predictor = grepl("D", scenario),  timeout = timeout, verbose = verbose)
+  fit_twinning.binary <- fit_twinning.binary(birth_level_data = birth_level_data, poly_order = ifelse(grepl("C", scenario), NA, 0L), maternal_ID_as.predictor = grepl("D", scenario), max_order = max_order,  timeout = timeout, verbose = verbose)
 
   ## stop stopwatch:
   time_end <- Sys.time()
@@ -374,8 +428,9 @@ fit_life_histories <- function(scenario, birth_level_data, timeout = Inf, verbos
 
 #' @describeIn fit_models compute the slope between the total number of births and the per-birth twinning probability from birth level data
 #'
-#' This function fits the model investigating the relationship between parity and twinning probability using [`fit_twinning.binomial`] and retrieve the slope of interest.
-#' For this, it aggregates the birth level data.
+#' This function fits the model investigating the relationship between parity and twinning
+#' probability using [`fit_twinning.binomial`] and retrieve the slope of interest. For this, it
+#' aggregates the birth level data.
 #'
 #' @export
 #'
@@ -392,4 +447,30 @@ compute_slope_from_birth.level.data = function(birth_level_data, timeout = Inf, 
 
   ## extract and return the slope:
   spaMM::fixef(fit_twinning.binomial)[["births_total"]]
+}
+
+
+#' @describeIn fit_models internal function calling the fitting function from spaMM
+#'
+#' This internal function allows for the handling of messages and timeout threshold.
+#' It is called by all the other fitting functions.
+#'
+#' @export
+#'
+fit_model_safely <- function(timeout, .args) {
+  ## setting timeout:
+  setTimeLimit(elapsed = timeout, transient = TRUE)
+  on.exit(setTimeLimit(cpu = Inf, elapsed = Inf, transient = FALSE))
+
+  ## fit the model while capturing messages produced by spaMM to prevent various displays (e.g. about testing separation)
+  ## and displaying a message in case of fit failing:
+
+  fit <- NULL # initialize fit, in case not created due to abort
+
+  tryCatch(
+      sink_messages <- utils::capture.output(fit <- do.call(spaMM::fitme, args = .args), type = "message"),
+      error = function(ex) {message("The fitting of model(s) has aborted. This is possibly because the fitting time has exceeded the threshold set with 'timeout'. It could also be because you are using the wrong data structure (missing predictor?).")
+                            return(NULL)})
+
+  fit
 }

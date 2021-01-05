@@ -17,7 +17,8 @@ simulate_slopes(
 \arguments{
 \item{birth_level_data}{a \code{tibble} or \code{data.frame} with birth level data (expanded or not)}
 
-\item{scenario}{the scenario defining which models to be fitted: e.g. "ABCD", "AC"... (see paper for explanations)}
+\item{scenario}{the scenario defining which models to be fitted: e.g. "ABCD", "AC"... (see paper
+for explanations)}
 
 \item{life_history_fits}{a named list containing the fits of each three life history models}
 
@@ -25,7 +26,8 @@ simulate_slopes(
 
 \item{N_replicates}{the number of simulation replicates to run}
 
-\item{timeout}{the maximal duration (in seconds) allowed for the fitting procedure (default = Inf)}
+\item{timeout}{the maximal duration (in seconds) allowed for the fitting procedure (default =
+Inf)}
 
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
 }

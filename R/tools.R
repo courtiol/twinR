@@ -124,7 +124,7 @@ test_parallel_computation <- function(iter = 20L,
   if (nb_cores > 1L && lapply_pkg == "base") message("using the 'base' package does not allow for parallel computing; only 1 CPU core will be used.")
 
   if (lapply_pkg == "pbmcapply" && !requireNamespace("pbmcapply", quietly = TRUE)) {
-    message("to run parallel computing using the package {pbmcapply} you need to install this package; since you did not {parallel} will be used instead.")
+    message("to run parallel computing using the package {pbmcapply} you need to install this package; since you did not, {parallel} will be used instead.")
     lapply_pkg <- "parallel"
   }
 

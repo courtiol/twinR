@@ -113,9 +113,6 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
                                     timeout = Inf,
                                     verbose = list(fit = FALSE, simu = FALSE)) {
 
-  ## display message:
-  if (interactive()) print("This function is very computationally demanding. It is not designed to be run on a usual laptop. If it requires more RAM than what is available on your system, it may crash your R session. In any case, be very patient...")
-
   ## fit the life history model on the observed data, if not provided:
   if (is.null(life_history_fits)) {
 
@@ -132,10 +129,10 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
 
 
   ## selecting function for lapply:
-  if (nb_cores > 1L && lapply_pkg == "base") message("using the 'base' package does not allow for parallel computing; only 1 CPU core will be used.")
+  if (nb_cores > 1L && lapply_pkg == "base") message("using the 'base' package does not allow for parallel computing; only 1 CPU core will be used and that means it will take a lot of time (perhaps weeks) to run till completion...")
 
   if (lapply_pkg == "pbmcapply" && !requireNamespace("pbmcapply", quietly = TRUE)) {
-    message("to run parallel computing using the package {pbmcapply} you need to install this package; since you did not {parallel} will be used instead.")
+    message("to run parallel computing using the package {pbmcapply} you need to install this package; since you did not, {parallel} will be used instead.")
     lapply_pkg <- "parallel"
   }
 
@@ -146,7 +143,7 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
                       )
 
   ## run the job:
-  if (interactive()) print("Perform the double bootstraping procedure...")
+  if (interactive()) print("Double bootstraping procedure in progress... Note: this step is computationally demanding and if it requires more RAM than what is available on your system, it will crash your R session.")
 
   job <- lapply_fn(seq_len(N_replicates_level1), function(it) {
 
