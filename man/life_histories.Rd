@@ -174,8 +174,9 @@ Filter the simulated dataset
 
 This function removes the mothers no longer reproducing, so they won't contribute to future
 iterations. Such mothers are those for which fit_PP predicts they won't go on reproducing.
-Additionally, we put a hard threshold at 100 years so that even under badly fitted models, the
-simulation will stop at some point.
+Additionally, we put a hard threshold at 100 years so that even under badly fitted models,
+the simulation will stop at some point. Some simulated mothers can still reach ages greater
+than 100, but no mother will reproduce passed 100.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{life_histories$filter_data_simulated()}\if{html}{\out{</div>}}
 }

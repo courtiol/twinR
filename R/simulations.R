@@ -192,14 +192,16 @@ life_histories <- R6::R6Class(
          ## back the missing 6 months here. We also add 0.5 to be sure that as.integer()
          ## does not round to the wrong number in case the value predicted
          ## by simulate.HLfit would be a real very close to the integer, but just epsilon underneath it.
-         ## Finally, we want to avoid Inf which may happen with badly fitted models (when models are
-         ## fitted on simulated data as opposed to when they are fitted on the real dataset), so in such
-         ## case we take the largest possible integer:
-         IBI <- as.integer(pmin(IBI_minus6 + 6.5, .Machine$integer.max))
+         ## Finally, we want to avoid Inf or other very large values which would make the fitting of
+         ## simulated data particularly difficult. Such large values may occur for badly fitted
+         ## models (when models are fitted on data simulated under an unrealistic scenario as
+         ## opposed to when they are fitted on the real dataset), so in such
+         ## case we take a very large value for the IBI set to 30 years or 360 months:
+         IBI <- as.integer(pmin(IBI_minus6 + 6.5, 360L))
 
          ## In case of badly fitted models, NA may also be produced by simulate.HLfit when numbers
          ## should be huge, so we also deal with this problem here:
-         IBI[is.na(IBI)] <- .Machine$integer.max
+         IBI[is.na(IBI)] <- 360L
 
          ## individuals that will not go on reproducing cannot have an IBI_next:
          IBI[!self$data_iteration$PP] <- NA_integer_
@@ -231,9 +233,9 @@ life_histories <- R6::R6Class(
       #'
       #' This function removes the mothers no longer reproducing, so they won't contribute to future
       #' iterations. Such mothers are those for which fit_PP predicts they won't go on reproducing.
-      #' Additionally, we put a hard threshold at 100 years so that even under badly fitted models, the
-      #' simulation will stop at some point.
-      #'
+      #' Additionally, we put a hard threshold at 100 years so that even under badly fitted models,
+      #' the simulation will stop at some point. Some simulated mothers can still reach ages greater
+      #' than 100, but no mother will reproduce passed 100.
       filter_data_simulated = function() {
 
          self$data_iteration %>%
