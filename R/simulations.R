@@ -57,7 +57,7 @@ life_histories <- R6::R6Class(
       verbose = list(),
 
       #'@field iteration the number of the current iteration of the simulation
-      iteration = 0,
+      iteration = 0L,
 
       #'@field data_iteration a `tibble` storing the information corresponding to one simulation iteration (generated automatically)
       data_iteration = tibble::tibble(),
@@ -69,10 +69,10 @@ life_histories <- R6::R6Class(
       birth_level_data.simulated = tibble::tibble(),
 
       #'@field fit_twinning.binomial the fitted model producing the main slope of interest (see [`fit_models`]) (generated automatically)
-      fit_twinning.binomial = NA,
+      fit_twinning.binomial = NA_real_,
 
       #'@field slope the main slope of interest quantifying effect of total_birth on the log odd of twinning (generated automatically)
-      slope = NA,
+      slope = NA_real_,
 
 
       ## Slots for the methods stored in the class ####################################################
@@ -126,7 +126,7 @@ life_histories <- R6::R6Class(
       build_initial_state = function() {
 
          self$birth_level_data %>%
-            dplyr::filter(.data$parity == 1) %>%
+            dplyr::filter(.data$parity == 1L) %>%
             dplyr::select(.data$parity, .data$age, .data$maternal_id, .data$pop) %>%
             dplyr::mutate(age_next = .data$age) -> self$data_iteration
          return(invisible(self))
@@ -147,13 +147,13 @@ life_histories <- R6::R6Class(
       simulate_one_iteration = function() {
 
          ## increment the iteration counter:
-         self$iteration <- self$iteration + 1
+         self$iteration <- self$iteration + 1L
 
          ## update the current age of the mothers by `age_next`, which is defined in the previous iteration:
-         if (self$iteration > 1) self$data_iteration$age <- self$data_iteration$age_next
+         if (self$iteration > 1L) self$data_iteration$age <- self$data_iteration$age_next
 
          ## update the current parity of the individuals:
-         if (self$iteration > 1) self$data_iteration$parity <- self$data_iteration$parity + 1
+         if (self$iteration > 1L) self$data_iteration$parity <- self$data_iteration$parity + 1L
 
          ## simulate the twinning status of the current parity:
          sink_messages <- utils::capture.output( # prevents messages from spaMM
@@ -208,7 +208,7 @@ life_histories <- R6::R6Class(
          self$data_iteration$IBI_next <- IBI
 
          ## update age at next parity from IBI_next:
-         self$data_iteration$age_next <- self$data_iteration$age + self$data_iteration$IBI_next/12 #note: the age of mothers is in years, but IBI is expressed in months
+         self$data_iteration$age_next <- self$data_iteration$age + self$data_iteration$IBI_next/12L #note: the age of mothers is in years, but IBI is expressed in months
          return(invisible(self))
       },
 
@@ -253,7 +253,7 @@ life_histories <- R6::R6Class(
       run = function() {
 
          ## prevent spaMM from displaying progression bars when predict.HLfit is called:
-         spaMM_options <- spaMM::spaMM.options(barstyle = 0)
+         spaMM_options <- spaMM::spaMM.options(barstyle = 0L)
 
          ## run the iterations:
          while (nrow(self$data_iteration) > 1L) {
@@ -286,7 +286,7 @@ life_histories <- R6::R6Class(
 
          ## extract info not simulated from the input data:
          self$birth_level_data %>%
-            dplyr::filter(.data$parity == 1) %>%
+            dplyr::filter(.data$parity == 1L) %>%
             dplyr::select(.data$maternal_id, .data$maternal_birthyear, .data$birth_year) -> original_data
 
          ## convert the simulated data into birth level data:
@@ -295,7 +295,7 @@ life_histories <- R6::R6Class(
                           monthly = TRUE) %>%
             dplyr::left_join(original_data, by = "maternal_id") %>%
             dplyr::group_by(.data$maternal_id) %>%
-            dplyr::mutate(birth_year = c(.data$birth_year[1], .data$birth_year[1] + (.data$maternal_age[-1] - .data$maternal_age[1])/12)) %>%
+            dplyr::mutate(birth_year = c(.data$birth_year[1], .data$birth_year[1] + (.data$maternal_age[-1] - .data$maternal_age[1])/12L)) %>%
             dplyr::ungroup() %>%
             dplyr::select(.data$pop, .data$maternal_id, .data$maternal_birthyear, .data$maternal_age, .data$birth_year, .data$twin, .data$monthly) -> self$birth_level_data.simulated
 
