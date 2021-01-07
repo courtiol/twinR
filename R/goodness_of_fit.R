@@ -9,6 +9,8 @@
 #' @inheritParams run_simulation
 #' @inheritParams fit_models
 #' @param N_replicates the number of simulation replicates to run
+#' @param .log a boolean indicating whether or not to write progress in a log file (for debugging purposes)
+#' @param .log_file the name of the log file (with extension)
 #' @seealso simulate_slopes_for_GOF
 #'
 #' @return a list containing the simulated slopes, the scenario, the input seed, and the time elapsed to do the job
@@ -18,12 +20,14 @@
 #'
 simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL, seed = 123L,
                             N_replicates = 49L,
-                            timeout = Inf, verbose = list(fit = FALSE, simu = FALSE)) {
+                            timeout = Inf, verbose = list(fit = FALSE, simu = FALSE),
+                            .log = FALSE, .log_file = "log.txt") {
 
   ## start stopwatch:
   time_begin <- Sys.time()
 
   ## run simulation based on models fitted on observed data:
+  if (.log) cat("start simulation level 1", scenario, seed, Sys.time(), "\n", sep = ";", file = .log_file, append = TRUE)
   simu_level1 <- run_simulation(birth_level_data = birth_level_data,
                                 scenario = scenario,
                                 life_history_fits = life_history_fits,
@@ -31,17 +35,23 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
                                 output = list(birth_level_data.simulated = TRUE, slope = TRUE, fits = FALSE),
                                 timeout = timeout,
                                 verbose = verbose)
+  if (.log) cat("end simulation level 1", scenario, seed, Sys.time(), "\n", sep = ";", file = .log_file, append = TRUE)
+
 
   ## remove first set of models to save memory:
   rm(life_history_fits)
 
   ## refit the life history models on the simulated data:
+  if (.log) cat("start fit life history (in simulate_slopes)", scenario, seed, Sys.time(), "\n", sep = ";", file = .log_file, append = TRUE)
   life_history_fits.simulated <- fit_life_histories(scenario = scenario,
                                                     birth_level_data = simu_level1$birth_level_data,
                                                     timeout = timeout,
                                                     verbose = verbose$fit)
+  if (.log) cat("end fit life history (in simulate_slopes)", scenario, seed, Sys.time(), "\n", sep = ";", file = .log_file, append = TRUE)
+
 
   ## run N_replicates simulations based on models fitted on simulated data and extract slopes:
+  if (.log) cat("start simulation level 2", scenario, seed, Sys.time(), "\n", sep = ";", file = .log_file, append = TRUE)
   slopes_level2 <- sapply(seq_len(N_replicates), function (i) {
     simu <- run_simulation(birth_level_data = simu_level1$birth_level_data,
                            scenario = scenario,
@@ -50,6 +60,7 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
                            output = list(birth_level_data.simulated = FALSE, slope = TRUE, fits = FALSE),
                            verbose = verbose)
     simu$slope})
+  if (.log) cat("end simulation level 2", scenario, seed, Sys.time(), "\n", sep = ";", file = .log_file, append = TRUE)
 
   ## remove second set of models to save memory:
   rm(life_history_fits.simulated)
@@ -111,7 +122,11 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
                                     lapply_pkg = "pbmcapply",
                                     seed = 0L,
                                     timeout = Inf,
-                                    verbose = list(fit = FALSE, simu = FALSE)) {
+                                    verbose = list(fit = FALSE, simu = FALSE),
+                                    .log = FALSE) {
+
+  ## define log file using time stamp (whether it will be used or not):
+  log_file <- paste0("log_", round(as.numeric(Sys.time())), ".txt")
 
   ## fit the life history model on the observed data, if not provided:
   if (is.null(life_history_fits)) {
@@ -161,7 +176,9 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
                             seed = seed + it,
                             N_replicates = N_replicates_level2,
                             timeout = timeout,
-                            verbose = verbose)
+                            verbose = verbose,
+                            .log = .log,
+                            .log_file = log_file)
 
     ## format the output as tibble:
     tibble::as_tibble(simu)

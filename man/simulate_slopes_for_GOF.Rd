@@ -14,7 +14,8 @@ simulate_slopes_for_GOF(
   lapply_pkg = "pbmcapply",
   seed = 0L,
   timeout = Inf,
-  verbose = list(fit = FALSE, simu = FALSE)
+  verbose = list(fit = FALSE, simu = FALSE),
+  .log = FALSE
 )
 }
 \arguments{
@@ -42,6 +43,8 @@ for explanations)}
 Inf)}
 
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
+
+\item{.log}{a boolean indicating whether or not to write progress in a log file (for debugging purposes)}
 }
 \value{
 a tibble containing all the results

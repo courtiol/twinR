@@ -11,7 +11,9 @@ simulate_slopes(
   seed = 123L,
   N_replicates = 49L,
   timeout = Inf,
-  verbose = list(fit = FALSE, simu = FALSE)
+  verbose = list(fit = FALSE, simu = FALSE),
+  .log = FALSE,
+  .log_file = "log.txt"
 )
 }
 \arguments{
@@ -30,6 +32,10 @@ for explanations)}
 Inf)}
 
 \item{verbose}{whether to display the formula of the fit during the fitting procedure}
+
+\item{.log}{a boolean indicating whether or not to write progress in a log file (for debugging purposes)}
+
+\item{.log_file}{the name of the log file (with extension)}
 }
 \value{
 a list containing the simulated slopes, the scenario, the input seed, and the time elapsed to do the job
