@@ -4,4 +4,5 @@
 .Ruserdata
 .DS_Store
 slopes_under_scenarios
-log.txt
+log_*
+script.R

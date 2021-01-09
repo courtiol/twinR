@@ -4,4 +4,6 @@
 ^fitted\_models$
 ^figures$
 ^slopes\_under\_scenarios$
-log.txt
+log_.*
+script.R
+^SI$
