@@ -2,25 +2,25 @@
 % Please edit documentation in R/goodness_of_fit.R
 \name{goodness_of_fit}
 \alias{goodness_of_fit}
-\title{Perform the goodness of fit test of a simulation scenario}
+\title{Perform the goodness of fit test of simulation scenario(s)}
 \usage{
 goodness_of_fit(slopes_obj)
 }
 \arguments{
-\item{slopes_obj}{an object returned by \code{\link{simulate_slopes_for_GOF}}}
+\item{slopes_obj}{an object returned by \code{\link{simulate_slopes_for_GOF}} or \code{\link{combine_simulated_slopes}}}
 }
 \value{
 a tibble with the information about the scenario and the computed p-values
 }
 \description{
-This functions perform the goodness of fit test on the data created by the function
-\code{\link{simulate_slopes_for_GOF}}. The justification and formal description of the test are given
-in the Appendix S1 of our Supplementary Material.
+This functions perform the goodness of fit test on the data created by the functions
+\code{\link{simulate_slopes_for_GOF}} or \code{\link{combine_simulated_slopes}}. The justification and formal
+description of the test are given in the Appendix S1 of our Supplementary Material.
 }
 \examples{
 # See ?twinR
 
 }
 \seealso{
-simulate_slopes_for_GOF
+simulate_slopes_for_GOF combine_simulated_slopes
 }

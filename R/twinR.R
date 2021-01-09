@@ -507,9 +507,15 @@
 #' }
 #'
 #'
-#' ## Combine simulated slopes and test scenarios:
+#' ## Combine simulated slopes:
 #'
 #' all_slopes <- combine_simulated_slopes()
+#'
+#'
+#' ## test scenarios (table S15):
+#'
+#' tableS15 <- goodness_of_fit(all_slopes)
+#' tableS15
 #'
 #' }
 #'

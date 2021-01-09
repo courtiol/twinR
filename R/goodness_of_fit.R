@@ -75,29 +75,6 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
 }
 
 
-#' Combine the simulated slopes across all scenarios
-#'
-#' @param path_slopes the path toward the folder where the objects containing the slopes have been
-#'   saved
-#'
-#' @return a tibble with all simulated slopes
-#' @export
-#'
-#' @examples
-#' #See ?twinR
-#'
-combine_simulated_slopes <- function(path_slopes = "slopes_under_scenarios") {
-  slopes_files <- list.files(path_slopes, full.names = TRUE)
-  if (length(slopes_files) == 0L) stop("folder seems missing or empty; please check the argument 'path_slopes'")
-  cat("combining outputs from files:\n")
-  for(file in slopes_files) {
-    cat("- ", file, "\n")
-    load(file)
-  }
-  do.call("rbind", lapply(ls(pattern = "slopes_under"), get))
-}
-
-
 
 #' Simulate slopes for the goodness of fit test
 #'
@@ -219,21 +196,54 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
 }
 
 
-#' Perform the goodness of fit test of a simulation scenario
+
+#' Combine the simulated slopes across all scenarios
 #'
-#' This functions perform the goodness of fit test on the data created by the function
-#' [`simulate_slopes_for_GOF`]. The justification and formal description of the test are given
-#' in the Appendix S1 of our Supplementary Material.
+#' @param path_slopes the path toward the folder where the objects containing the slopes have been
+#'   saved
 #'
-#' @param slopes_obj an object returned by [`simulate_slopes_for_GOF`]
+#' @return a tibble with all simulated slopes
+#' @export
+#'
+#' @examples
+#' #See ?twinR
+#'
+combine_simulated_slopes <- function(path_slopes = "slopes_under_scenarios") {
+  slopes_files <- list.files(path_slopes, full.names = TRUE)
+  if (length(slopes_files) == 0L) stop("folder seems missing or empty; please check the argument 'path_slopes'")
+  cat("combining outputs from files:\n")
+  for(file in slopes_files) {
+    cat("- ", file, "\n")
+    load(file)
+  }
+  do.call("rbind", lapply(ls(pattern = "slopes_under"), get))
+}
+
+
+#' Perform the goodness of fit test of simulation scenario(s)
+#'
+#' This functions perform the goodness of fit test on the data created by the functions
+#' [`simulate_slopes_for_GOF`] or [`combine_simulated_slopes`]. The justification and formal
+#' description of the test are given in the Appendix S1 of our Supplementary Material.
+#'
+#' @param slopes_obj an object returned by [`simulate_slopes_for_GOF`] or [`combine_simulated_slopes`]
 #'
 #' @return a tibble with the information about the scenario and the computed p-values
 #' @export
-#' @seealso simulate_slopes_for_GOF
+#' @seealso simulate_slopes_for_GOF combine_simulated_slopes
 #' @examples
 #' # See ?twinR
 #'
 goodness_of_fit <- function(slopes_obj) {
+
+  ## recursive call if the list contains multiple scenarios:
+  if (length(unique(slopes_obj$scenario)) > 1L) {
+    slopes_obj %>%
+      dplyr::group_split(.data$scenario) -> list_slopes_obj
+
+    all_gof <- lapply(list_slopes_obj, goodness_of_fit)
+    return(do.call("rbind", all_gof))
+  }
 
   ## we do not need the individual slopes for the 2nd level of bootstrapping but only their means,
   ## so we aggregate the data:
@@ -244,6 +254,7 @@ goodness_of_fit <- function(slopes_obj) {
       slopes_level1 = unique(.data$slopes_level1),
       mean_slopes_level2 = mean(.data$slopes_level2)) %>%
     dplyr::ungroup() -> slopes_obj_aggregated
+
 
   ## fit a model predicting slopes of first bootstrap based on the slopes at second bootstrap:
   fit <- stats::lm(slopes_level1 ~ mean_slopes_level2, data = slopes_obj_aggregated)
