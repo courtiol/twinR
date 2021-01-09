@@ -75,6 +75,29 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
 }
 
 
+#' Combine the simulated slopes across all scenarios
+#'
+#' @param path_slopes the path toward the folder where the objects containing the slopes have been
+#'   saved
+#'
+#' @return a tibble with all simulated slopes
+#' @export
+#'
+#' @examples
+#' #See ?twinR
+#'
+combine_simulated_slopes <- function(path_slopes = "slopes_under_scenarios") {
+  slopes_files <- list.files(path_slopes, full.names = TRUE)
+  if (length(slopes_files) == 0L) stop("folder seems missing or empty; please check the argument 'path_slopes'")
+  cat("combining outputs from files:\n")
+  for(file in slopes_files) {
+    cat("- ", file, "\n")
+    load(file)
+  }
+  do.call("rbind", lapply(ls(pattern = "slopes_under"), get))
+}
+
+
 
 #' Simulate slopes for the goodness of fit test
 #'

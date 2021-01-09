@@ -458,7 +458,7 @@ simu_test2 <- run_simulation(birth_level_data = data_births_monthly.complete,
 ### computation sequentially instead of in parallel across multiple CPU cores, which should work
 ### fine at the cost of requiring probably weeks of running time.
 
-### We run the double bootstrap (takes ca. 7 hours using 50 core CPUs at 2.9 GHz):
+### We run the double bootstrap (takes ca. 9 hours using 50 core CPUs at 2.9 GHz):
 
 slopes_under_AC <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
                                            N_replicates_level2 = 49L,
@@ -466,7 +466,7 @@ slopes_under_AC <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
                                            scenario = "AC",
                                            nb_cores = nb_cores,
                                            seed = 0L,
-                                           timeout = 5 * 60 * 60, # limit longest fit to 5 hours
+                                           timeout = 2 * 60 * 60, # limit longest fit to 2 hours
                                            life_history_fits = fits_AC_obs)
 
 
@@ -483,20 +483,34 @@ dir.create("slopes_under_scenarios") # create a folder to store the simulated sl
 ### provided here but done internally, which avoids us to store all these large objects in the
 ### package.
 
+#library(twinR)
+#nb_cores <- 50L
+#data_births_monthly <- filter_data(data_births_all)
+
+scenarios_to_do <- c("base_model", "A", "B", "C", "D", "AB", "AC", "AD", "BC", "BD", "CD",
+                     "ABC", "ABD", "ACD", "BCD", "ABCD")
+
+dir.create("slopes_under_scenarios")
+
 for (scenario in scenarios_to_do) {
   slopes_under_scenario <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
                                                    N_replicates_level2 = 49L,
                                                    birth_level_data = data_births_monthly,
                                                    scenario = scenario,
                                                    nb_cores = nb_cores,
-                                                   timeout = 5 * 60 * 60)
+                                                   timeout = 2 * 60 * 60,
+                                                   .log = TRUE)
   name_obj <- paste0("slopes_under_", scenario)
   assign(name_obj, value = slopes_under_scenario)
-  save(name_obj, file = paste0("slopes_under_scenarios/", name_obj, ".rda"))
-  rm(list = name_obj) # remove the object behind the placeholder!
-  rm(slopes_under_scenario, scenario, name_obj)
+  save(list = name_obj, file = paste0("slopes_under_scenarios/", name_obj, ".rda"))
+  rm(list = name_obj) # remove the object behind the name!
+  rm(slopes_under_scenario, scenario, name_obj) # remove the object directly
 }
 
+
+## Combine simulated slopes and test scenarios:
+
+all_slopes <- combine_simulated_slopes()
 
 }
 
