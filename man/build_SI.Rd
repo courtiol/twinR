@@ -23,7 +23,7 @@ build_SI(
 \description{
 This function compiles the SI. It relies on a template "SI.Rnw" located in the package folder
 \code{extdata}. For the compilation to work, you need to have created all the SI figures and tables,
-and you need your system to be properly setup for the creation of LaTeX-PDF using rmarkdown.
+and you need your system to be properly setup for the creation of LaTeX-PDF using knitr.
 }
 \examples{
 # See ?twinR

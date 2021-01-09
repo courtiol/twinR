@@ -2,7 +2,7 @@
 #'
 #' This function compiles the SI. It relies on a template "SI.Rnw" located in the package folder
 #' `extdata`. For the compilation to work, you need to have created all the SI figures and tables,
-#' and you need your system to be properly setup for the creation of LaTeX-PDF using rmarkdown.
+#' and you need your system to be properly setup for the creation of LaTeX-PDF using knitr.
 #'
 #' @param path_tables the computer path to the folder containing the pdfs of all SI tables
 #' @param path_figs the computer path to the folder containing the pdfs of all SI figures
@@ -35,6 +35,8 @@ build_SI <- function(path_tables = "tables", path_figs = "figures", path_SI = "S
   dir.create(path = path_SI, showWarnings = FALSE)
   path_SI <- normalizePath(path_SI, mustWork = TRUE)
   path_SI_file <- paste0(path_SI, "/SI.pdf")
+  path_tex_file <- paste0(path_SI, "/SI.tex")
+
 
   ## we check if the SI has already been created:
   if (file.exists(path_SI_file) && interactive() && !overwrite) {
@@ -70,14 +72,16 @@ build_SI <- function(path_tables = "tables", path_figs = "figures", path_SI = "S
   path_source_SI <- normalizePath(path_source_SI, mustWork = TRUE)
   path_source_SI_file <- paste0(path_source_SI, "/SI.Rnw")
 
-  ## check if {rmarkdown} is there because we don't have it in IMPORTS:
-  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
-    stop("you need to install the package 'rmarkdown' to use this function")
+  ## check if the knitr is installed because we don't have it in IMPORTS:
+  if (!requireNamespace("knitr", quietly = TRUE)) {
+    stop("you need to install the package 'knitr' to use this function")
   }
 
   ## actual job:
   message("the SI is being created (be patient)...")
-  vignette_path <- rmarkdown::render(path_source_SI_file, output_file = path_SI_file, quiet = FALSE)
+  system(paste0("mv ", path_source_SI, "/*.bst ", path_SI))
+  system(paste0("mv ", path_source_SI, "/*.bib ", path_SI))
+  vignette_path <- knitr::knit2pdf(input = path_source_SI_file, output = path_tex_file, quiet = FALSE)
   message("the SI should have been created and is stored at the following location:")
   message(vignette_path)
 

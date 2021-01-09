@@ -34,5 +34,5 @@ Suggests:
     digest,
     openxlsx,
     pbmcapply,
-    rmarkdown,
+    knitr,
     testthat
