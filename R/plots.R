@@ -536,6 +536,61 @@ draw_fig_3C <- function(data) {
 }
 
 
+#' @describeIn figures draw fig. 4
+#' @export
+#'
+draw_fig_4 <- function(data) {
+
+  ## reformat data to name and order scenarios properly:
+  data %>%
+    dplyr::mutate(scenario = ifelse(.data$scenario  == "base_model", "0", .data$scenario),
+                  scenario = factor(.data$scenario,
+                                    levels = c("ABCD", "ABC", "ABD", "ACD", "AB", "AC", "AD",
+                                               "A", "BCD", "BC", "BD", "B", "CD", "C", "D",
+                                               "0"))) -> data
+
+  ## extract gof info:
+  gof_data <- goodness_of_fit(data)
+
+  ## merge datasets and drop slopes level 2:
+  dplyr::full_join(data, gof_data, by = "scenario") %>%
+    dplyr::group_by(.data$scenario, .data$seed) %>%
+    dplyr::slice(1L) %>%
+    dplyr::select(-.data$slopes_level2) -> data_plot
+
+  ## flower plot (an idea from us!):
+  data_plot %>%
+    ggplot2::ggplot() +
+      ggplot2::aes(x = .data$scenario, y = .data$slopes_level1, fill = .data$pv_gof) +
+      ggplot2::coord_polar(start = pi/length(unique(data_plot$scenario))) +
+      ggplot2::geom_hline(yintercept = 0, colour = "grey", size = 0.5) +
+      ggplot2::geom_violin(size = 0.1, width = 0.075) + ## change width to change the width of the petals
+      ggplot2::geom_hline(yintercept = unique(data_plot$slope_observed),
+                          colour = "darkgreen", linetype = "dashed", size = 0.5) +
+      ggplot2::scale_fill_gradient2(low = "#0018ffff", high = "yellow",
+                                    midpoint = log(0.05, 10), limits  = c(min(c(0.005, data_plot$pv_gof)), 1), trans = "log10",
+                                    breaks = c(0.005, 0.05, 1),
+                                    guide = ggplot2::guide_colorbar(barwidth = ggplot2::unit(3.5, "cm"),
+                                                                    ticks.colour = "black",
+                                                                    title.vjust = 0.8)) +
+      ggplot2::labs(fill = "p-value") +
+      theme_twin() +
+      ggplot2::theme(panel.grid.minor.y = ggplot2::element_blank(),
+                     panel.grid.major.y = ggplot2::element_blank(),
+                     axis.title.y = ggplot2::element_blank(),
+                     axis.title.x = ggplot2::element_blank(),
+                     axis.text.y = ggplot2::element_blank(),
+                     axis.ticks.y = ggplot2::element_blank(),
+                     legend.position = "bottom",
+                     legend.text = ggplot2::element_text(size = 6),
+                     legend.title = ggplot2::element_text(size = 8),
+                     legend.title.align = 0.5,
+                     legend.margin = ggplot2::margin(c(0, 0, 0, 0)),
+                     legend.box.spacing	= ggplot2::unit(0, units = "cm"))
+
+
+}
+
 
 #' @describeIn figures draw fig. S1
 #' @export

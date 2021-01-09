@@ -10,6 +10,7 @@
 \alias{draw_fig_3A}
 \alias{draw_fig_3B}
 \alias{draw_fig_3C}
+\alias{draw_fig_4}
 \alias{draw_fig_S1}
 \alias{draw_fig_S2}
 \alias{draw_fig_S5}
@@ -30,6 +31,8 @@ draw_fig_3A(data)
 draw_fig_3B(data)
 
 draw_fig_3C(data)
+
+draw_fig_4(data)
 
 draw_fig_S1(data)
 
@@ -63,6 +66,8 @@ Functions producing the figures
 \item \code{draw_fig_3B}: draw fig. 3B
 
 \item \code{draw_fig_3C}: draw fig. 3C
+
+\item \code{draw_fig_4}: draw fig. 4
 
 \item \code{draw_fig_S1}: draw fig. S1
 

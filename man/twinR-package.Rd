@@ -513,6 +513,13 @@ for (scenario in scenarios_to_do) {
 all_slopes <- combine_simulated_slopes()
 
 
+## Figure 4:
+
+draw_fig_4(all_slopes)
+
+ggsave(file = "figures/fig4.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
+
+
 ## test scenarios (table S15):
 
 tableS15 <- goodness_of_fit(all_slopes)
