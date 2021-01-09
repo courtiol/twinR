@@ -209,14 +209,16 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
 #' #See ?twinR
 #'
 combine_simulated_slopes <- function(path_slopes = "slopes_under_scenarios") {
-  slopes_files <- list.files(path_slopes, full.names = TRUE)
+  slopes_files <- normalizePath(list.files(path_slopes, full.names = TRUE), mustWork = TRUE)
+  slopes_files <- slopes_files[grepl(pattern = "slopes_under", x = slopes_files)]
   if (length(slopes_files) == 0L) stop("folder seems missing or empty; please check the argument 'path_slopes'")
   cat("combining outputs from files:\n")
-  for(file in slopes_files) {
+  env_slopes <- new.env()
+  for (file in slopes_files) {
     cat("- ", file, "\n")
-    load(file)
+    load(file, envir = env_slopes)
   }
-  do.call("rbind", lapply(ls(pattern = "slopes_under"), get))
+  do.call("rbind", lapply(ls(envir = env_slopes), function (x) get(x, envir = env_slopes)))
 }
 
 
