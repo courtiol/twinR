@@ -524,6 +524,16 @@
 #' tableS15 <- goodness_of_fit(all_slopes)
 #' tableS15
 #'
+#'
+#' #------------------------------------------------------------------------------------------------
+#' #---------------------------------- Building the SI ---------------------------------------------
+#' #------------------------------------------------------------------------------------------------
+#'
+#' ## Here we generate the Supplementary Information material.
+#' ## This requires a full installation of the LaTeX system.
+#'
+#' build_SI()
+#'
 #' }
 #'
 NULL

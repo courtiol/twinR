@@ -525,6 +525,16 @@ ggsave(file = "figures/fig4.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "c
 tableS15 <- goodness_of_fit(all_slopes)
 tableS15
 
+
+#------------------------------------------------------------------------------------------------
+#---------------------------------- Building the SI ---------------------------------------------
+#------------------------------------------------------------------------------------------------
+
+## Here we generate the Supplementary Information material.
+## This requires a full installation of the LaTeX system.
+
+build_SI()
+
 }
 
 }
