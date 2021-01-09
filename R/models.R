@@ -469,7 +469,7 @@ fit_model_safely <- function(timeout, .args) {
 
   tryCatch(
       sink_messages <- utils::capture.output(fit <- do.call(spaMM::fitme, args = .args), type = "message"),
-      error = function(ex) {message("The fitting of model(s) has aborted. This is possibly because the fitting time has exceeded the threshold set with 'timeout'. It could also be because you are using the wrong data structure (missing predictor?).")
+      error = function(ex) {message("\n The fitting of model(s) has aborted. This is possibly because the fitting time has exceeded the threshold set with 'timeout'. It could also be because you are using the wrong data structure (missing predictor?).")
                             return(NULL)})
 
   fit
