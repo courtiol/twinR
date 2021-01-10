@@ -369,5 +369,8 @@ run_simulation <- function(birth_level_data, scenario = NULL, life_history_fits 
    ## compute time elapsed:
    list_output[["time_elapsed"]] <- as.numeric(time_end - time_begin, units = "secs")
 
+   ## add scenario info:
+   list_output[["scenario"]] <- scenario
+
    return(list_output)
 }

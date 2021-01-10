@@ -1,10 +1,8 @@
 #' Welcome to the R package twinR
 #'
 #' This package contains the code necessary to produce the results of the paper
-#' _"Twinners in pre-industrial Europe: more babies but fewer births"_.
-#'
-#' This document provides in its __Examples__ section the script producing all
-#' the results of the paper.
+#' _"Twinners in pre-industrial Europe: more babies but fewer births"_. See section __Examples__
+#' below.
 #'
 #' @name twinR-package
 #' @aliases twinR-package twinR
@@ -434,13 +432,28 @@
 #'
 #' ## Example of how to run one simulation using the wrapper:
 #'
-#' simu_test2 <- run_simulation(birth_level_data = data_births_monthly.complete,
-#'                              scenario = "AC",
-#'                              life_history_fits = fits_AC_obs,
-#'                              output = list(birth_level_data.simulated = TRUE,
-#'                                            slope = TRUE,
-#'                                            fits = FALSE))
+#' simu_AC <- run_simulation(birth_level_data = data_births_monthly.complete,
+#'                           scenario = "AC",
+#'                           life_history_fits = fits_AC_obs,
+#'                           output = list(birth_level_data.simulated = TRUE,
+#'                                         slope = TRUE,
+#'                                         fits = FALSE))
 #'
+#'
+#' ## Figure S6:
+#'
+#' data_fig_S6 <- prepare_data_fig_S6(simulation_obj = simu_AC,
+#'                                    birth_level_data = data_births_monthly.complete)
+#'
+#' fig_S6A <- draw_fig_S6A(data_fig_S6)
+#' fig_S6B <- draw_fig_S6B(data_fig_S6)
+#' fig_S6C <- draw_fig_S6C(data_fig_S6)
+#' fig_S6D <- draw_fig_S6D(data_fig_S6)
+#'
+#' plot_grid(fig_S6A, fig_S6B, fig_S6C, fig_S6D,
+#'           labels = "AUTO", label_size = 12, align = "v", axis = "l")
+#'
+#' ggsave(file = "figures/figS6.pdf", width = 13, height = 10, units = "cm", scale = 1.3)
 #'
 #'
 #' #------------------------------------------------------------------------------------------------
@@ -457,19 +470,7 @@
 #' ### computation sequentially instead of in parallel across multiple CPU cores, which should work
 #' ### fine at the cost of requiring probably weeks of running time.
 #'
-#' ### We run the double bootstrap (takes ca. 9 hours using 50 core CPUs at 2.9 GHz):
-#'
-#' slopes_under_AC <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
-#'                                            N_replicates_level2 = 49L,
-#'                                            birth_level_data = data_births_monthly,
-#'                                            scenario = "AC",
-#'                                            nb_cores = nb_cores,
-#'                                            seed = 0L,
-#'                                            timeout = 2 * 60 * 60, # limit longest fit to 2 hours
-#'                                            life_history_fits = fits_AC_obs)
-#'
-#'
-#' ## Generate data to test all scenarios:
+#' ## Generate data to test all scenarios (takes ca. 150 hours using 50 core CPUs at 2.9 GHz!!!):
 #'
 #' scenarios_to_do <- c("base_model", "A", "B", "C", "D", "AB", "AC", "AD", "BC", "BD", "CD",
 #'                      "ABC", "ABD", "ACD", "BCD", "ABCD")
@@ -523,6 +524,7 @@
 #'
 #' tableS15 <- goodness_of_fit(all_slopes)
 #' tableS15
+#'
 #'
 #'
 #' #------------------------------------------------------------------------------------------------

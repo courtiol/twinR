@@ -76,6 +76,7 @@ NULL
 #' @param fit_IBI a fitted model for predicting the interbirth interval
 #' @param fit_twin a fitted model for predicting the per-birth probability of twinning
 #' @param fit_AFB a fitted model for predicting the age at first birth
+#' @param simulation_obj an object produced by [`run_simulation`]
 #' @examples
 #' prepare_newdata_fig_3(expand_data(data_births_all), xaxis = "age")
 #' prepare_newdata_fig_3(expand_data(data_births_all), xaxis = "parity")
@@ -274,6 +275,24 @@ prepare_data_fig_S2 <- function(fit_PP, fit_IBI, fit_twin, mother_level_data) {
   dplyr::left_join(mother_level_data %>% dplyr::select(.data$maternal_id, .data$twin_total), ranefs_all, by = c(maternal_id = "name"))
 }
 
+
+#' @describeIn prepare_data_for_fig prepare the data to be plotted in Fig. S6
+#' @export
+#'
+prepare_data_fig_S6 <- function(simulation_obj, birth_level_data) {
+
+  expand_data(simulation_obj$birth_level_data.simulated) %>%
+    dplyr::select(.data$pop, .data$maternal_id, .data$parity, .data$twin, .data$IBI, .data$age)  %>%
+    dplyr::mutate(scenario = paste0("simulated (", simulation_obj$scenario, ")")) -> simulated
+
+  birth_level_data %>%
+    dplyr::select(.data$pop, .data$maternal_id, .data$parity, .data$twin, .data$IBI, .data$age) %>%
+    dplyr::mutate(scenario = "observed") -> observed
+
+  dplyr::bind_rows(simulated, observed) %>%
+    dplyr::mutate(age_round = round(.data$age, 0L))
+
+}
 
 
 #' Functions producing the figures
@@ -728,3 +747,114 @@ draw_fig_S5 <- function(data) {
     ggplot2::geom_line(data = data$data_fig_S5, ggplot2::aes(y = .data$lwr), linetype = "dotted", lwd = 1) +
     ggplot2::geom_line(data = data$data_fig_S5, ggplot2::aes(y = .data$upr), linetype = "dotted", lwd = 1)
 }
+
+
+#' @describeIn figures draw fig. S6A
+#' @export
+#'
+draw_fig_S6A <- function(data) {
+
+  data %>%
+    dplyr::group_by(.data$maternal_id, .data$scenario) %>%
+    dplyr::summarise(total_birth = max(.data$parity, na.rm = TRUE),
+                     twinner = factor(ifelse(any(.data$twin), "twinner", "non-twinner"),
+                                      levels = c("non-twinner", "twinner"))) %>%
+    dplyr::group_by(.data$total_birth, .data$scenario, .data$twinner) %>%
+    dplyr::count() -> data_sample_sizes
+
+  data_sample_sizes %>%
+    ggplot2::ggplot() +
+    ggplot2::aes(.data$total_birth, .data$n) +
+    ggplot2::geom_line(ggplot2::aes(col = .data$scenario, linetype = .data$twinner)) +
+    ggplot2::geom_point(ggplot2::aes(shape = .data$twinner)) +
+    ggplot2::scale_y_continuous("Number of observations", trans = "log",
+                                breaks = c(1, 10, 100, 1000, 10000),
+                                labels = c("1", "10", "100", "1000", "10000"),
+                                limits = c(1, 10000)) +
+    ggplot2::scale_color_discrete("Data") +
+    ggplot2::scale_shape_discrete("Lifetime twin. status", solid = FALSE) +
+    ggplot2::scale_linetype_discrete("Lifetime twin. status") +
+    ggplot2::scale_x_continuous("Maternal total births", breaks = c(1, 5, 10, 15, 18),
+                                labels = c("1", "5", "10", "15", "18")) +
+    theme_twin() +
+    ggplot2::guides(col = ggplot2::guide_legend(override.aes = list(shape = 15, size = 4)),
+                    linetype = ggplot2::guide_legend(ovveride.aes = list(size = 8)),
+                    shape = ggplot2::guide_legend(ovveride.aes = list(size = 8))) +
+    ggplot2::theme(
+      legend.position = c(.15, 0.01),
+      legend.justification = c("left", "bottom"),
+      legend.box.margin = ggplot2::margin(0, 0, 0, 0),
+      legend.margin = ggplot2::margin(0, 0, 0, 0),
+      legend.title = ggplot2::element_text(size = 6),
+      legend.text  = ggplot2::element_text(size = 6),
+      legend.background = ggplot2::element_blank(),
+      legend.spacing.y = ggplot2::unit(0.05, "cm"),
+      legend.key.size = ggplot2::unit(1, "lines"))
+
+}
+
+
+#' @describeIn figures draw fig. S6B
+#' @export
+#'
+draw_fig_S6B <- function(data) {
+
+  data %>%
+    dplyr::group_by(.data$maternal_id, .data$scenario) %>%
+    dplyr::summarise(twinner = any(.data$twin)) %>%
+    dplyr::group_by(.data$twinner, .data$scenario) %>%
+    dplyr::count() -> data_sample_sizes
+
+  data_sample_sizes %>%
+    ggplot2::ggplot() +
+    ggplot2::aes(.data$twinner, .data$n, fill = .data$scenario) +
+    ggplot2::geom_col(position = "dodge") +
+    ggplot2::scale_y_continuous("Number of observations", trans = "log",
+                                breaks = c(1, 10, 100, 1000, 10000)) +
+    ggplot2::scale_fill_discrete("Scenario", guide = ggplot2::guide_legend(title.vjust = 0.5, nrow = 2)) +
+    ggplot2::scale_x_discrete("Lifetime twin. status", breaks = c(0, 1),
+                              labels = c("Non-twinner", "Twinner")) +
+    theme_twin() +
+    ggplot2::theme(legend.position = "none")
+
+}
+
+
+#' @describeIn figures draw fig. S6C
+#' @export
+#'
+draw_fig_S6C <- function(data) {
+
+  data %>%
+    ggplot2::ggplot() +
+    ggplot2::aes(.data$age, col = .data$scenario) +
+    ggplot2::geom_line(stat = "density") +
+    ggplot2::scale_y_continuous("Density", breaks = c(0.00, 0.02, 0.04, 0.06),
+                                limits = c(0.00, 0.06)) +
+    ggplot2::scale_x_continuous("Maternal age at birth") +
+    theme_twin() +
+    ggplot2::theme(legend.position = "none")
+
+}
+
+
+#' @describeIn figures draw fig. S6D
+#' @export
+#'
+draw_fig_S6D <- function(data) {
+
+  data %>%
+    ggplot2::ggplot() +
+    ggplot2::aes(.data$twin, fill = .data$scenario) +
+    ggplot2::geom_bar(position = "dodge") +
+    ggplot2::scale_y_continuous("Number of observations", trans = "log",
+                                breaks = c(1, 10, 100, 1000, 10000, 100000),
+                                labels = c("1", "10", "100", "1000", "10000", "100000")) +
+    ggplot2::scale_fill_discrete("Scenario", guide = ggplot2::guide_legend(title.vjust = 0.5, nrow = 2)) +
+    ggplot2::scale_x_discrete("Birth outcome", breaks = c(0, 1),
+                              labels = c("Singleton", "Twin")) +
+    theme_twin() +
+    ggplot2::theme(legend.position = "none")
+
+}
+

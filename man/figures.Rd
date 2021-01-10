@@ -14,6 +14,10 @@
 \alias{draw_fig_S1}
 \alias{draw_fig_S2}
 \alias{draw_fig_S5}
+\alias{draw_fig_S6A}
+\alias{draw_fig_S6B}
+\alias{draw_fig_S6C}
+\alias{draw_fig_S6D}
 \title{Functions producing the figures}
 \usage{
 draw_fig_1A(data)
@@ -39,6 +43,14 @@ draw_fig_S1(data)
 draw_fig_S2(data)
 
 draw_fig_S5(data)
+
+draw_fig_S6A(data)
+
+draw_fig_S6B(data)
+
+draw_fig_S6C(data)
+
+draw_fig_S6D(data)
 }
 \arguments{
 \item{data}{a \code{data.frame} or a \code{list} containing the data to be plotted}
@@ -74,6 +86,14 @@ Functions producing the figures
 \item \code{draw_fig_S2}: draw fig. S2
 
 \item \code{draw_fig_S5}: draw fig. S5
+
+\item \code{draw_fig_S6A}: draw fig. S6A
+
+\item \code{draw_fig_S6B}: draw fig. S6B
+
+\item \code{draw_fig_S6C}: draw fig. S6C
+
+\item \code{draw_fig_S6D}: draw fig. S6D
 }}
 
 \examples{
