@@ -110,5 +110,55 @@ Despite the huge savings in computing brought by the control variate approach ov
 
 \section{Supplementary Figures \& Tables}
 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[height = 6cm]{../figures/figS1.pdf}
+\end{center}
+\caption{Relationship between lifetime twinning status, maternal total births and the age at first birth. The age at first birth was significantly higher for twinners with one ($\textrm{AFB}_\textrm{twinners}$ = 31.6 years; 95\% CI: 30.2, 33.0; $\textrm{AFB}_\textrm{non-twinners}$ = 29.3 years; 95\% CI 28.6, 30.0; delay for twinners = 27.5 months; 95\% CI: 12.1, 41.3) or two maternal total births ($\textrm{AFB}_\textrm{twinners}$ = 29.7 years; 95\% CI: 28.5, 31.0; $\textrm{AFB}_\textrm{non-twinners}$ = 28.2 years; 95\% CI: 27.5, 28.7; delay for twinners = 17.9 months; 95\% CI: 5.98, 29.4). Marginal predictions for the age at first reproduction are shown in black with open symbols. Their values are provided by the left y-axis. The distribution of maternal total births for both twinners and non-twinners is shown by the grey lines with filled symbols, with the numerical value given by the log-scaled y-axis on the right of the figure. Note that, here, the 95\% CIs are based on 1000 bootstrap replicates for maternal total births 1 \& 2, but only on 100 replicates for other total births. We did so to reduce the computational load of the analysis for cases which do not require much precision.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[height = 8cm]{../figures/figS2.pdf}
+\end{center}
+\caption{Relationships between the random effects for the three life history traits.
+Top row (A-C) shows the relationship between the random effect from the fit of model 7 (the full model predicting the parity progression) and 9 (the full model predicting the per-birth twinning probability). Bottom row (D-F) shows the relationship between the random effect from the fit of model 8 (the full model predicting the interbirth interval) and 9. Left column (A \& D) shows the relationship for mothers that did not produce any twins during their life. Middle column (B \& E) shows the relationship for mothers that produced twins once during their life. Right column (C \& F) shows the relationship for mothers that produced twins twice during their life. All axes are represented on the scale of the linear predictor of the corresponding models. Relationships for mothers that produced twins more than twice during their life are not displayed but follow similar patterns.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[height = 6cm]{../figures/figS3.png}
+\end{center}
+\caption{Hypothetical mechanisms tested by the simulation of alternative scenarios built around models predicting three life history events: parity progression (PP), interbirth interval (IBI) and twinning status of a given birth (T). The bubble on the left shows how the three life history models that were included in all simulation scenarios were modified to test each of the four hypothetical mechanisms (A, B, C, D; see section Results in main text for description). Each life history model describes the effect of predictors on a particular life history event. By default, each life history model includes an intercept and a random effect referring to the population. All models for PP and IBI also consider the effect of age/parity and maternal ID (see Materials and Methods). The bubble on the right shows the comprehensive set of combinations of the four mechanisms that were tested to produce simulation scenarios.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{../figures/figS4.pdf}
+\end{center}
+\caption{Representation of the four mechanisms (row 1) used as the basis for 16 simulation scenarios evaluated (all rows). Circles represent the three life history events we considered: parity progression (PP), probability of twinning (T) and interbirth interval (IBI). The rectangles represent the variables potentially shaping these life history events — maternal age and parity at a given birth (Age + Parity above; $\mathtt{poly(cbind(age, parity), best\_order)}$ in models) and whether the last birth was a twin birth or not (Twin above; $\mathtt{twin}$ in models) — as well as a random effect capturing other sources of heterogeneity between mothers (Mum ID above; $\mathtt{maternal\_id}$ in models). Black links represent relationships assumed in all simulation scenarios. Red links represent the given relationship that is considered in a given mechanism in view of accounting for the negative relationship between per-birth twinning probability and maternal total births.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[height = 6cm]{../figures/figS5.pdf}
+\end{center}
+\caption{Relationship between the per-birth twinning probability and maternal total births. This figure reproduces Main Text Fig. 2 and adds on top of it the same information once families with missing information for birth months (including the entire Norway dataset) are also included in the statistical models. Such new information is illustrated by the dashed regression line with an estimated slope $\beta'$ of -0.0349, as well as with the dotted lines showing the location of the 95\% CI.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[height = 10cm]{../figures/figS6.pdf}
+\end{center}
+\caption{Comparison of different metrics between the real data and a dataset simulated under scenario AC. A: distribution of maternal total births; B: number of twinners and non-twinners; C: distribution of maternal age at birth; D: number of singleton and twin births. The first row (A \& B) represents metrics computed at the level of mothers. The second row (C \& D) represents metrics computed at the level of births. All these plots show that the simulation scenario AC produced data with fertility and twinning information compatible to the ones estimated.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{../figures/figS7.pdf}
+\end{center}
+\caption{Evaluation of the validity of the goodness of fit testing procedure. Each plot shows the empirical cumulative distribution of p-values for each tested simulation scenario, when the data were simulated under the same scenario. The goodness of fit test in such a case corresponds to the test of the null hypothesis when the null hypothesis is true. Therefore, the probability density of p-values should be uniform and the cumulative distribution should appear as the straight diagonal line depicted on the plots. However, the empirical cumulative distribution of p-values for the single-level bootstrap (shown in red) clearly departs from this expectation for scenarios including mechanisms A or C, showing that a correction is required. The empirical distributions of the double-bootstrap procedure (shown in blue) corrects this and show that the latter procedure can be applied for all scenarios.}
+\end{figure}
+
 \end{document}
 
