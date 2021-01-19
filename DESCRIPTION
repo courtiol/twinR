@@ -35,4 +35,5 @@ Suggests:
     openxlsx,
     pbmcapply,
     knitr,
+    kableExtra,
     testthat

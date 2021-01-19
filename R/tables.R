@@ -100,6 +100,87 @@ build_data_summary.table <- function(birth_level_data) {
 }
 
 
+
+
+#' Create fit summary tables
+#'
+#' This function is used to create the tables providing the details of the fitted models used in the study.
+#'
+#' @param fit the output of one of the function fitting models (see [`fit_models`])
+#'
+#' @return a `tibble` with an additional attribute called "formula"
+#' @export
+#'
+#' @examples
+#' #See ?twinR
+#'
+build_fit_summary.table <- function(fit) {
+
+  ## extract raw model output:
+  utils::capture.output(fit_components <- spaMM::summary.HLfit(fit))
+
+  ## extract model formula:
+  model_formula <- paste(as.character(fit$call$formula)[c(2,1,3)], collapse = " ")
+
+  ## extract and format info on fixed effects:
+  tibble::as_tibble(fit_components$beta_table) %>%
+    dplyr::rename("value" = .data$Estimate) %>%
+    dplyr::mutate(name = rownames(fit_components$beta_table), .before = 1) %>%
+    dplyr::bind_cols(object = c("fixed effects", rep("", max(c(0, nrow(fit_components$beta_table) - 1)))), .) -> fixed_effects
+
+  ## extract and format info on random effects:
+  tibble::as_tibble(fit_components$lambda_table) %>%
+    dplyr::select("name" = .data$Group) %>%
+    dplyr::mutate(name = ifelse(.data$name == "maternal_.", "maternal_id", .data$name),
+                  name = paste0("variance between ", .data$name)) %>%
+    dplyr::bind_cols(object = c("random effects", rep("", max(c(0, nrow(.) - 1)))), .) -> random_effects
+
+  if (!is.null(fit$lambda)) {
+    random_effects %>%
+      dplyr::mutate(value = fit$lambda) -> random_effects
+  }
+
+  ## extract and format info on model family:
+  tibble::tibble(object = "response family",
+                 name = as.character(fit$family$family),
+                 value = NA) %>%
+    dplyr::mutate(name = ifelse(.data$name == "negbin", "negative binomial", .data$name),
+                  name = paste(.data$name, "with", as.character(fit$family$link), "link")) ->  model_family
+
+  if (fit$family$family == "negbin") {
+    model_family %>%
+      dplyr::mutate(name = paste0(ifelse(fit$family$zero_truncated, "truncated ", ""), .data$name)) %>%
+      dplyr::bind_rows(tibble::tibble(object = "", name = "shape parameter",
+                                      value = get("shape", envir = environment(fit$family$aic)))) -> model_family
+  }
+
+  ## extract and format info on number of parameters, likelihood, AICs:
+  dplyr::bind_cols(K = nrow(fixed_effects) + nrow(random_effects) + nrow(model_family) - 1,
+                   L = tibble::as_tibble_row(fit_components$likelihoods)[2][[1]]) -> model_stats
+
+  utils::capture.output(AICs <- stats::AIC(fit, verbose = FALSE, also_cAIC = TRUE)[1:2])
+
+  model_stats <- dplyr::bind_cols(model_stats, tibble::as_tibble_row(AICs))
+  names(model_stats) <- c("number of model parameters", "marginal log Likelihood", "marginal AIC", "conditional AIC (cAIC)")
+  model_stats <- dplyr::bind_cols(object = c("fit info", rep("", ncol(model_stats) - 1)),
+                                  tidyr::pivot_longer(cols = 1:ncol(model_stats), model_stats))
+
+  ## extract and format info on fitted data:
+  tibble::tibble(object = "data info", name = "number of fitted observations (N)", value = nrow(fit$data)) -> fitted_data
+
+  ## combine all formated info:
+  dplyr::bind_rows(fixed_effects, random_effects, model_family, model_stats, fitted_data) %>%
+    dplyr::rename(Type = .data$object,
+                  "Variable" = .data$name,
+                  Value = .data$value) -> all_results
+
+  ## add formula as an atribute of the tibble:
+  attr(all_results, "formula") <- model_formula
+
+  all_results
+}
+
+
 #' Export a table in the *.xlsx format
 #'
 #' This function is used to export tables into Microsoft Excel format.
@@ -165,3 +246,148 @@ export_table_xlsx <- function(table, file) {
     stop("to save table in *.xlsx format, you need to install the package openxlsx!")
   }
 }
+
+
+
+#' Format to LaTeX
+#'
+#' These functions are helper functions for turning R text into LaTeX.
+#' into (knitr) LaTeX code.
+#'
+#' @param fit_summary.table a table produced by [`build_fit_summary.table`]
+#' @param fit_n an integer indicating which models the fit refers to (for defining captions)
+#' @param text a string of characters to turn into LaTeX
+#' @param size a parameter for the size in LaTeX
+#'
+#' @name format_to_LaTeX
+#' @return a string of characters
+#' @seealso pretty_text build_table_tex
+#'
+NULL
+
+
+#' @describeIn format_to_LaTeX turn a model fit summary table into the *.tex format
+#'
+#' This function is used to generate the tables of fitted models using the LaTeX syntax.
+#' It is a wrapper for the function [`kable`][`knitr::kable`] modified with the help of the package
+#' kableExtra. It contains part of the caption of the supplementary tables.
+#' @export
+#'
+format_fit_summary.table_2_LaTeX <- function(fit_summary.table, fit_n = 0) {
+
+  ## check that packages required for this function are installed (since they are declared in Suggests and not Imports)
+  if (!requireNamespace("knitr", quietly = TRUE) && requireNamespace("kableExtra", quietly = TRUE)) {
+    stop("this function requires you to install the packages {knitr} and {kableExtra} for it to run.")
+  }
+
+  ## define caption based on fit_n:
+  if (fit_n == 1) {
+    extra_caption <- " In all tables showing the summary of fits, values given in column 3 for fixed effects, random effects (if applicable) and the parameters of the response family (if applicable) are estimates. Other values are the results of computations."
+  } else if (fit_n %in% c(8, 11)) {
+    extra_caption <- " Note that the variable \\texttt{IBI} fitted in the model actually corresponds to the duration of interbirth interval minus six months. This rescaling prevents numerical issues during the simulations. When this fitted model is used for predictions (in plots or to compute effect sizes), the missing six months are reintroduced to produce correct results. See legend of Table S1 for other details."
+  } else {
+  extra_caption <- " See legend of Table S1 for more details."
+  }
+
+  ## adapt formatting to LaTeX:
+  fit_summary.table %>%
+    dplyr::mutate(dplyr::across(where(is.character), format_text_2_LaTeX)) %>%
+    dplyr::mutate(dplyr::across(where(is.numeric), prettyNum, digits = 3L, scientific = FALSE)) %>%
+    dplyr::mutate(dplyr::across(tidyselect::everything(), function(txt) ifelse(txt == "NA", "", txt))) -> fit_summary.table
+
+
+  ## fill Type column for defining highlighting:
+  fit_summary.table_types_filled <- fit_summary.table
+  while (any(fit_summary.table_types_filled$Type == "")) {
+    fit_summary.table_types_filled %>%
+      dplyr::select(.data$Type) %>%
+      dplyr::mutate(Type = ifelse(.data$Type == "", dplyr::lag(.data$Type), .data$Type)) -> fit_summary.table_types_filled
+  }
+
+  ## build table
+  knitr::kable(fit_summary.table,
+               format = "latex",
+               linesep = "", ## turn off auto space every 5 rows
+               escape = FALSE, ## interpret tex "as is"
+               booktabs = TRUE, ## bold line as in usual tables
+               table.envir = "table",
+               label = paste0("tab", fit_n),
+               caption = paste0("Summary of the fit of model ", fit_n, ". The model fit corresponds to the fit of a model with the following formula: ",
+                                format_formula_2_LaTeX(fit_summary.table, size = "small"), ".", extra_caption),
+               align = "llrrr") %>%
+        kableExtra::column_spec(2, width = "6cm") %>%
+        kableExtra::column_spec(1, width = "2cm") %>%
+        kableExtra::kable_styling(full_width = FALSE,
+                                  latex_options = c("striped"), ## grey highlight
+                                  font_size = 8,
+                                  stripe_index = which(fit_summary.table_types_filled$Type %in% c("fixed effects", "response family", "data info"))) ## grey highlight locations
+
+}
+
+
+
+
+#' @describeIn format_to_LaTeX extract a model formula from a fitted model and format it for LaTeX
+#' @export
+#'
+format_formula_2_LaTeX <- function(fit_summary.table, size = NULL) {
+  formula <- attr(fit_summary.table, "formula")
+  text <- paste0("$\\mathtt{", formula, "}$")
+  text <- sub("~", "\\sim", text, fixed = TRUE)
+  text <- gsub("_", "\\_", text, fixed = TRUE)
+  if (!is.null(size) && size == "small") {
+    text <- paste0("{\\small", text, "}")
+  }
+  text
+}
+
+
+#' @describeIn format_to_LaTeX format text for LaTeX
+#' @export
+#'
+format_text_2_LaTeX <- function(text) {
+  text <- gsub("_", "\\_", text, fixed = TRUE)
+  text <- sub("(Intercept)", "$\\beta_1$", text, fixed = TRUE)
+
+  text <- unlist(lapply(text, function(x) {
+    exp <- regmatches(x, gregexpr("\\d", x))[[1]]
+    if (length(exp) > 1L) {
+      age_exp <- exp[2]
+      parity_exp <- exp[3]
+      ifelse(grepl(pattern = "poly", x = x), paste0("$\\beta_{\\mathtt{age}^", age_exp, "\\times\\mathtt{parity}^", parity_exp, "}$"), x)
+    } else {
+      x
+    }
+    }
+  ))
+
+  text <- sub("\\mathtt{age}^0\\times", "", text, fixed = TRUE)
+  text <- sub("\\times\\mathtt{parity}^0", "", text, fixed = TRUE)
+  text <- sub("\\mathtt{age}^1", "\\mathtt{age}", text, fixed = TRUE)
+  text <- sub("\\mathtt{parity}^1", "\\mathtt{parity}", text, fixed = TRUE)
+
+  text <- sub("twinTRUE", "$\\beta_{\\mathtt{twin}}$", text, fixed = TRUE)
+  text <- sub("first\\_twinnerTRUE", "$\\beta_{\\mathtt{first\\_twinner}}$", text, fixed = TRUE)
+  text <- sub("^twinnerTRUE$", "$\\\\beta_{\\\\mathtt{twinner}}$", text, fixed = FALSE)
+
+  text <- sub("^twinnerTRUE:births\\\\_total\\\\_fac(\\d+.*)$", "$\\\\beta_{\\\\mathtt{twinner:births\\\\_total\\\\_fac\\1}}$", text, fixed = FALSE)
+  text <- sub("^births\\\\_total\\\\_fac(\\d+.*)$", "$\\\\beta_{\\\\mathtt{births\\\\_total\\\\_fac\\1}}$", text, fixed = FALSE)
+  text <- sub("^births\\\\_total$", "$\\\\beta_{\\\\mathtt{births\\\\_total}}$", text, fixed = FALSE)
+
+  text <- sub("pop", "$\\mathtt{pop}$", text, fixed = TRUE)
+  text <- sub("maternal\\_id", "$\\mathtt{maternal\\_id}$", text, fixed = TRUE)
+
+  text <- sub("number of fitted observations (N)", "number of fitted observations (\\emph{N})", text, fixed = TRUE)
+  text
+}
+
+
+#' @describeIn format_to_LaTeX format the text describing a predictor in model fits for LaTeX
+#' @export
+#'
+format_predictor_2_LaTeX <- function(text) {
+  text
+}
+
+
+

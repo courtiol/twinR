@@ -65,7 +65,7 @@
 #'
 #' ## Create table 1:
 #'
-#' table1 <- build_summary_table(data_births_monthly)
+#' table1 <- build_data_summary.table(data_births_monthly)
 #' table1
 #'
 #' export_table_xlsx(table1, file = "tables/table1.xlsx")
@@ -73,7 +73,7 @@
 #'
 #' ## Create table S16:
 #'
-#' tableS16 <- build_summary_table(data_births_all)
+#' tableS16 <- build_data_summary.table(data_births_all)
 #' tableS16
 #'
 #' export_table_xlsx(tableS16, file = "tables/tableS16.xlsx")
@@ -107,6 +107,8 @@
 #'                               maternal_ID_as.predictor = FALSE)
 #' fit_14 <- fit_twinning.binary(data_births_monthly.complete, maternal_ID_as.predictor = FALSE)
 #'
+#' ## for getting tibble summary output of a model fit, do e.g.:
+#' build_fit_summary.table(fit_01)
 #'
 #'
 #' #------------------------------------------------------------------------------------------------
@@ -535,8 +537,19 @@
 #' #---------------------------------- Building the SI ---------------------------------------------
 #' #------------------------------------------------------------------------------------------------
 #'
-#' ## Here we generate the Supplementary Information material.
-#' ## This requires a full installation of the LaTeX system.
+#' ## Create the supplementary tables of the fitted models:
+#' all_fits <- c(paste0("0", 1:9), 10:14)
+#'
+#' for (fit_nb in all_fits){
+#'  load(paste0("fitted_models/fit_", fit_nb, ".rda"))
+#'  write(format_fit_summary.table_2_LaTeX(build_fit_summary.table(get(paste0("fit_", fit_nb))),
+#'                                                                 fit_n = as.numeric(fit_nb)),
+#'        file = paste0("tables/tableS", fit_nb, ".tex"))
+#' }
+#'
+#' ## Generate the Supplementary Information material:
+#'
+#' ## Note: This requires a full installation of the LaTeX system.
 #'
 #' build_SI()
 #'

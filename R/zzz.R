@@ -27,3 +27,17 @@
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
 NULL
+
+
+
+## export some variables names to please R CMD check
+
+## for tidyselect (due to https://github.com/r-lib/tidyselect/issues/201):
+utils::globalVariables("where")
+
+## for magrittr (see function build_fit_summary.table):
+utils::globalVariables(".")
+
+## for temporary text connection (see function `#`):
+globalVariables("str_temp")
+

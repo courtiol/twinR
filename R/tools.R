@@ -57,9 +57,6 @@
   hash_safe(result = result, digits = digits, prefix = prefix)
 }
 
-globalVariables("str_temp")
-
-
 
 #' Testing parallel computing
 #'

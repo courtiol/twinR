@@ -4,18 +4,9 @@
 \alias{build_SI}
 \title{Build Supplementary Information}
 \usage{
-build_SI(
-  path_tables = "tables",
-  path_figs = "figures",
-  path_SI = "SI",
-  overwrite = FALSE
-)
+build_SI(path_SI = "SI", overwrite = FALSE)
 }
 \arguments{
-\item{path_tables}{the computer path to the folder containing the pdfs of all SI tables}
-
-\item{path_figs}{the computer path to the folder containing the pdfs of all SI figures}
-
 \item{path_SI}{the computer path to the folder where the pdf of the compiled SI will be written}
 
 \item{overwrite}{a boolean indicating whether or not to overwrite a potentially existing SI.pdf file (default = FALSE)}

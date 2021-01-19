@@ -160,5 +160,33 @@ Top row (A-C) shows the relationship between the random effect from the fit of m
 \caption{Evaluation of the validity of the goodness of fit testing procedure. Each plot shows the empirical cumulative distribution of p-values for each tested simulation scenario, when the data were simulated under the same scenario. The goodness of fit test in such a case corresponds to the test of the null hypothesis when the null hypothesis is true. Therefore, the probability density of p-values should be uniform and the cumulative distribution should appear as the straight diagonal line depicted on the plots. However, the empirical cumulative distribution of p-values for the single-level bootstrap (shown in red) clearly departs from this expectation for scenarios including mechanisms A or C, showing that a correction is required. The empirical distributions of the double-bootstrap procedure (shown in blue) corrects this and show that the latter procedure can be applied for all scenarios.}
 \end{figure}
 
+\input{../tables/tableS01.tex}
+
+\input{../tables/tableS02.tex}
+
+\input{../tables/tableS03.tex}
+
+\input{../tables/tableS04.tex}
+
+\input{../tables/tableS05.tex}
+
+\input{../tables/tableS06.tex}
+
+\input{../tables/tableS07.tex}
+
+\input{../tables/tableS08.tex}
+
+\input{../tables/tableS09.tex}
+
+\input{../tables/tableS10.tex}
+
+\input{../tables/tableS11.tex}
+
+\input{../tables/tableS12.tex}
+
+\input{../tables/tableS13.tex}
+
+\input{../tables/tableS14.tex}
+
 \end{document}
 

@@ -4,8 +4,6 @@
 #' `extdata`. For the compilation to work, you need to have created all the SI figures and tables,
 #' and you need your system to be properly setup for the creation of LaTeX-PDF using knitr.
 #'
-#' @param path_tables the computer path to the folder containing the pdfs of all SI tables
-#' @param path_figs the computer path to the folder containing the pdfs of all SI figures
 #' @param path_SI the computer path to the folder where the pdf of the compiled SI will be written
 #' @param overwrite a boolean indicating whether or not to overwrite a potentially existing SI.pdf file (default = FALSE)
 #' @export
@@ -13,23 +11,7 @@
 #' @examples
 #' # See ?twinR
 #'
-build_SI <- function(path_tables = "tables", path_figs = "figures", path_SI = "SI", overwrite = FALSE) {
-
-  ## check and strengthen path to tables:
-  if (!dir.exists(path_tables)) {
-    stop("the folder with the tables was not found")
-  }
-
-  path_tables <- normalizePath(path_tables, mustWork = TRUE)
-
-
-  ## check and strengthen path to figs:
-  if (!dir.exists(path_figs)) {
-    stop("the folder with the figures was not found")
-  }
-
-  path_figs <- normalizePath(path_figs, mustWork = TRUE)
-
+build_SI <- function(path_SI = "SI", overwrite = FALSE) {
 
   ## check and strengthen path to SI:
   dir.create(path = path_SI, showWarnings = FALSE)
