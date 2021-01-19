@@ -298,6 +298,7 @@ prepare_data_fig_S6 <- function(simulation_obj, birth_level_data) {
 #' Functions producing the figures
 #'
 #' @param data a `data.frame` or a `list` containing the data to be plotted
+#' @param width_petal a numeric used to influence the width of each petal in the flower plot (default = 0.5)
 #' @return a ggplot
 #' @name figures
 #' @examples
@@ -558,7 +559,7 @@ draw_fig_3C <- function(data) {
 #' @describeIn figures draw fig. 4
 #' @export
 #'
-draw_fig_4 <- function(data) {
+draw_fig_4 <- function(data, width_petal = 0.5) {
 
   ## reformat data to name and order scenarios properly:
   data %>%
@@ -583,7 +584,7 @@ draw_fig_4 <- function(data) {
       ggplot2::aes(x = .data$scenario, y = .data$slopes_level1, fill = .data$pv_gof) +
       ggplot2::coord_polar(start = pi/length(unique(data_plot$scenario))) +
       ggplot2::geom_hline(yintercept = 0, colour = "grey", size = 0.5) +
-      ggplot2::geom_violin(size = 0.1, width = 0.075) + ## change width to change the width of the petals
+      ggplot2::geom_violin(size = 0.1, width = width_petal) + ## change width to change the width of the petals
       ggplot2::geom_hline(yintercept = unique(data_plot$slope_observed),
                           colour = "darkgreen", linetype = "dashed", size = 0.5) +
       ggplot2::scale_fill_gradient2(low = "#0018ffff", high = "yellow",

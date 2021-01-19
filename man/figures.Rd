@@ -36,7 +36,7 @@ draw_fig_3B(data)
 
 draw_fig_3C(data)
 
-draw_fig_4(data)
+draw_fig_4(data, width_petal = 0.5)
 
 draw_fig_S1(data)
 
@@ -54,6 +54,8 @@ draw_fig_S6D(data)
 }
 \arguments{
 \item{data}{a \code{data.frame} or a \code{list} containing the data to be plotted}
+
+\item{width_petal}{a numeric used to influence the width of each petal in the flower plot (default = 0.5)}
 }
 \value{
 a ggplot
