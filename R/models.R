@@ -494,3 +494,4 @@ extract_poly.order <- function(fit) {
   formula <- as.character(formula(fit)[3])
   found <- grepl(pattern = pattern, formula, perl = TRUE)
   ifelse(found, as.numeric(sub(pattern = pattern, replacement = "\\1", formula, perl = TRUE)), 0L)
+}
