@@ -254,8 +254,13 @@ export_table_xlsx <- function(table, file) {
 #' These functions are helper functions for turning R text into LaTeX.
 #' into (knitr) LaTeX code.
 #'
+#' The functions used to generate the tables using the LaTeX syntax are essentially wrappers to the
+#' function [`kable`][`knitr::kable`] modified with the help of the package kableExtra.
+#' They contains in the code the captions of the supplementary tables.
+#'
 #' @param fit_summary.table a table produced by [`build_fit_summary.table`]
 #' @param data_summary.table a table produced by [`build_data_summary.table`]
+#' @param goodness_of_fit.table a table produced by [`goodness_of_fit`]
 #' @param fit_n an integer indicating which models the fit refers to (for defining captions)
 #' @param text a string of characters to turn into LaTeX
 #' @param size a parameter for the size in LaTeX
@@ -269,9 +274,6 @@ NULL
 
 #' @describeIn format_to_LaTeX turn a model fit summary table into the *.tex format
 #'
-#' This function is used to generate the tables of fitted models using the LaTeX syntax.
-#' It is a wrapper for the function [`kable`][`knitr::kable`] modified with the help of the package
-#' kableExtra. It contains part of the captions of the supplementary tables.
 #' @export
 #'
 format_fit_summary.table_2_LaTeX <- function(fit_summary.table, fit_n = 0) {
@@ -329,9 +331,6 @@ format_fit_summary.table_2_LaTeX <- function(fit_summary.table, fit_n = 0) {
 
 #' @describeIn format_to_LaTeX turn a data summary table into the *.tex format
 #'
-#' This function is used to generate the tables summarizing the sampled data using the LaTeX syntax.
-#' It is a wrapper for the function [`kable`][`knitr::kable`] modified with the help of the package
-#' kableExtra. It contains part of the captions of the supplementary tables.
 #' @export
 #'
 format_data_summary.table_2_LaTeX <- function(data_summary.table) {
@@ -342,7 +341,7 @@ format_data_summary.table_2_LaTeX <- function(data_summary.table) {
                  table.envir = "table",
                  label = "tab16",
                  caption = "Details of data used in the present study, for each population and overall. This table is the same as Table 1, but here we also included the observations for which the temporal resolution was limited to years and not months. All references are cited in main text.",
-                 digits = 3,
+                 digits = 3L,
                 align = "llcccccccccccl") %>%
   kableExtra::kable_styling(full_width = FALSE,
                             latex_options = c("striped"), ## grey highlights
@@ -352,6 +351,36 @@ format_data_summary.table_2_LaTeX <- function(data_summary.table) {
   kableExtra::column_spec(14, width = "2cm") %>%
   kableExtra::pack_rows(group_label = NULL, start_row = 10, end_row = 10, hline_before = TRUE, indent = FALSE) %>%
   kableExtra::landscape()
+}
+
+
+#' @describeIn format_to_LaTeX turn the table with the results from the goodness of fit into the *.tex format
+#'
+#' @export
+#'
+format_goodness_of_fit.table_2_LaTeX <- function(goodness_of_fit.table) {
+
+  goodness_of_fit.table$scenario[goodness_of_fit.table$scenario == "base_model"] <- "0"
+
+  goodness_of_fit.table %>%
+    dplyr::rename(Scenario = .data$scenario,
+                  `GOF p-value` = .data$pv_gof,
+                  `Raw p-value` = .data$pv_raw) -> goodness_of_fit.table
+
+  goodness_of_fit.table %>%
+    knitr::kable(format = "latex",
+                 linesep = "", ## turn off auto space every 5 rows
+                 booktabs = TRUE, ## bold line as in usual tables
+                 table.envir = "table",
+                 label = "tab15",
+                 caption = "Results of the goodness of fit tests. P-values underlined denote scenario simulations generating data for which the relationship between twinning propensity and fertility is compatible to the one estimated on the raw data, using a threshold of 0.05. The two columns for p-values correspond, respectivelly from left to right, to p-values obtained in the case of the double-bootstrap or single-bootstrap procedure  (see SI Section 1 \\& Fig. S7).",
+                 digits = 3L,
+                 align = "lrr") %>%
+    kableExtra::column_spec(2, underline = goodness_of_fit.table$`GOF p-value` >= 0.05) %>%
+    kableExtra::column_spec(3, underline = goodness_of_fit.table$`Raw p-value` >= 0.05) %>%
+    kableExtra::kable_styling(full_width = FALSE,
+                              latex_options = c("striped"), ## grey highlights
+                              font_size = 8)
 }
 
 

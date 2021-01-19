@@ -531,6 +531,7 @@
 #' tableS15 <- goodness_of_fit(all_slopes)
 #' tableS15
 #'
+#' write(format_goodness_of_fit.table_2_LaTeX(tableS15), file = "tables/tableS15.tex")
 #'
 #'
 #' #------------------------------------------------------------------------------------------------

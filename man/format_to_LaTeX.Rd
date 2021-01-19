@@ -4,6 +4,7 @@
 \alias{format_to_LaTeX}
 \alias{format_fit_summary.table_2_LaTeX}
 \alias{format_data_summary.table_2_LaTeX}
+\alias{format_goodness_of_fit.table_2_LaTeX}
 \alias{format_formula_2_LaTeX}
 \alias{format_text_2_LaTeX}
 \title{Format to LaTeX}
@@ -11,6 +12,8 @@
 format_fit_summary.table_2_LaTeX(fit_summary.table, fit_n = 0)
 
 format_data_summary.table_2_LaTeX(data_summary.table)
+
+format_goodness_of_fit.table_2_LaTeX(goodness_of_fit.table)
 
 format_formula_2_LaTeX(fit_summary.table, size = NULL)
 
@@ -23,6 +26,8 @@ format_text_2_LaTeX(text)
 
 \item{data_summary.table}{a table produced by \code{\link{build_data_summary.table}}}
 
+\item{goodness_of_fit.table}{a table produced by \code{\link{goodness_of_fit}}}
+
 \item{size}{a parameter for the size in LaTeX}
 
 \item{text}{a string of characters to turn into LaTeX}
@@ -34,19 +39,18 @@ a string of characters
 These functions are helper functions for turning R text into LaTeX.
 into (knitr) LaTeX code.
 }
+\details{
+The functions used to generate the tables using the LaTeX syntax are essentially wrappers to the
+function \code{\link[knitr:kable]{kable}} modified with the help of the package kableExtra.
+They contains in the code the captions of the supplementary tables.
+}
 \section{Functions}{
 \itemize{
 \item \code{format_fit_summary.table_2_LaTeX}: turn a model fit summary table into the *.tex format
 
-This function is used to generate the tables of fitted models using the LaTeX syntax.
-It is a wrapper for the function \code{\link[knitr:kable]{kable}} modified with the help of the package
-kableExtra. It contains part of the captions of the supplementary tables.
-
 \item \code{format_data_summary.table_2_LaTeX}: turn a data summary table into the *.tex format
 
-This function is used to generate the tables summarizing the sampled data using the LaTeX syntax.
-It is a wrapper for the function \code{\link[knitr:kable]{kable}} modified with the help of the package
-kableExtra. It contains part of the captions of the supplementary tables.
+\item \code{format_goodness_of_fit.table_2_LaTeX}: turn the table with the results from the goodness of fit into the *.tex format
 
 \item \code{format_formula_2_LaTeX}: extract a model formula from a fitted model and format it for LaTeX
 
