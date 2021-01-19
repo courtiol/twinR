@@ -196,7 +196,9 @@ fit_PP <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE, 
     }
 
   ## prepare the model formula:
-  if (twin_as.predictor) formula <- paste(formula, " + twin")
+  if (twin_as.predictor) {
+    formula <- sub(pattern = "1 + ", replacement = "1 + twin + ", x = formula, fixed = TRUE)
+  }
 
   if (verbose) {
     if (poly_order > 1L) {
@@ -279,7 +281,9 @@ fit_IBI <- function(birth_level_data, poly_order = NA, twin_as.predictor = TRUE,
     }
 
   ## prepare the model formula:
-  if (twin_as.predictor) formula <- paste(formula, " + twin")
+  if (twin_as.predictor) {
+    formula <- sub(pattern = "1 + ", replacement = "1 + twin + ", x = formula, fixed = TRUE)
+  }
 
   if (verbose) {
     if (poly_order > 1L) {
