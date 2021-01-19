@@ -9,9 +9,9 @@
 #' @export
 #'
 #' @examples
-#' build_summary_table(data_births_all)
+#' build_data_summary.table(data_births_all)
 #'
-build_summary_table <- function(birth_level_data) {
+build_data_summary.table <- function(birth_level_data) {
 
   ## add total births and twinning status to the data:
   birth_level_data %>%
