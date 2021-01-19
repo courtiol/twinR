@@ -474,3 +474,19 @@ fit_model_safely <- function(timeout, .args) {
 
   fit
 }
+
+
+
+#' Internal function for extracting the polynomial order of fitted models
+#'
+#' This internal function allows for identifying which polynomial order has actually been used in a
+#' fit. This is used for debugging purposes only.
+#'
+#' @param fit a fitted model
+#' @export
+#'
+extract_poly.order <- function(fit) {
+  pattern <- ".*(\\d)(?=\\)).*"
+  formula <- as.character(formula(fit)[3])
+  found <- grepl(pattern = pattern, formula, perl = TRUE)
+  ifelse(found, as.numeric(sub(pattern = pattern, replacement = "\\1", formula, perl = TRUE)), 0L)

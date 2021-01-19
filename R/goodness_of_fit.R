@@ -62,14 +62,18 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
     simu$slope})
   if (.log) cat("end simulation level 2", scenario, seed, Sys.time(), "\n", sep = ";", file = .log_file, append = TRUE)
 
-  ## remove second set of models to save memory:
-  rm(life_history_fits.simulated)
+
+
+  ## extract polynomial orders:
+  polys <- as.numeric(lapply(life_history_fits.simulated[1:3], extract_poly.order))
 
   ## stop stopwatch:
   time_end <- Sys.time()
 
   ## return:
-  list_output <- list(slopes_level1 = simu_level1$slope, slopes_level2 = slopes_level2, scenario = scenario, seed = seed, time_elapsed = as.numeric(time_end - time_begin, units = "secs"))
+  list_output <- list(slopes_level1 = simu_level1$slope, slopes_level2 = slopes_level2, scenario = scenario, seed = seed,
+                      poly_order_PP = polys[1], poly_order_IBI = polys[2], poly_order_twin = polys[3],
+                      time_elapsed = as.numeric(time_end - time_begin, units = "secs"))
 
   return(list_output)
 }
@@ -120,7 +124,7 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
                                     life_history_fits = NULL,
                                     nb_cores = 2L,
                                     lapply_pkg = "pbmcapply",
-                                    seed = 0L,
+                                    seed = 1L,
                                     timeout = Inf,
                                     verbose = list(fit = FALSE, simu = FALSE),
                                     .log = FALSE) {
@@ -173,7 +177,7 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
     simu <- simulate_slopes(birth_level_data = birth_level_data,
                             scenario = scenario,
                             life_history_fits = life_history_fits,
-                            seed = seed + it,
+                            seed = seed + -1L + it,
                             N_replicates = N_replicates_level2,
                             timeout = timeout,
                             verbose = verbose,

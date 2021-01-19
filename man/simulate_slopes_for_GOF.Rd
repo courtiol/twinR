@@ -12,7 +12,7 @@ simulate_slopes_for_GOF(
   life_history_fits = NULL,
   nb_cores = 2L,
   lapply_pkg = "pbmcapply",
-  seed = 0L,
+  seed = 1L,
   timeout = Inf,
   verbose = list(fit = FALSE, simu = FALSE),
   .log = FALSE
