@@ -484,21 +484,25 @@ dir.create("slopes_under_scenarios") # create a folder to store the simulated sl
 ### package.
 
 #library(twinR)
-#nb_cores <- 50L
 #data_births_monthly <- filter_data(data_births_all)
 
+## list scenarios to do:
 scenarios_to_do <- c("base_model", "A", "B", "C", "D", "AB", "AC", "AD", "BC", "BD", "CD",
                      "ABC", "ABD", "ACD", "BCD", "ABCD")
 
 dir.create("slopes_under_scenarios")
 
 for (scenario in scenarios_to_do) {
+
+  ## set nb_cores depending on the scenarios due to RAM limitation
+  nb_cores <- ifelse(grepl("D", scenario), 40, 50)
+
   slopes_under_scenario <- simulate_slopes_for_GOF(N_replicates_level1 = 200L,
                                                    N_replicates_level2 = 49L,
                                                    birth_level_data = data_births_monthly,
                                                    scenario = scenario,
                                                    nb_cores = nb_cores,
-                                                   timeout = 2 * 60 * 60,
+                                                   timeout = 16 * 60 * 60,
                                                    .log = TRUE)
   name_obj <- paste0("slopes_under_", scenario)
   assign(name_obj, value = slopes_under_scenario)
@@ -515,7 +519,7 @@ all_slopes <- combine_simulated_slopes()
 
 ## Figure 4:
 
-draw_fig_4(all_slopes)
+draw_fig_4(all_slopes, width = 0.3)
 
 ggsave(file = "figures/fig4.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
 
