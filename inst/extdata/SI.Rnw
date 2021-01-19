@@ -188,5 +188,7 @@ Top row (A-C) shows the relationship between the random effect from the fit of m
 
 \input{../tables/tableS14.tex}
 
+\input{../tables/tableS16.tex}
+
 \end{document}
 

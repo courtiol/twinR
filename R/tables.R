@@ -255,6 +255,7 @@ export_table_xlsx <- function(table, file) {
 #' into (knitr) LaTeX code.
 #'
 #' @param fit_summary.table a table produced by [`build_fit_summary.table`]
+#' @param data_summary.table a table produced by [`build_data_summary.table`]
 #' @param fit_n an integer indicating which models the fit refers to (for defining captions)
 #' @param text a string of characters to turn into LaTeX
 #' @param size a parameter for the size in LaTeX
@@ -270,7 +271,7 @@ NULL
 #'
 #' This function is used to generate the tables of fitted models using the LaTeX syntax.
 #' It is a wrapper for the function [`kable`][`knitr::kable`] modified with the help of the package
-#' kableExtra. It contains part of the caption of the supplementary tables.
+#' kableExtra. It contains part of the captions of the supplementary tables.
 #' @export
 #'
 format_fit_summary.table_2_LaTeX <- function(fit_summary.table, fit_n = 0) {
@@ -318,12 +319,40 @@ format_fit_summary.table_2_LaTeX <- function(fit_summary.table, fit_n = 0) {
         kableExtra::column_spec(2, width = "5cm") %>%
         kableExtra::column_spec(1, width = "3cm") %>%
         kableExtra::kable_styling(full_width = FALSE,
-                                  latex_options = c("striped"), ## grey highlight
+                                  latex_options = c("striped"), ## grey highlights
                                   font_size = 8,
                                   stripe_index = which(fit_summary.table_types_filled$Type %in% c("fixed effects", "response family", "data info"))) ## grey highlight locations
 
 }
 
+
+
+#' @describeIn format_to_LaTeX turn a data summary table into the *.tex format
+#'
+#' This function is used to generate the tables summarizing the sampled data using the LaTeX syntax.
+#' It is a wrapper for the function [`kable`][`knitr::kable`] modified with the help of the package
+#' kableExtra. It contains part of the captions of the supplementary tables.
+#' @export
+#'
+format_data_summary.table_2_LaTeX <- function(data_summary.table) {
+  data_summary.table %>%
+    knitr::kable(format = "latex",
+                 linesep = "", ## turn off auto space every 5 rows
+                 booktabs = TRUE, ## bold line as in usual tables
+                 table.envir = "table",
+                 label = "tab16",
+                 caption = "Details of data used in the present study, for each population and overall. This table is the same as Table 1, but here we also included the observations for which the temporal resolution was limited to years and not months. All references are cited in main text.",
+                 digits = 3,
+                align = "llcccccccccccl") %>%
+  kableExtra::kable_styling(full_width = FALSE,
+                            latex_options = c("striped"), ## grey highlights
+                            font_size = 6) %>%
+  kableExtra::column_spec(c(1, 2, 3, 8), width = "1.5cm") %>%
+  kableExtra::column_spec(c(4:7, 9:13), width = "1cm") %>%
+  kableExtra::column_spec(14, width = "2cm") %>%
+  kableExtra::pack_rows(group_label = NULL, start_row = 10, end_row = 10, hline_before = TRUE, indent = FALSE) %>%
+  kableExtra::landscape()
+}
 
 
 
@@ -378,14 +407,6 @@ format_text_2_LaTeX <- function(text) {
   text <- sub("maternal\\_id", "$\\mathtt{maternal\\_id}$", text, fixed = TRUE)
 
   text <- sub("number of fitted observations (N)", "number of fitted observations (\\emph{N})", text, fixed = TRUE)
-  text
-}
-
-
-#' @describeIn format_to_LaTeX format the text describing a predictor in model fits for LaTeX
-#' @export
-#'
-format_predictor_2_LaTeX <- function(text) {
   text
 }
 

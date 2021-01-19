@@ -3,23 +3,25 @@
 \name{format_to_LaTeX}
 \alias{format_to_LaTeX}
 \alias{format_fit_summary.table_2_LaTeX}
+\alias{format_data_summary.table_2_LaTeX}
 \alias{format_formula_2_LaTeX}
 \alias{format_text_2_LaTeX}
-\alias{format_predictor_2_LaTeX}
 \title{Format to LaTeX}
 \usage{
 format_fit_summary.table_2_LaTeX(fit_summary.table, fit_n = 0)
 
+format_data_summary.table_2_LaTeX(data_summary.table)
+
 format_formula_2_LaTeX(fit_summary.table, size = NULL)
 
 format_text_2_LaTeX(text)
-
-format_predictor_2_LaTeX(text)
 }
 \arguments{
 \item{fit_summary.table}{a table produced by \code{\link{build_fit_summary.table}}}
 
 \item{fit_n}{an integer indicating which models the fit refers to (for defining captions)}
+
+\item{data_summary.table}{a table produced by \code{\link{build_data_summary.table}}}
 
 \item{size}{a parameter for the size in LaTeX}
 
@@ -38,13 +40,17 @@ into (knitr) LaTeX code.
 
 This function is used to generate the tables of fitted models using the LaTeX syntax.
 It is a wrapper for the function \code{\link[knitr:kable]{kable}} modified with the help of the package
-kableExtra. It contains part of the caption of the supplementary tables.
+kableExtra. It contains part of the captions of the supplementary tables.
+
+\item \code{format_data_summary.table_2_LaTeX}: turn a data summary table into the *.tex format
+
+This function is used to generate the tables summarizing the sampled data using the LaTeX syntax.
+It is a wrapper for the function \code{\link[knitr:kable]{kable}} modified with the help of the package
+kableExtra. It contains part of the captions of the supplementary tables.
 
 \item \code{format_formula_2_LaTeX}: extract a model formula from a fitted model and format it for LaTeX
 
 \item \code{format_text_2_LaTeX}: format text for LaTeX
-
-\item \code{format_predictor_2_LaTeX}: format the text describing a predictor in model fits for LaTeX
 }}
 
 \seealso{

@@ -77,7 +77,7 @@ tableS16 <- build_data_summary.table(data_births_all)
 tableS16
 
 export_table_xlsx(tableS16, file = "tables/tableS16.xlsx")
-
+write(format_data_summary.table_2_LaTeX(tableS16), file = "tables/tableS16.tex")
 
 
 #------------------------------------------------------------------------------------------------
