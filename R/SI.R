@@ -61,8 +61,8 @@ build_SI <- function(path_SI = "SI", overwrite = FALSE) {
 
   ## actual job:
   message("the SI is being created (be patient)...")
-  system(paste0("mv ", path_source_SI, "/*.bst ", path_SI))
-  system(paste0("mv ", path_source_SI, "/*.bib ", path_SI))
+  system(paste0("cp ", path_source_SI, "/*.bst ", path_SI))
+  system(paste0("cp ", path_source_SI, "/*.bib ", path_SI))
   vignette_path <- knitr::knit2pdf(input = path_source_SI_file, output = path_tex_file, quiet = FALSE)
   message("the SI should have been created and is stored at the following location:")
   message(vignette_path)
