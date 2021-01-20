@@ -23,7 +23,7 @@ test_parallel_computation(
 lengthen it)}
 
 \item{lapply_pkg}{the R package used to implement a \code{lapply()} kind of function (default =
-"pbmcapply"; see Details)}
+"pbmcapply"; other possibilities are "parallel" and "base")}
 }
 \description{
 This function is aimed at testing if the parallel computation run efficiently and you can use it

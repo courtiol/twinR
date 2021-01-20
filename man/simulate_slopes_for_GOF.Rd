@@ -35,7 +35,7 @@ for explanations)}
 \item{nb_cores}{the number of CPU core(s) to use}
 
 \item{lapply_pkg}{the R package used to implement a \code{lapply()} kind of function (default =
-"pbmcapply"; see Details)}
+"pbmcapply"; other possibilities are "parallel" and "base")}
 
 \item{seed}{a seed for the random number generator that will be added to the seed for individual simulations; with the latters corresponding to \code{1:N_replicates_level1}}
 

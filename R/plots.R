@@ -601,13 +601,13 @@ draw_fig_4 <- function(data, width_petal = 0.5) {
                      axis.title.x = ggplot2::element_blank(),
                      axis.text.y = ggplot2::element_blank(),
                      axis.ticks.y = ggplot2::element_blank(),
+                     axis.text.x = ggplot2::element_text(size = 6),
                      legend.position = "bottom",
                      legend.text = ggplot2::element_text(size = 6),
-                     legend.title = ggplot2::element_text(size = 8),
+                     legend.title = ggplot2::element_text(size = 7),
                      legend.title.align = 0.5,
                      legend.margin = ggplot2::margin(c(0, 0, 0, 0)),
                      legend.box.spacing	= ggplot2::unit(0, units = "cm"))
-
 
 }
 

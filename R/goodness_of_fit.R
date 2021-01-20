@@ -190,7 +190,7 @@ simulate_slopes_for_GOF <- function(N_replicates_level1 = 200L,
     })
 
   ## combine all outputs into a single tibble:
-  if (interactive()) print("Process the output...")
+  if (interactive()) print("Processing the output...")
   job <- do.call(rbind, job)
 
   ## add the slope measured on the observed data and sort the output:

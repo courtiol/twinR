@@ -91,7 +91,7 @@
 #' @param cost the cost for the time threshold (default = 1; increase to speed up test, decrease to
 #'   lengthen it)
 #' @param lapply_pkg the R package used to implement a `lapply()` kind of function (default =
-#'   "pbmcapply"; see Details)
+#'   "pbmcapply"; other possibilities are "parallel" and "base")
 #' @export
 #' @examples
 #' ## sequential version, for reference:

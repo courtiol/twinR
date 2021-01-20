@@ -18,10 +18,8 @@ below.
 #---------------------------------- Loading packages --------------------------------------------
 #------------------------------------------------------------------------------------------------
 
-requireNamespace(doSNOW, quietly = TRUE) # load doSNOW if install, for better load balancing in
-                                         # parallel computing done with spaMM (optional)
 library(spaMM)  ## for manipulating mixed effects models
-
+# library(doSNOW) ## (optional) for better load-balancing during parallel computations in spaMM
 
 
 #------------------------------------------------------------------------------------------------
@@ -256,7 +254,7 @@ effect_twinning_on_IBI <- compare_predictions(fit_08,
 
 `#`(effect_twinning_on_IBI$results, digits = 3L) # in months
 #  estimate   lwr    upr
-#1    -1.03 -1.94 -0.169
+#1    -1.03 -1.98 -0.194
 
 
 ## Computing AFB for twinners and non-twinners with one and two total births (legend Fig S1):
@@ -456,6 +454,7 @@ plot_grid(fig_S6A, fig_S6B, fig_S6C, fig_S6D,
           labels = "AUTO", label_size = 12, align = "v", axis = "l")
 
 ggsave(file = "figures/figS6.pdf", width = 13, height = 10, units = "cm", scale = 1.3)
+
 
 
 #------------------------------------------------------------------------------------------------
