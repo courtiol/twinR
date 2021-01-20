@@ -400,12 +400,16 @@ fit_twinning.binary <- function(birth_level_data, poly_order = NA, maternal_ID_a
 
   ## prepare the model formula:
   if (poly_order == 0) {
-    formula <- "twin ~ 1 + (1|pop)"
+    formula <- "twin ~ 1"
   } else {
-    formula <- paste0("twin ~ 1 + poly(cbind(age, parity), ", poly_order, ") + (1|pop)")
+    formula <- paste0("twin ~ 1 + poly(cbind(age, parity), ", poly_order, ")")
   }
 
-  if (maternal_ID_as.predictor) formula <- paste(formula, " + (1|maternal_id)")
+  if (maternal_ID_as.predictor) {
+    formula <- paste(formula, " + (1|maternal_id) + (1|pop)")
+  } else {
+    formula <- paste(formula, " + (1|pop)")
+  }
 
   if (verbose) {
     if (maternal_ID_as.predictor) {
