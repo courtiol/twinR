@@ -101,10 +101,10 @@
 #' #     chi2_LR df   p_value
 #' #p_v 11.56422  8 0.1717319
 #'
-#' fit_06 <- fit_AFB(data_mothers_monthly)
-#' fit_07 <- fit_PP(data_births_monthly.complete)
-#' fit_08 <- fit_IBI(data_births_monthly.complete)
-#' fit_09 <- fit_twinning.binary(data_births_monthly.complete)
+#' fit_06 <- fit_PP(data_births_monthly.complete)
+#' fit_07 <- fit_IBI(data_births_monthly.complete)
+#' fit_08 <- fit_twinning.binary(data_births_monthly.complete)
+#' fit_09 <- fit_AFB(data_mothers_monthly)
 #' fit_10 <- fit_PP(data_births_monthly.complete, twin_as.predictor = FALSE)
 #' fit_11 <- fit_IBI(data_births_monthly.complete, twin_as.predictor = FALSE)
 #' fit_12 <- fit_twinning.binary(data_births_monthly.complete, poly_order = 0L) # no age and parity
@@ -253,7 +253,7 @@
 #' ## Increase in duration of interbirth interval after a twinning event at mean age and parity:
 #' ## Note: this computation takes ~ 11 days on a single CPU
 #'
-#' effect_twinning_on_IBI <- compare_predictions(fit_08,
+#' effect_twinning_on_IBI <- compare_predictions(fit_07,
 #'                                        newdata = data.frame(
 #'                                              age = mean(data_births_monthly.complete$age),
 #'                                              parity = mean(data_births_monthly.complete$parity),
@@ -267,7 +267,7 @@
 #'
 #' ## Computing AFB for twinners and non-twinners with one and two total births (legend Fig S1):
 #'
-#' predictions_AFB_1_2_births <- compute_predictions(fit_06,
+#' predictions_AFB_1_2_births <- compute_predictions(fit_09,
 #'                                                  newdata = data.frame(
 #'                                                        births_total_fac = c("1", "1", "2", "2"),
 #'                                                        twinner = c(TRUE, FALSE, TRUE, FALSE)),
@@ -290,13 +290,13 @@
 #'
 #' ## Computing delay in AFB for twinners compared to non-twinners (legend Fig S1):
 #'
-#' effect_twinner_on_AFB_1_birth <- compare_predictions(fit_06,
+#' effect_twinner_on_AFB_1_birth <- compare_predictions(fit_09,
 #'                                        newdata = data.frame(
 #'                                                        births_total_fac = "1",
 #'                                                        twinner = c(TRUE, FALSE)),
 #'                                        nb_boot = nb_boot)
 #'
-#' effect_twinner_on_AFB_2_births <- compare_predictions(fit_06,
+#' effect_twinner_on_AFB_2_births <- compare_predictions(fit_09,
 #'                                        newdata = data.frame(
 #'                                                        births_total_fac = "2",
 #'                                                        twinner = c(TRUE, FALSE)),
@@ -363,9 +363,9 @@
 #'
 #' ## Figure 3:
 #'
-#' data_fig_3A <- prepare_data_fig_3A(fit_07)
-#' data_fig_3B <- prepare_data_fig_3B(fit_08)
-#' data_fig_3C <- prepare_data_fig_3C(fit_09)
+#' data_fig_3A <- prepare_data_fig_3A(fit_06)
+#' data_fig_3B <- prepare_data_fig_3B(fit_07)
+#' data_fig_3C <- prepare_data_fig_3C(fit_08)
 #'
 #' fig_3A <- draw_fig_3A(data_fig_3A)
 #' fig_3B <- draw_fig_3B(data_fig_3B)
@@ -378,7 +378,7 @@
 #'
 #' ## Figure S1:
 #'
-#' data_fig_S1 <- prepare_data_fig_S1(fit_06)
+#' data_fig_S1 <- prepare_data_fig_S1(fit_09)
 #'
 #' draw_fig_S1(data_fig_S1)
 #'
@@ -387,7 +387,7 @@
 #'
 #' ## Figure S2:
 #'
-#' data_fig_S2 <- prepare_data_fig_S2(fit_PP = fit_07, fit_IBI = fit_08, fit_twin = fit_09,
+#' data_fig_S2 <- prepare_data_fig_S2(fit_PP = fit_06, fit_IBI = fit_07, fit_twin = fit_08,
 #'                                    mother_level_data = data_mothers_monthly)
 #'
 #' draw_fig_S2(data_fig_S2)
@@ -416,9 +416,9 @@
 #' ## (here considering the full models for PP, IBI and the per-birth twinning probability, i.e.
 #' ## the scenario ABCD):
 #'
-#' simu_test <- life_histories$new(fit_PP = fit_07,           # prepare the simulation
-#'                                 fit_IBI = fit_08,
-#'                                 fit_twinning.binary = fit_09,
+#' simu_test <- life_histories$new(fit_PP = fit_06,           # prepare the simulation
+#'                                 fit_IBI = fit_07,
+#'                                 fit_twinning.binary = fit_08,
 #'                                 birth_level_data = data_births_monthly.complete)
 #'
 #' set.seed(123) # fix the seed of the random generator for reproducibility
@@ -435,7 +435,6 @@
 #'
 #' fits_AC_obs <- fit_life_histories(scenario = "AC",
 #'                                   birth_level_data = data_births_monthly.complete)
-#' save(fits_AC_obs, file = "fitted_models/fits_AC_obs.rda", compress = "xz")
 #'
 #'
 #' ## Example of how to run one simulation using the wrapper:

@@ -286,7 +286,7 @@ format_fit_summary.table_2_LaTeX <- function(fit_summary.table, fit_n = 0) {
   ## define caption based on fit_n:
   if (fit_n == 1) {
     extra_caption <- " In all tables showing the summary of fits, values given in column 3 for fixed effects, random effects (if applicable) and the parameters of the response family (if applicable) are estimates. Other values are the results of computations."
-  } else if (fit_n %in% c(8, 11)) {
+  } else if (fit_n %in% c(7, 11)) {
     extra_caption <- " Note that the variable \\texttt{IBI} fitted in the model actually corresponds to the duration of interbirth interval minus six months. This rescaling prevents numerical issues during the simulations. When this fitted model is used for predictions (in plots or to compute effect sizes), the missing six months are reintroduced to produce correct results. See legend of Table S1 for other details."
   } else {
   extra_caption <- " See legend of Table S1 for more details."
@@ -373,7 +373,7 @@ format_goodness_of_fit.table_2_LaTeX <- function(goodness_of_fit.table) {
                  booktabs = TRUE, ## bold line as in usual tables
                  table.envir = "table",
                  label = "tab15",
-                 caption = "Results of the goodness of fit tests. P-values underlined denote scenario simulations generating data for which the relationship between twinning propensity and fertility is compatible to the one estimated on the raw data, using a threshold of 0.05. The two columns for p-values correspond, respectivelly from left to right, to p-values obtained in the case of the double-bootstrap or single-bootstrap procedure  (see SI Section 1 \\& Fig. S7).",
+                 caption = "Results of the goodness of fit tests. P-values underlined denote scenario simulations generating data for which the relationship between twinning propensity and fertility is compatible to the one estimated on the raw data, using a threshold of 0.05. The two columns for p-values correspond, respectivelly from left to right, to p-values obtained in the case of the double-bootstrap or single-level bootstrap procedure  (see SI Section 1 \\& Fig. S7).",
                  digits = 3L,
                  align = "lrr") %>%
     kableExtra::column_spec(2, underline = goodness_of_fit.table$`GOF p-value` >= 0.05) %>%
