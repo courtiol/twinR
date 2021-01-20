@@ -6,6 +6,8 @@
 \alias{fit_twinner.allbirths}
 \alias{fit_twinner.firstbirth}
 \alias{fit_twinning.binomial}
+\alias{fit_twinning.binomial_with_pop_as_fixed}
+\alias{fit_twinning.binomial_with_pop_interaction}
 \alias{fit_AFB}
 \alias{fit_PP}
 \alias{fit_IBI}
@@ -27,6 +29,18 @@ fit_twinner.allbirths(mother_level_data, timeout = Inf, verbose = TRUE)
 fit_twinner.firstbirth(mother_level_data, timeout = Inf, verbose = TRUE)
 
 fit_twinning.binomial(mother_level_data, timeout = Inf, verbose = TRUE)
+
+fit_twinning.binomial_with_pop_as_fixed(
+  mother_level_data,
+  timeout = Inf,
+  verbose = TRUE
+)
+
+fit_twinning.binomial_with_pop_interaction(
+  mother_level_data,
+  timeout = Inf,
+  verbose = TRUE
+)
 
 fit_AFB(mother_level_data, timeout = Inf, verbose = TRUE)
 
@@ -140,6 +154,10 @@ See \strong{Functions}, below, for details on which model each function does fit
 \item \code{fit_twinner.firstbirth}: fit the model predicting the twinning status of the mother at first birth from her total number of births
 
 \item \code{fit_twinning.binomial}: fit the model predicting the probability of a birth to result in twins from the total number of births
+
+\item \code{fit_twinning.binomial_with_pop_as_fixed}: fit the model predicting the probability of a birth to result in twins from the total number of births with population considered as a fixed effect
+
+\item \code{fit_twinning.binomial_with_pop_interaction}: fit the model predicting the probability of a birth to result in twins from the total number of births in interaction with the population
 
 \item \code{fit_AFB}: fit the model predicting the age at first birth from the twinning status and the total number of births
 

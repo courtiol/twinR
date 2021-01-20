@@ -114,6 +114,38 @@ fit_twinning.binomial <- function(mother_level_data, timeout = Inf, verbose = TR
 }
 
 
+#' @describeIn fit_models fit the model predicting the probability of a birth to result in twins from the total number of births with population considered as a fixed effect
+#' @export
+#'
+fit_twinning.binomial_with_pop_as_fixed <- function(mother_level_data, timeout = Inf, verbose = TRUE) {
+
+  formula <- "cbind(twin_total, singleton_total) ~ 1 + births_total + pop"
+
+  if (verbose) print(paste0("Fitting model '", formula, "'..."))
+
+  args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
+
+  ## fit the model:
+  fit_model_safely(timeout = timeout, .args = args)
+}
+
+
+#' @describeIn fit_models fit the model predicting the probability of a birth to result in twins from the total number of births in interaction with the population
+#' @export
+#'
+fit_twinning.binomial_with_pop_interaction <- function(mother_level_data, timeout = Inf, verbose = TRUE) {
+
+  formula <- "cbind(twin_total, singleton_total) ~ 1 + births_total*pop"
+
+  if (verbose) print(paste0("Fitting model '", formula, "'..."))
+
+  args <- list(formula = stats::as.formula(formula), data = mother_level_data, family = stats::binomial(link = "logit"), method = "PQL/L")
+
+  ## fit the model:
+  fit_model_safely(timeout = timeout, .args = args)
+}
+
+
 #' @describeIn fit_models fit the model predicting the age at first birth from the twinning status and the total number of births
 #' @export
 #'

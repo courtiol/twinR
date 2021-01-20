@@ -94,6 +94,13 @@ fit_05 <- fit_twinning.binomial(data_mothers_monthly)
 ## we refit fit_05 on the complete dataset to study the effect of dropping observations:
 fit_05bis <- fit_twinning.binomial(data_mothers_all) # for Fig S5
 
+## we refit fit_05 with different parameterisation (for discussing interaction in Methods):
+fit_05_pop_fixed <- fit_twinning.binomial_with_pop_as_fixed(data_mothers_all)
+fit_05_pop_inter <- fit_twinning.binomial_with_pop_interaction(data_mothers_all)
+`#`(anova(fit_05_pop_fixed, fit_05_pop_inter)) ## --> test interaction pop:births_total
+#     chi2_LR df   p_value
+#p_v 11.56422  8 0.1717319
+
 fit_06 <- fit_AFB(data_mothers_monthly)
 fit_07 <- fit_PP(data_births_monthly.complete)
 fit_08 <- fit_IBI(data_births_monthly.complete)
@@ -107,6 +114,7 @@ fit_14 <- fit_twinning.binary(data_births_monthly.complete, maternal_ID_as.predi
 
 ## for getting tibble summary output of a model fit, do e.g.:
 build_fit_summary.table(fit_01)
+
 
 
 #------------------------------------------------------------------------------------------------
