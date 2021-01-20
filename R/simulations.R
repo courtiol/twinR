@@ -374,3 +374,80 @@ run_simulation <- function(birth_level_data, scenario = NULL, life_history_fits 
 
    return(list_output)
 }
+
+
+
+#' Simulate data to study the reproductive life of mothers
+#'
+#' This function simulates the life history of mothers and extract information about simulated
+#' individuals. The argument `effect_pt` can be used to simulate an increased (or reduced) twinning
+#' propensity.
+#'
+#' @inheritParams simulate_slopes
+#' @inheritParams simulate_slopes_for_GOF
+#' @param effect_pt a numerical value defining by how much the intercept of `fit_pt` has to be
+#'   increased (on the scale of the linear predictor)
+#'
+#' @return a tibble containing information about the reproductive life of the simulated mothers
+#' @export
+#' @examples
+#' ## See ?twinR
+#'
+simulate_reproduction <- function(birth_level_data, scenario, life_history_fits = NULL,
+                                  effect_pt = 0,
+                                  N_replicates = 100L, seed = 1L,
+                                  nb_cores = 2L, lapply_pkg = "pbmcapply") {
+
+
+  ## modifying the fitted intercept of the model pt:
+  life_history_fits$fit_twinning.binary$fixef[1] <- life_history_fits$fit_twinning.binary$fixef[1] + effect_pt
+
+  ## selecting function for lapply:
+  if (nb_cores > 1L && lapply_pkg == "base") message("using the 'base' package does not allow for parallel computing; only 1 CPU core will be used and that means it will take a lot of time (perhaps weeks) to run till completion...")
+
+  if (lapply_pkg == "pbmcapply" && !requireNamespace("pbmcapply", quietly = TRUE)) {
+    message("to run parallel computing using the package {pbmcapply} you need to install this package; since you did not, {parallel} will be used instead.")
+    lapply_pkg <- "parallel"
+  }
+
+  lapply_fn <- switch(lapply_pkg,
+                      parallel = function(...) parallel::mclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE),
+                      pbmcapply = function(...) pbmcapply::pbmclapply(..., mc.cores = nb_cores, mc.preschedule = FALSE, mc.style = "txt", mc.substyle = 3),
+                      base = function(...) lapply(...)
+                      )
+
+  ## run the job:
+  if (interactive()) print("Simulations in progress...")
+
+  job <- lapply_fn(seq_len(N_replicates), function(it) {
+
+    ## run simulation based on models fitted on observed data:
+    simu <- run_simulation(birth_level_data = birth_level_data,
+                           scenario = scenario,
+                           life_history_fits = life_history_fits,
+                           seed = seed + -1L + it,
+                           output = list(birth_level_data.simulated = TRUE, slope = FALSE, fits = FALSE),
+                           timeout = Inf,
+                           verbose =  list(fit = FALSE, simu = FALSE))
+
+    simu$birth_level_data.simulated %>%
+       dplyr::group_by(.data$maternal_id) %>%
+       dplyr::summarize(twinner = any(.data$twin),
+                        twin_births = sum(.data$twin),
+                        all_births = dplyr::n(),
+                        twins = sum(.data$twin_births * 2L), ## note: we don't simulate triplets and so forth
+                        singletons = sum(!.data$twin),
+                        offsprings = .data$twins + .data$singletons) %>%
+       dplyr::summarize(twinning_rate = sum(.data$twin_births)/sum(.data$all_births),
+                        twinner_rate = mean(.data$twinner),
+                        total_offsprings = mean(.data$offsprings),
+                        total_births = mean(.data$all_births)) %>%
+       dplyr::bind_cols(seed = seed + -1L + it)
+
+  })
+
+  ## combine all outputs into a single tibble:
+  if (interactive()) print("Processing the output...")
+  do.call(rbind, job)
+
+}

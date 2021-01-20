@@ -534,6 +534,50 @@
 #' write(format_goodness_of_fit.table_2_LaTeX(tableS15), file = "tables/tableS15.tex")
 #'
 #'
+#'
+#' #------------------------------------------------------------------------------------------------
+#' #--- Studying the effect of twinning propensity on the number of offspring using simulations  ---
+#' #------------------------------------------------------------------------------------------------
+#'
+#' ## Simulate the reproductive life history of mothers so to study the influence of  a simulation
+#' ## scenario on the total number of offspring produced as well as on other metrics about the
+#' ## reproductive life of mothers.
+#'
+#' ## Part one: simulation under AC:
+#' simu_baseline <- simulate_reproduction(birth_level_data = data_births_monthly,
+#'                                        scenario = "AC",
+#'                                        life_history_fits = fits_AC_obs,
+#'                                        effect_pt = 0,
+#'                                        nb_cores = nb_cores)
+#'
+#'  `#`(rbind(apply(simu_baseline, 2L, mean),
+#'            apply(simu_baseline, 2L, quantile, probs = 0.025),
+#'            apply(simu_baseline, 2L, quantile, probs = 0.975)), digits = 3L)
+#'
+#' #     twinning_rate twinner_rate total_offsprings total_births  seed
+#' #[1,]        0.0167       0.0772             4.91         4.83 50.50
+#' #[2,]        0.0158       0.0734             4.88         4.80  3.48
+#' #[3,]        0.0175       0.0813             4.95         4.87 97.50
+#'
+#'
+#' ## Part two: simulation under AC with an increased probability of twinning:
+#' simu_more_twins <- simulate_reproduction(birth_level_data = data_births_monthly,
+#'                                          scenario = "AC",
+#'                                          life_history_fits = fits_AC_obs,
+#'                                          effect_pt = 2.5,
+#'                                          nb_cores = nb_cores)
+#'
+#'  `#`(rbind(apply(simu_more_twins, 2L, mean),
+#'            apply(simu_more_twins, 2L, quantile, probs = 0.025),
+#'            apply(simu_more_twins, 2L, quantile, probs = 0.975)), digits = 3L)
+#'
+#' #     twinning_rate twinner_rate total_offsprings total_births  seed
+#' #[1,]         0.167        0.535             5.53         4.74 50.50
+#' #[2,]         0.165        0.529             5.50         4.71  3.48
+#' #[3,]         0.170        0.541             5.56         4.76 97.50
+#'
+#'
+#'
 #' #------------------------------------------------------------------------------------------------
 #' #---------------------------------- Building the SI ---------------------------------------------
 #' #------------------------------------------------------------------------------------------------
