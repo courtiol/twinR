@@ -37,6 +37,11 @@ library(twinR)
 ```
 
 
+## Documentation
+
+Click on **Releases** to access the PDF manual for this package. 
+
+
 ## Exploration of the source code
 
 Since comments embedded within source code disappear upon installation of R packages, we recommend you to directly explore the source of the R code here in GitHub.
