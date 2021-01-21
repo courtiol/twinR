@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/324365720.svg)](https://zenodo.org/badge/latestdoi/324365720)
+
 # twinR
 
 This is the repository providing the code and the data associated with the paper
