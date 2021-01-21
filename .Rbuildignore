@@ -7,3 +7,4 @@
 log_.*
 script.R
 ^SI$
+LICENSE
