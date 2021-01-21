@@ -47,5 +47,5 @@ needed for a given application.
 
 }
 \seealso{
-simulate_slopes
+\code{\link{simulate_slopes}}
 }

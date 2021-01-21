@@ -22,5 +22,5 @@ description of the test are given in the Appendix S1 of our Supplementary Materi
 
 }
 \seealso{
-simulate_slopes_for_GOF combine_simulated_slopes
+\code{\link{simulate_slopes_for_GOF}}, \code{\link{combine_simulated_slopes}}
 }

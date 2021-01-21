@@ -78,5 +78,5 @@ For details on the implementation used for the parallel computing and its settin
 
 }
 \seealso{
-simulate_slopes goodness_of_fit test_parallel_computation
+\code{\link{simulate_slopes}}, \code{\link{goodness_of_fit}}, \code{\link{test_parallel_computation}}
 }

@@ -52,5 +52,5 @@ information). There is no reason to use this function directly. It is called by
 
 }
 \seealso{
-simulate_slopes_for_GOF
+\code{\link{simulate_slopes_for_GOF}}
 }

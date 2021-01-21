@@ -11,7 +11,7 @@
 #' @param N_replicates the number of simulation replicates to run
 #' @param .log a boolean indicating whether or not to write progress in a log file (for debugging purposes)
 #' @param .log_file the name of the log file (with extension)
-#' @seealso simulate_slopes_for_GOF
+#' @seealso [`simulate_slopes_for_GOF`]
 #'
 #' @return a list containing the simulated slopes, the scenario, the input seed, and the time elapsed to do the job
 #' @export
@@ -111,7 +111,7 @@ simulate_slopes <- function(birth_level_data, scenario, life_history_fits = NULL
 #' @inheritParams simulate_slopes
 #' @inheritParams test_parallel_computation
 #'
-#' @seealso simulate_slopes goodness_of_fit test_parallel_computation
+#' @seealso [`simulate_slopes`], [`goodness_of_fit`], [`test_parallel_computation`]
 #' @return a tibble containing all the results
 #' @export
 #' @examples
@@ -236,7 +236,7 @@ combine_simulated_slopes <- function(path_slopes = "slopes_under_scenarios") {
 #'
 #' @return a tibble with the information about the scenario and the computed p-values
 #' @export
-#' @seealso simulate_slopes_for_GOF combine_simulated_slopes
+#' @seealso [`simulate_slopes_for_GOF`], [`combine_simulated_slopes`]
 #' @examples
 #' # See ?twinR
 #'

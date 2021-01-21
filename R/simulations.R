@@ -323,7 +323,7 @@ life_histories <- R6::R6Class(
 #'
 #' @return a list with the output requested
 #' @export
-#' @seealso simulate_slopes
+#' @seealso [`simulate_slopes`]
 #' @examples
 #' # See ?twinR
 #'

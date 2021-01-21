@@ -26,7 +26,7 @@
 #' @param seed an `integer` providing the seed for the random generator
 #' @return a list containing the predictions (or differences in predictions) and
 #'  intervals, as well as the estimates from each bootstrap replicate used to compute
-#'  the intervals and the object created by [`boot.ci`][`boot::boot.ci()`].
+#'  the intervals and the object created by [`boot.ci`][`boot::boot.ci`].
 #'
 NULL
 

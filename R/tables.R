@@ -267,7 +267,6 @@ export_table_xlsx <- function(table, file) {
 #'
 #' @name format_to_LaTeX
 #' @return a string of characters
-#' @seealso pretty_text build_table_tex
 #'
 NULL
 

@@ -57,6 +57,3 @@ They contains in the code the captions of the supplementary tables.
 \item \code{format_text_2_LaTeX}: format text for LaTeX
 }}
 
-\seealso{
-pretty_text build_table_tex
-}
