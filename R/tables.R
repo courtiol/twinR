@@ -389,6 +389,9 @@ format_goodness_of_fit.table_2_LaTeX <- function(goodness_of_fit.table) {
 #'
 format_formula_2_LaTeX <- function(fit_summary.table, size = NULL) {
   formula <- attr(fit_summary.table, "formula")
+  if (grepl("twin ~", formula)) {
+    formula <- sub("twin ~", "T ~", formula, fixed = TRUE)
+  }
   text <- paste0("$\\mathtt{", formula, "}$")
   text <- sub("~", "\\sim", text, fixed = TRUE)
   text <- gsub("_", "\\_", text, fixed = TRUE)
