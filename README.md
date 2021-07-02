@@ -3,7 +3,7 @@
 # twinR
 
 This is the repository providing the code and the data associated with the paper
-"**Twinners in pre-industrial Europe: more babies but fewer births**" by:
+"**More babies but fewer births for twinners in pre-industrial Europe**" by:
 
 - Ian J. Rickard *(Department of Anthropology, Durham University, Durham, UK / Department of Evolutionary Genetics, Leibniz Institute for Zoo and Wild Research, Berlin, Germany)*
 - Colin Vullioud *(Department of Evolutionary Genetics, Leibniz Institute for Zoo and Wild Research, Berlin, Germany)*
