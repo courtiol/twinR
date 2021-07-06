@@ -348,6 +348,7 @@
 #'           labels = "AUTO", label_size = 12, align = "v", axis = "l")
 #'
 #' ggsave(file = "figures/fig1.pdf", width = 11.4, height = 8.5, units = "cm") # export as PDF
+#' ggsave(file = "figures/fig1.png", width = 11.4, height = 8.5, units = "cm") # export as PNG
 #'
 #'
 #' ## Figure 2:
@@ -359,6 +360,7 @@
 #' draw_fig_2(data_fig_2)
 #'
 #' ggsave(file = "figures/fig2.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
+#' ggsave(file = "figures/fig2.png", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
 #'
 #'
 #' ## Figure 3:
@@ -374,6 +376,7 @@
 #'           labels = "AUTO", nrow = 3, label_size = 12, align = "v", axis = "lr")
 #'
 #' ggsave(file = "figures/fig3.pdf", width = 8.7, height = 20, units = "cm")
+#' ggsave(file = "figures/fig3.png", width = 8.7, height = 20, units = "cm")
 #'
 #'
 #' ## Figure S1:
