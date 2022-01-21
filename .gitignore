@@ -7,5 +7,6 @@ slopes_under_scenarios
 gof_logs
 log_*
 script.R
+fitted_models
 fitted_models/non_shared
 fitted_models_backup
