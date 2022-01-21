@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+slopes_under_scenarios
+gof_logs
+log_*
+script.R
+fitted_models/non_shared
+fitted_models_backup
