@@ -1,0 +1,11 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^gof\_logs$
+^tables$
+^fitted\_models$
+^figures$
+^slopes\_under\_scenarios$
+log_.*
+script.R
+^SI$
+LICENSE

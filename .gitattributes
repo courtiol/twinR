@@ -1,0 +1,2 @@
+fitted_models/*.rda filter=lfs diff=lfs merge=lfs -text
+./fitted_models filter=lfs diff=lfs merge=lfs -text

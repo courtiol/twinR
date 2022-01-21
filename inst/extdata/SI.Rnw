@@ -1,0 +1,239 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsfonts}
+\usepackage[sectionbib]{natbib}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage[margin=1in]{geometry}
+
+\bibliographystyle{tpb}
+\newcommand{\adata}{\ensuremath{\mathcal{D}}}
+\newcommand{\data}{\ensuremath{D}}
+\newcommand{\datab}{\ensuremath{D_{b}^*}}
+\newcommand{\databb}{\ensuremath{D_{bc}^{**}}}
+\newcommand{\boo}[1]{\ensuremath{{#1}_{b}^{*}}}
+\newcommand{\CDF}{\ensuremath{\mathrm{CDF}}}
+\newcommand{\sfn}{\ensuremath{\mathrm{s}}}
+\newcommand{\tfn}{\ensuremath{\mathrm{t}}}
+\newcommand{\bth}{\ensuremath{\boldsymbol{\theta}}}
+\newcommand{\bSigma}{\ensuremath{\boldsymbol{\Sigma}}}
+\DeclareMathOperator{\Esp}{E}
+
+\title{Supplementary Information for}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Lower fertility for mothers with higher twinning propensity in pre-industrial Europe}
+\author{I. J. Rickard \and C. Vullioud \and F. Rousset \and E. Postma \and S.
+Helle \and V. Lummaa \and R. Kylli \and J. E. Pettay \and E.
+Røskaft \and G. R. Skjærvø \and C. Störmer \and E. Voland \and D.
+Waldvogel \and A. Courtiol\footnote{corresponding author: courtiol@izw-berlin.de}}
+
+\date{}
+
+\begin{document}
+
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+<<setup, include = FALSE>>=
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, error = TRUE, message = FALSE)
+options(knitr.kable.NA = "")
+library(twinR)
+library(dplyr)
+@
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\listoffigures
+
+\newpage
+
+\listoftables
+
+\newpage
+
+% \section{Section 1: the heterogeneity hypothesis and the Utah population}
+%
+% In 2011, \citeauthor{Robson2011} published a paper advancing the so-called heterogeneity hypothesis: "Twinning may be an indicator of higher maternal capacity and may identify those women whose enhanced phenotypic quality allows them to bear these elevated reproductive costs". As \citet{Rickard2012} argued however, all the predictions from  \citet{Robson2011} suffer from a key methodological issue that casts doubt on this finding. Because \citet{Robson2012} repudiated this criticism, we here unpack their arguments as well as ours for readers interested in the specific controversy.
+%
+% That individuals may evolve mechanisms to modulate the expression of their traits according to their phenotypic quality is not questioned. This is true irrespective of whether one defines phenotypic as a source of fixed or dynamic heterogeneity between individuals. In fact, this idea has been the focus of thousands of studies performed in a myriad of species. This includes for instance studies from the field of behavioural ecology known as condition dependence. That phenotypic quality has shaped the evolution of a given trait is however particularly difficult to demonstrate. One main difficulty is that it is not clear what the phenotypic quality (or condition) really is, how to define it, and how to measure it \citep[e.g.][]{Cotton2004, Wilson2010}. Another, as \citet{Robson2011} pointed out, is that variation in phenotypic quality is overlaid on top of trade-offs in resource allocation. Indeed, when resource acquisition varies between individuals, inferring trade-offs from phenotypic correlations is in itself difficult \citep[e.g.][]{VanNoordwijk1986, Pease1988, Bolund2020}.
+%
+% \citet{Robson2011} thus decided not to test the effect of phenotypic quality as such but to test predictions consistent with their heterogeneity hypothesis. Namely, that "twinning mothers should exhibit additional features of a robust phenotype, including shorter average inter-birth intervals, later ALB [age at last birth] and longer reproductive spans resulting in higher parities, and longer postmenopausal lifespans". The outputs of their statistical analyses comparing these variables between twinners and non-twinners were consistent with the predictions the authors made, which led them to conclude that the heterogeneity hypothesis must be right. \citet{Rickard2012}'s concern is that the same predictions would hold even if the specific heterogeneity hypothesis considered by \citet{Robson2011} does not hold.
+%
+% \citet{Rickard2012} argued that all the predictions from \citet{Robson2011} related to the relationship between twinning and fertility suffer from a key methodological issue: they are framed in terms of problematic comparisons between mothers that produced twins and mothers that did not. Such comparisons are problematic because differences related to fertility are expected to be found between twinners and non twinners irrespective of the presence or absence of heterogeneity in the phenotypic quality of mothers. This is because twinners and non-twinners do not just differ from a difference in their twinning propensity, but they also differ in their exposure to the risk of twinning \citep[see][and Discussion in main text for illustrations]{Rickard2012}. Even if the patterns predicted by \citet{Robson2011} are correct, we do not need the heterogeneity between mothers to cause it. In fact, it suffices to reverse the causality of the predictions to see that a different mechanism as the one proposed by \citet{Robson2011} may also be consistent with the observations:
+%
+% \begin{itemize}
+% \item do twinners have shorter interbirth intervals because they are of higher quality, or do women that have shorter interbirth intervals are more likely to get twins because they give birth more times?
+% \item do twinners have a later age at last birth or a longer reproductive span because they are of higher quality, or do women that have a later age at last birth or a longer reproductive span are more likely to get twins because they give birth more times?
+% \item do twinners have more births because they are of higher quality, or do women that have more births are more likely to get twins precisely because they play the "twin lottery" more times.
+% \end{itemize}
+%
+% The situation for postmenopausal lifespan is different since this prediction does not relate to differences in fertility between mothers and therefore does not concern us here.
+%
+% That predictions about difference between twinners and non-twinners may hold irrespective of the true direction of the causality reaches beyond the traditional "correlation does not imply causation" issue. Indeed, here the problem is that predictions made by \citet{Robson2011} may be validated irrespective of the veracity of their hypothesis. Worse, the predictions obtained by reversing causality are not the product of some unlikely hypothesis but an unavoidable statistical consequence (the more you play the lottery, the more likely you are to win). This means that once the causality is reversed, the predictions will hold (e.g. mothers that would produce more birth due to chance alone would also be more likely to end up being classified as twinners) whether the heterogeneity hypothesis (or indeed, other forms of condition dependence) hold or not.
+%
+% In their comment, \citet{Rickard2012} also presented the result of a very simple simulation study illustrating the issue. The simulation experiment showed that even when the heterogeneity hypothesis does not apply (something that \citet{Rickard2012} implemented by assuming that the twinning propensity was the same across all mothers), analysing the data generated by comparing twinners and non-twinners yielded in results which were both qualitatively and quantitatively similar to those presented by \citet{Robson2011}. In other words, they obtained results that are typically interpreted as supportive of the heterogeneity hypothesis, although the simulations, by construction, did not emulate any of the mechanisms which the hypothesis assumes.
+%
+% Importantly, the message of \citet{Rickard2012} comment was not to suggest that the heterogeneity hypothesis does not apply to the Utah population studied by \citet{Robson2011} -- a point which we will return to below. Instead, \citet{Rickard2012}'s conclusion was that the predictions and analyses performed by \citet{Robson2011} were not suitable to test the heterogeneity hypothesis.
+%
+% In reply to \citet{Rickard2012} comments. \citet{Robson2012} criticised the simulation study made by  \citet{Rickard2012} and presented new results aimed to support their initial finding. Concerning the simulation study, \citet{Robson2011} questioned the simplicity of the assumptions made by  \citet{Rickard2012} to generate their synthetic data. They remarked that \citet{Rickard2012} did not consider the higher infant mortality rate of twins compared to singletons and its negative effect on the duration of interbirth intervals. They also criticised that \citet{Rickard2012} did not consider that the twinning propensity varies with the age of mothers. However, this has no bearing on the logical argument of \citet{Rickard2012}. The simulation showed that even in the absence of heterogeneity between mothers, twinners are expected to have more children. Considering that the death of twin infants may reduce interbirth intervals should in fact increase the apparent higher fertility of mothers with twins; but, like the effect of mother's age, those details have nothing to do with what the simulation demonstrated; namely, that comparing twinners and non-twinners can lead to misleading conclusions.
+%
+% The simulations presented in the main text of the current paper are different from those made by \citet{Rickard2012}. This time, the simulations do not fall into the category of proof-of-concept models \citep{Servedio2014}. Instead, they are used to compare different mechanisms based on the quantitative relationship they create between twinning propensity of the total number of births. For this reason, the life history of the virtual individuals is simulated with much more realism. In particular, all the details mentioned by \citet{Robson2012} are now considered. That twinners may have shorter interbirth intervals after giving birth to twins is modeled by mechanism B (see main text; yet again it is not necessary to model explicitly why this occurs -- the death of the infants may be one of the reasons). That the twinning propensity varies with the age of the mothers is modelled by mechanism C.
+%
+% We now turn to the analyses presented in \citet{Robson2012}. All the new results focused on the analysis of parity progression ratios. They "compared the proportion of twinning mothers who bear an additional child relative with non-twinning mothers at that same parity" and found that twinners have higher parity progression ratios at any parity (at least in the earlier cohort). Unfortunately, this additional analysis does not cope with our main criticism since twinners are still compared to non-twinners. Again, it is easy to reverse the causality to show that the predicted patterns hold in the absence of the specific heterogeneity hypothesis they considered:
+%
+% \begin{itemize}
+% \item do twinners have higher parity progression because they are of higher quality, or do mothers that have higher parity progression are more likely to get twins because they give birth more times?
+% \end{itemize}
+%
+% Had \citet{Robson2012} analysed non-aggregated data with the value of the variable representing the outcome of twinning being defined for the parity considered instead of being defined across all births a mother gave to, the answer would have been clear. In addition to presenting the results of a comparison of the mean parity progression ratios between twinners and non-twinners, they also presented the results as a ratio and as an odds-ratio. Unfortunately, using means, ratios, odd-ratios, or whichever metric, has no relevance to the problem. The same is also true of the statistical model used and the covariates considered in the analysis: as long as twinning status is defined over the full life history of the mothers, twinners and non-twinners do not simply differ by their twinning propensity but also by their realised fertility which confounds the results. In sum, none of the arguments put forward by \citeauthor{Robson2012} in their 2012 reply addresses the fundamental issue pointed by \citet{Rickard2012}.
+%
+% In conclusion, until the right analyses are done on the data from historical Utah, one simply cannot tell if, as we found for our European data, the heterogeneity hypothesis should be rejected, or if the hypothesis is likely to be correct in that population. Other studies have shown that the Utah population shows different biological characteristics from European populations it originated from -- a result that may be explained by the particular history of the demography of this pioneer population. For example, the variance in relative fitness increased during the demographic transition in Utah \citep{Moorad2013}, although it decreased in most other populations investigated thus far \citep[][and references therein]{Courtiol2013, Corbett2018, Hed1987}. It may therefore be possible that the heterogeneity hypothesis is true in Utah as claimed in \citet{Robson2011, Robson2012}. It should certainly be tested, but the data must be analysed at the level of each individual birth. Comparing populations as different as the one from Utah to others may further yield decisive insights into the biology of twinning.
+
+
+
+\section{Section 1: an unbiased test for the simulation scenarios}
+
+We face the problem of testing Goodness-Of-Fit (GOF) when the distribution of the test statistic depends on fitted parameters, and we use a bootstrap procedure for that purpose. While this practice is widespread, it is widely ignored beyond the theoretical literature that this may be incorrect, so we first recall some theory and then consider corrections for this procedure.
+
+We aim to assess whether the slope $s=\sfn(\adata)$ we estimate from the actual data \adata\ by the logistic regression (model 3; see Methods) between the per-birth twinning probability and maternal total births is consistent with the distribution $\phi(S=\sfn(\data) ; \bth)$ of slopes expected for samples $\data$ drawn under a given hypothetical scenario $\pi$ (say ``P'') with parameters $\bth$. We do not know the $\bth$ vector so we estimate it from the data, and the estimates  depend on the assumed $\pi$ (i.e., we obtain different estimates $\hat{\bth}_\pi$ for $\pi$=``P'', ``I'', and so on). Thus we use the slope as a GOF statistic for a model with parameters $\bth$ estimated aside of the slope, on the same data.
+
+For a GOF test, we can then simulate the distribution $\phi(S;\hat{\bth}_\pi)$ and use this distribution as an approximation for $\phi(S; \bth)$. That is, we can obtain by simulation an estimate $\hat{\CDF}(x;\hat{\bth}_\pi)$ of the cumulative distribution function (CDF) of $S=\sfn(\data^*)$ for bootstrap samples $\data^*$ generated under $\hat{\bth}_\pi$, i.e., an estimate of $\Pr(S\leq x; \hat{\bth}_\pi)$ for any $x$, and determine a unidirectional p-value as the value of the estimated CDF value for observed slope, $p=\hat{\CDF}(\sfn(\adata) ;\hat{\bth}_\pi)$ (or $1-p$, depending on context). This is what a naive use of the bootstrap would provide.
+
+However, we fitted parameters on the data, which means that the data tend to be more consistent with the fitted model $\phi(S;\hat{\bth}_\pi)$ than with the data-generating process $\phi(S; \bth)$. This means that, if a GOF test has controlled error rates (uniform p-values) when defined from $\CDF(x;\bth)$, it may be conservative when each sample is assessed against  $\CDF(x;\hat{\bth}_\pi)$, with parameters and CDF re-estimated on each sample produced by the data-generating process.
+
+Whether the test is conservative depends on the relationship between the GOF statistic (more generally denoted $T=\tfn(D)$) and the estimated parameters. A toy example that captures this problem considers that $\bth$ is reduced to a single scalar parameter $\theta$, and that $\hat{\theta}(\data)$ follows jointly with $T(\data)$ the bivariate Gaussian model \begin{equation*}
+	\begin{pmatrix}T\\  \hat{\theta}\end{pmatrix} \sim \mathcal{N}\left(\boldsymbol{\mu}=\begin{pmatrix}\beta \theta\\ \theta\end{pmatrix}, \bSigma=\begin{pmatrix}
+	\sigma^2_t+\beta^2 \sigma^2_{\hat{\theta}}& \beta \sigma^2_{\hat{\theta}}\\
+	\beta \sigma^2_{\hat{\theta}}& \sigma^2_{\hat{\theta}}
+	\end{pmatrix}\right)
+\end{equation*}
+with $\beta$, $\sigma^2_t$ and $\sigma^2_{\hat{\theta}}$ independent of $\theta$. The reason for considering this example is that it leads to a simple linear regression of $T$ to $\hat{\theta}$. Specifically, $T|\hat{\theta}; \theta \sim \mathcal{N}(\beta\hat{\theta},\sigma^2_t)$,%
+%
+\footnote{From standard regression theory for gaussian variables: $T|\theta$ has mean $\Esp[T]+\bSigma_{12} \bSigma_{22}^{-1}(\hat{\theta}-\Esp(\hat{\theta}))$ and variance $\bSigma_{11}-\bSigma_{12} \bSigma_{22}^{-1}\bSigma_{12}$} %
+%
+from which some properties of the naive bootstrap test can easily be deduced. For this test, $T$ is compared to the distribution of $T^*$ values for bootstrap samples from the fitted model (i.e. with $\hat{\theta}$ as parameter). Therefore, for the test to be correct (with a uniform distribution of p-values), the conditional distribution of $T$ given $\hat{\theta}$ should be identical to the simulated distribution of the $T^*$s. But their variances are different: the conditional variance of $T$ is $\sigma^2_t$ (regression result), while the simulation variance is higher ($\sigma^2_t+\beta^2 \sigma^2_{\hat{\theta}}$, this being the same as the variance of $T$ drawn from the distribution with parameter $\theta$).  Various forms of non-uniform distributions of p-values may then result, the simplest one occurring when when $\beta=1$ and $\sigma^2_t$ reduces to zero. In that case the means of the two distributions are equal (to $\hat{\theta}$), so the distribution of p-values concentrates on 0.5. Since this is true irrespective of the $\hat{\theta}$ value, the p-value will be generally too close to 0.5.
+
+Conservativeness is expected whenever the GOF statistic is positively correlated with one of the parameter estimates. Ideally, one should use a GOF statistic whose distribution is (as least asymptotically) independent of the value of $\hat{\bth}_\pi$, or, equivalently in practice, of the value of $\bth$. In other words, the bootstrap procedure is guaranteed to provide an asymptotically correct GOF test of a statistic $T$ only if $T$ is asymptotically a pivotal statistic under the null model; a statistic being pivotal if its distribution is independent of the value of $\bth$. Using pivotal statistics is also a standard requirement for analytic GOF tests (e.g., \citealp{CoxH74}, §3.3).
+
+Pivotal statistics are not generally available for use in one-step bootstrap procedures. In that case, double bootstrap procedures have been developed (e.g., \citealp{Beran88}; \citealp{DavisonH97}, p. 177).  The basic idea of such procedures is that, for each sample $\datab$ from the first bootstrap step, a second bootstrap is performed using bootstrap samples $\databb$ generated given the estimates $\hat{\bth}_\pi(\datab)$ (with $b=1,\ldots,B$) from the model fit to $\datab$, and $\tfn(\datab)$ can be compared to the distribution of $\tfn(\databb)$ (with $c=1,\ldots,C$) providing a value $\boo{p} = \hat{\CDF}(\tfn(\datab);\hat{\bth}_\pi(\datab) )$ for each $\datab$. The distribution of $\boo{p}$ would be uniform if $T$ were pivotal; instead of assuming that, one considers that the non-uniform distribution of $p= \hat{\CDF}(\tfn(\data);\hat{\bth}_\pi(\data))$ is asymptotically pivotal, and obtains an estimate of this distribution as that of \boo{p} over different $\datab$, by the double bootstrap calculation.
+
+Double-bootstrap computations are computer intensive, and indeed not practically applicable as described above to the present problem. For such reasons, various simplifications of the above procedure have been discussed in the literature (\citealp{DavisonH97}, ch. 9). We apply here the notion of control variates, previously applied for bias correction in non-parametric bootstrap (ibid, Section 9.3; \citealp{Efron90}), as follows. A control variate is a variable correlated with $T$, which can be used to predict its value. The control variate that we consider here is (an estimator of) E$[S^*;\hat{\bth}_\pi(\data)]$, the expected value of the slope from samples drawn under the model fitted to \data. The test statistic of the corrected bootstrap test is then the residual of the prediction of the slope \sfn(\data)  by the mean value of $S^*$ under $\hat{\bth}_\pi(\data)$; the latter mean being obtained by performing a single-level bootstrap simulation. In the literature, simpler control variates have been considered, not requiring a bootstrap simulation; but these previous works considered non-parametric bootstrap simulations, which involve additional assumptions not valid here. In some of these previous works, parameter estimates (elements of $\hat{\bth}_\pi$) clearly correlated with $T$ could be used, in contrast to the present case.
+
+More specifically, we apply the following procedure, which would be exact (apart from finite simulation error) under the toy model. Under the tested model, we draw $B$ replicates of $\data^*$ given $\hat{\bth}_\pi(\adata)$ and $C$ replicates of $\data^{**}$ given $\hat{\bth}_\pi(\data^*)$. We then perform a \emph{calibration} fit to construct a predictor of $\sfn(\datab)$  from the average value of $\sfn(\databb)$, by simple regression with intercept and slope. We use the residuals of prediction as GOF statistics. We use $B=200$ and $C=49$. We also performed \emph{validation} simulations that demonstrated the need for correcting the single-level bootstrap procedure and the effectiveness of our correction. For this validation, under each of the sixteen scenarios, we simulated $B_{\mathrm{v}}=200$ samples under the fitted model and applied to them both the single-level bootstrap test and the testing procedure with control variate. The resulting distributions are shown in Fig. S7, which confirms the need for a correction for models including mechanisms P and S.
+
+Computationally, the main benefits of using a control variate over the raw double-bootstrap appear (a) when performing a single test, as fewer simulations may be needed to reach a given degree of accuracy in p-value determination; (b) when assessing the performance of the GOF test of an hypothesis $\pi_0$ under an alternative model $\pi_1$ (and in particular for the validation simulations, where $\pi_0 = \pi_1$). We first perform a double bootstrap simulation to obtain a calibration fit under $\pi_0$. Then, for each new sample \data\ generated under $\pi_1$, we do not need to perform a new double-bootstrap simulation. Instead, we need only to compute \sfn(\data), $\hat{\bth}_{\pi_0}(\data)$, and values of $\sfn(\data^*)$ for $C$ replicates of $\data^*$ simulated given $\hat{\bth}_{\pi_0}(\data)$, to obtain the residual of prediction of \sfn(\data)  from mean $\sfn(\data^*)$ and to compare it to the distribution of residuals from the single double bootstrap simulation on the original \data.
+
+Despite the huge savings in computing brought by the control variate approach over a basic double bootstrap, our GOF tests of the different simulation scenarios still have large CPU and memory requirements. Such computations were performed both on a Linux computer with 128 cores and 254 GB of RAM from the Department of Evolutionary Genetics at the Leibniz Institute for Zoo and Wildlife Research (Berlin, Germany), as well as on a Linux cluster node with 112 cores and 3To of RAM of the Meso@LR cluster of the University of Montpellier, requiring a computation time of the order of 10,000 core CPU hours (around half being used for the validation).
+
+\bibliography{biol,english,twin_SI}
+
+\pagebreak
+
+
+\section{Supplementary Figures \& Tables}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[height = 6cm]{../figures/figS1.pdf}
+\end{center}
+\caption{Relationship between lifetime twinning status, maternal total births and the age at first birth. The age at first birth was significantly higher for twinners with one ($\textrm{AFB}_\textrm{twinners}$ = 31.6 years; 95\% CI: 30.2, 33.0; $\textrm{AFB}_\textrm{non-twinners}$ = 29.3 years; 95\% CI 28.6, 30.0; delay for twinners = 27.5 months; 95\% CI: 11.9, 43.7) or two maternal total births ($\textrm{AFB}_\textrm{twinners}$ = 29.7 years; 95\% CI: 28.6, 30.8; $\textrm{AFB}_\textrm{non-twinners}$ = 28.2 years; 95\% CI: 27.5, 28.8; delay for twinners = 17.9 months; 95\% CI: 6.55, 29.4). Marginal predictions for the age at first reproduction are shown in black with open symbols. Their values are provided by the left y-axis. The distribution of maternal total births for both twinners and non-twinners is shown by the grey lines with filled symbols, with the numerical value given by the log-scaled y-axis on the right of the figure. 95\% CIs are based on 1000 bootstrap replicates for each depicted category of maternal total births.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[height = 8cm]{../figures/figS2.pdf}
+\end{center}
+\caption{Relationships between the random effects for the three life history traits.
+Top row (A-C) shows the relationship between the random effect from the fit of model 4 (the full model predicting parity progression; see Methods) and 6 (the full model predicting per-birth twinning probability). Bottom row (D-F) shows the relationship between the random effect from the fit of model 5 (the full model predicting the interbirth interval) and 6. Left column (A \& D) shows the relationship for mothers that did not produce any twins during their life. Middle column (B \& E) shows the relationship for mothers that produced twins once during their life. Right column (C \& F) shows the relationship for mothers that produced twins twice during their life. All axes are represented on the scale of the linear predictor of the corresponding models. Relationships for mothers that produced twins more than twice during their life are not displayed but follow similar patterns.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[height = 6cm]{../figures/figS3.pdf}
+\end{center}
+\caption{Hypothetical mechanisms tested by the simulation of alternative scenarios built around models predicting three life history events: parity progression (PP), interbirth interval (IBI) and twinning status of a given birth (T). The bubble on the left shows how the three life history models that were included in all simulation scenarios were modified to test each of the four hypothetical mechanisms (P, I, S, H; see section Results in main text for description). Each life history model describes the effect of predictors on a particular life history event. By default, each life history model includes an intercept and a random effect referring to the population. All models for PP and IBI also consider the effect of age/parity and maternal ID (see Methods). The bubble on the right shows the comprehensive set of combinations of the four mechanisms that were tested to produce simulation scenarios.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{../figures/figS4.pdf}
+\end{center}
+\caption{Representation of the four mechanisms (row 1) used as the basis for 16 simulation scenarios evaluated (all rows). Circles represent the three life history events we considered: parity progression (PP), probability of twinning (T) and interbirth interval (IBI). The rectangles represent the variables potentially shaping these life history events — maternal age and parity at a given birth (referred to as Age + Parity above; and as $\mathtt{poly(cbind(age, parity), best\_order)}$ in model formulas) and whether the last birth was a twin birth or not (Twin above; $\mathtt{twin}$ in model formulas) — as well as a random effect capturing other sources of heterogeneity between mothers (Mum ID above; $\mathtt{maternal\_id}$ in model formulas). Black arrows represent relationships assumed in all simulation scenarios. Red arrows represent relationships \emph{activated} in order to investigate the role of each mechanism in accounting for the negative relationship between per-birth twinning probability and maternal total births.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[height = 6cm]{../figures/figS5.pdf}
+\end{center}
+\caption{Relationship between the per-birth twinning probability and maternal total births. This figure reproduces the relationship shown in Main Text Fig. 2 (solid line) but additionally plots the relationship with the inclusion of data from families with missing birth month information (including the entire Norway dataset). This latter relationship is illustrated by the dashed regression line with an estimated slope $\beta'$ of -0.0346 (95\% CI: -0.0511, -0.0183), as well as with the dotted lines showing the location of the 95\% CI.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[height = 10cm]{../figures/figS6.pdf}
+\end{center}
+\caption{Comparison of different metrics between the real data and a dataset simulated under scenario PIS. A: distribution of maternal total births; B: number of twinners and non-twinners; C: distribution of maternal age at birth; D: number of singleton and twin births. The first row (A \& B) represents metrics computed at the level of mothers. The second row (C \& D) represents metrics computed at the level of births. All these plots show that the simulation scenario PIS produced fertility and twinning data similar to those measured on the observed data.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 0.9\linewidth]{../figures/figS7.pdf}
+\end{center}
+\caption{Evaluation of the validity of the goodness-of-fit testing procedure. Each plot shows the empirical cumulative distribution of p-values for each tested simulation scenario, when the data were simulated under the same scenario. The goodness-of-fit test in such a case corresponds to the test of the null hypothesis when the null hypothesis is true. Therefore, the probability density of p-values should be uniform and the cumulative distribution should appear as the straight diagonal line depicted on the plots. However, the empirical cumulative distribution of p-values for the single-level bootstrap (shown in red) clearly departs from this expectation for scenarios including mechanisms P or S, showing that a correction is required. The empirical distributions of the double-bootstrap procedure (shown in blue) corrects this and show that the latter procedure can be applied for all scenarios.}
+\end{figure}
+
+\input{../tables/tableS01.tex}
+
+\input{../tables/tableS02.tex}
+
+\input{../tables/tableS03.tex}
+
+\input{../tables/tableS04.tex}
+
+\input{../tables/tableS05.tex}
+
+\input{../tables/tableS06.tex}
+
+\input{../tables/tableS07.tex}
+
+\input{../tables/tableS08.tex}
+
+\input{../tables/tableS09.tex}
+
+\input{../tables/tableS10.tex}
+
+\input{../tables/tableS11.tex}
+
+\input{../tables/tableS12.tex}
+
+\input{../tables/tableS13.tex}
+
+\input{../tables/tableS14.tex}
+
+\end{document}
+

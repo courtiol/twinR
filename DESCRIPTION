@@ -1,0 +1,39 @@
+Package: twinR
+Type: Package
+Title: A Supporting R Package for the Paper "Lower fertility for mothers with higher twinning propensity in pre-industrial Europe"
+Version: 0.9999
+Authors@R: c(person("Alexandre", "Courtiol", email = "courtiol@izw-berlin.de", role = c("cre", "aut"), comment = c(ORCID = "0000-0003-0637-2959")),
+             person("François", "Rousset", email = "francois.rousset@umontpellier.fr", role = "aut", comment = c(ORCID = "0000-0003-4670-0371")),
+             person("Ian", "Rickard", email = "ian.rickard@durham.ac.uk", role = "aut", comment = c(ORCID = "0000-0003-0762-1689")),
+             person("Colin", "Vullioud", email = "colin.vullioud@posteo.org", role = "aut", comment = c(ORCID = "0000-0001-9218-1571")))
+Description: This package contains the code necessary to produce the results of the paper "Twinners in pre-industrial Europe: more babies but fewer births".
+License: CC BY-SA 4.0
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
+Roxygen: list(markdown = TRUE)
+Depends:
+    R (>= 3.5.0)
+Imports:
+    boot,
+    cowplot,
+    ggplot2,
+    ggnewscale,
+    dplyr (>= 1.0),
+    magrittr,
+    pracma,
+    R6,
+    rlang,
+    spaMM (>= 3.5.0),
+    tibble,
+    tidyr,
+    tidyselect,
+    utils
+Suggests:
+    doSNOW,
+    digest,
+    openxlsx,
+    pbmcapply,
+    knitr,
+    kableExtra,
+    testthat

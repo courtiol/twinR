@@ -1,0 +1,49 @@
+\begin{table}
+
+\caption{\label{tab:tab9}Summary of the fit of model 9. The model fit corresponds to the fit of a model with the following formula: {\small$\mathtt{IBI \sim 1 + poly(cbind(age, parity), 6) + (1 | maternal\_id) + (1 | pop)}$}. Note that the variable \texttt{IBI} fitted in the model actually corresponds to the duration of interbirth interval minus six months. This rescaling prevents numerical issues during the simulations. When this fitted model is used for predictions (in plots or to compute effect sizes), the missing six months are reintroduced to produce correct results. See legend of Table S1 for other details.}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{5cm}rrr}
+\toprule
+Type & Variable & Value & Cond. SE & t-value\\
+\midrule
+\cellcolor{gray!6}{fixed effects} & \cellcolor{gray!6}{$\beta_1$} & \cellcolor{gray!6}{3.44} & \cellcolor{gray!6}{0.0578} & \cellcolor{gray!6}{59.6}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}}$} & \cellcolor{gray!6}{-63.4} & \cellcolor{gray!6}{21.9} & \cellcolor{gray!6}{-2.9}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^2}$} & \cellcolor{gray!6}{39.5} & \cellcolor{gray!6}{19.6} & \cellcolor{gray!6}{2.01}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^3}$} & \cellcolor{gray!6}{-31.2} & \cellcolor{gray!6}{13} & \cellcolor{gray!6}{-2.4}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^4}$} & \cellcolor{gray!6}{14.9} & \cellcolor{gray!6}{6.31} & \cellcolor{gray!6}{2.37}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^5}$} & \cellcolor{gray!6}{-4.98} & \cellcolor{gray!6}{2.42} & \cellcolor{gray!6}{-2.06}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^6}$} & \cellcolor{gray!6}{4.01} & \cellcolor{gray!6}{1.01} & \cellcolor{gray!6}{3.95}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{parity}}$} & \cellcolor{gray!6}{120} & \cellcolor{gray!6}{40.7} & \cellcolor{gray!6}{2.96}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}\times\mathtt{parity}}$} & \cellcolor{gray!6}{-29655} & \cellcolor{gray!6}{15604} & \cellcolor{gray!6}{-1.9}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^2\times\mathtt{parity}}$} & \cellcolor{gray!6}{26491} & \cellcolor{gray!6}{12834} & \cellcolor{gray!6}{2.06}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^3\times\mathtt{parity}}$} & \cellcolor{gray!6}{-15608} & \cellcolor{gray!6}{7263} & \cellcolor{gray!6}{-2.15}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^4\times\mathtt{parity}}$} & \cellcolor{gray!6}{5870} & \cellcolor{gray!6}{2912} & \cellcolor{gray!6}{2.02}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^5\times\mathtt{parity}}$} & \cellcolor{gray!6}{-2048} & \cellcolor{gray!6}{883} & \cellcolor{gray!6}{-2.32}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{parity}^2}$} & \cellcolor{gray!6}{75.2} & \cellcolor{gray!6}{54.5} & \cellcolor{gray!6}{1.38}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}\times\mathtt{parity}^2}$} & \cellcolor{gray!6}{-30241} & \cellcolor{gray!6}{19139} & \cellcolor{gray!6}{-1.58}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^2\times\mathtt{parity}^2}$} & \cellcolor{gray!6}{24178} & \cellcolor{gray!6}{13414} & \cellcolor{gray!6}{1.8}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^3\times\mathtt{parity}^2}$} & \cellcolor{gray!6}{-11134} & \cellcolor{gray!6}{5960} & \cellcolor{gray!6}{-1.87}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^4\times\mathtt{parity}^2}$} & \cellcolor{gray!6}{3084} & \cellcolor{gray!6}{1618} & \cellcolor{gray!6}{1.91}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{parity}^3}$} & \cellcolor{gray!6}{52.6} & \cellcolor{gray!6}{42.1} & \cellcolor{gray!6}{1.25}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}\times\mathtt{parity}^3}$} & \cellcolor{gray!6}{-17419} & \cellcolor{gray!6}{12995} & \cellcolor{gray!6}{-1.34}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^2\times\mathtt{parity}^3}$} & \cellcolor{gray!6}{9676} & \cellcolor{gray!6}{7207} & \cellcolor{gray!6}{1.34}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^3\times\mathtt{parity}^3}$} & \cellcolor{gray!6}{-2943} & \cellcolor{gray!6}{2067} & \cellcolor{gray!6}{-1.42}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{parity}^4}$} & \cellcolor{gray!6}{18.9} & \cellcolor{gray!6}{19} & \cellcolor{gray!6}{0.993}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}\times\mathtt{parity}^4}$} & \cellcolor{gray!6}{-4622} & \cellcolor{gray!6}{4824} & \cellcolor{gray!6}{-0.958}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^2\times\mathtt{parity}^4}$} & \cellcolor{gray!6}{1891} & \cellcolor{gray!6}{1773} & \cellcolor{gray!6}{1.07}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{parity}^5}$} & \cellcolor{gray!6}{7.79} & \cellcolor{gray!6}{5.26} & \cellcolor{gray!6}{1.48}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}\times\mathtt{parity}^5}$} & \cellcolor{gray!6}{-1409} & \cellcolor{gray!6}{970} & \cellcolor{gray!6}{-1.45}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{parity}^6}$} & \cellcolor{gray!6}{1.67} & \cellcolor{gray!6}{1.04} & \cellcolor{gray!6}{1.6}\\
+random effects & variance between $\mathtt{maternal\_id}$ & 0.163 &  & \\
+ & variance between $\mathtt{pop}$ & 0.00369 &  & \\
+\cellcolor{gray!6}{response family} & \cellcolor{gray!6}{negative binomial with log link} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{shape parameter} & \cellcolor{gray!6}{5.2} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
+fit info & number of model parameters & 31 &  & \\
+ & marginal log Likelihood & -337277 &  & \\
+ & marginal AIC & 674616 &  & \\
+ & conditional AIC (cAIC) & 663064 &  & \\
+\cellcolor{gray!6}{data info} & \cellcolor{gray!6}{number of fitted observations (\emph{N})} & \cellcolor{gray!6}{84543} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
+\bottomrule
+\end{tabular}
+\end{table}

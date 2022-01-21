@@ -1,0 +1,42 @@
+\begin{table}
+
+\caption{\label{tab:tab4}Summary of the fit of model 4. The model fit corresponds to the fit of a model with the following formula: {\small$\mathtt{PP \sim 1 + twin + poly(cbind(age, parity), 5) + (1 | maternal\_id) + (1 | pop)}$}. See legend of Table S1 for more details.}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{5cm}rrr}
+\toprule
+Type & Variable & Value & Cond. SE & t-value\\
+\midrule
+\cellcolor{gray!6}{fixed effects} & \cellcolor{gray!6}{$\beta_1$} & \cellcolor{gray!6}{1.57} & \cellcolor{gray!6}{0.179} & \cellcolor{gray!6}{8.74}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{twin}}$} & \cellcolor{gray!6}{-0.412} & \cellcolor{gray!6}{0.0636} & \cellcolor{gray!6}{-6.47}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}}$} & \cellcolor{gray!6}{-420} & \cellcolor{gray!6}{59.7} & \cellcolor{gray!6}{-7.04}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^2}$} & \cellcolor{gray!6}{-185} & \cellcolor{gray!6}{51.7} & \cellcolor{gray!6}{-3.57}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^3}$} & \cellcolor{gray!6}{-43.7} & \cellcolor{gray!6}{32.6} & \cellcolor{gray!6}{-1.34}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^4}$} & \cellcolor{gray!6}{-15.7} & \cellcolor{gray!6}{14.3} & \cellcolor{gray!6}{-1.09}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^5}$} & \cellcolor{gray!6}{2.47} & \cellcolor{gray!6}{9.7} & \cellcolor{gray!6}{0.255}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{parity}}$} & \cellcolor{gray!6}{49.1} & \cellcolor{gray!6}{97.6} & \cellcolor{gray!6}{0.502}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}\times\mathtt{parity}}$} & \cellcolor{gray!6}{12922} & \cellcolor{gray!6}{39528} & \cellcolor{gray!6}{0.327}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^2\times\mathtt{parity}}$} & \cellcolor{gray!6}{-33721} & \cellcolor{gray!6}{30550} & \cellcolor{gray!6}{-1.1}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^3\times\mathtt{parity}}$} & \cellcolor{gray!6}{-395} & \cellcolor{gray!6}{14752} & \cellcolor{gray!6}{-0.0268}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^4\times\mathtt{parity}}$} & \cellcolor{gray!6}{-3270} & \cellcolor{gray!6}{6413} & \cellcolor{gray!6}{-0.51}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{parity}^2}$} & \cellcolor{gray!6}{-18.3} & \cellcolor{gray!6}{105} & \cellcolor{gray!6}{-0.175}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}\times\mathtt{parity}^2}$} & \cellcolor{gray!6}{23609} & \cellcolor{gray!6}{38306} & \cellcolor{gray!6}{0.616}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^2\times\mathtt{parity}^2}$} & \cellcolor{gray!6}{-5967} & \cellcolor{gray!6}{22834} & \cellcolor{gray!6}{-0.261}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^3\times\mathtt{parity}^2}$} & \cellcolor{gray!6}{10602} & \cellcolor{gray!6}{8890} & \cellcolor{gray!6}{1.19}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{parity}^3}$} & \cellcolor{gray!6}{27} & \cellcolor{gray!6}{64.7} & \cellcolor{gray!6}{0.417}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}\times\mathtt{parity}^3}$} & \cellcolor{gray!6}{-15417} & \cellcolor{gray!6}{19086} & \cellcolor{gray!6}{-0.808}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}^2\times\mathtt{parity}^3}$} & \cellcolor{gray!6}{1259} & \cellcolor{gray!6}{8611} & \cellcolor{gray!6}{0.146}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{parity}^4}$} & \cellcolor{gray!6}{24.5} & \cellcolor{gray!6}{21.4} & \cellcolor{gray!6}{1.14}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{age}\times\mathtt{parity}^4}$} & \cellcolor{gray!6}{-1816} & \cellcolor{gray!6}{5027} & \cellcolor{gray!6}{-0.361}\\
+\cellcolor{gray!6}{} & \cellcolor{gray!6}{$\beta_{\mathtt{parity}^5}$} & \cellcolor{gray!6}{-4.69} & \cellcolor{gray!6}{4.84} & \cellcolor{gray!6}{-0.97}\\
+random effects & variance between $\mathtt{maternal\_id}$ & 0.465 &  & \\
+ & variance between $\mathtt{pop}$ & 0.104 &  & \\
+\cellcolor{gray!6}{response family} & \cellcolor{gray!6}{binomial with logit link} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
+fit info & number of model parameters & 24 &  & \\
+ & marginal log Likelihood & -40429 &  & \\
+ & marginal AIC & 80905 &  & \\
+ & conditional AIC (cAIC) & 80276 &  & \\
+\cellcolor{gray!6}{data info} & \cellcolor{gray!6}{number of fitted observations (\emph{N})} & \cellcolor{gray!6}{105833} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{}\\
+\bottomrule
+\end{tabular}
+\end{table}
