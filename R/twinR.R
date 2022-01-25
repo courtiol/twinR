@@ -287,6 +287,37 @@
 #' #1    -1.03 -1.95 -0.193
 #'
 #'
+#'
+#' #------------------------------------------------------------------------------------------------
+#' #---------------------------------- Testing interaction births_total*pop ------------------------
+#' #------------------------------------------------------------------------------------------------
+#'
+#' fit_03fix    <- fitme(cbind(twin_total, singleton_total) ~ 1 + births_total+pop,
+#'                       data = data_mothers_monthly, family = stats::binomial(link = "logit"),
+#'                       method = "PQL/L")
+#' fit_03intfix <- fitme(cbind(twin_total, singleton_total) ~ 1 + births_total*pop,
+#'                       data = data_mothers_monthly, family = stats::binomial(link = "logit"),
+#'                       method = "PQL/L")
+#' fit_03intran <- fitme(cbind(twin_total, singleton_total) ~ 1 + births_total+(1+births_total|pop),
+#'                       data = data_mothers_monthly, family = stats::binomial(link = "logit"),
+#'                       method = "PQL/L")
+#'
+#' res_fix <- anova(fit_03fix, fit_03intfix, boot.repl = 1000, seed = 123)
+#' `#`(res_fix$rawBootLRT, digits = 3L)
+#' #    chi2_LR df p_value
+#' #p_v    11.9  7   0.119
+#'
+#' res_ran <- anova(fit_03, fit_03intran, boot.repl = 1000, seed = 123)
+#' `#`(res_ran$rawBootLRT, digits = 3L)
+#' #    chi2_LR df p_value
+#' #p_v    1.22 NA   0.313
+#'
+#'
+#'
+#' #------------------------------------------------------------------------------------------------
+#' #---------------------------------- Results on age at frist birth -------------------------------
+#' #------------------------------------------------------------------------------------------------
+#'
 #' ## Computing AFB for twinners and non-twinners with one and two total births (legend Fig S1):
 #'
 #' predictions_AFB_1_2_births <- compute_predictions(fit_07,
