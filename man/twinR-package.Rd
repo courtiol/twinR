@@ -7,7 +7,7 @@
 \title{Welcome to the R package twinR}
 \description{
 This package contains the code necessary to produce the results of the paper
-\emph{"Lower fertility for mothers with higher twinning propensity in pre-industrial Europe"}.
+\emph{"Mothers with higher twinning propensity have lower fertility in pre-industrial Europe"}.
 See section \strong{Examples} below.
 }
 \examples{

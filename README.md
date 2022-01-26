@@ -3,7 +3,7 @@
 # twinR
 
 This is the repository providing the code and the data associated with the paper
-"**Lower fertility for mothers with higher twinning propensity in pre-industrial Europe**" by:
+"**Mothers with higher twinning propensity have lower fertility in pre-industrial Europe**" by:
 
 - Ian J. Rickard *(Department of Anthropology, Durham University, Durham, UK / Department of Evolutionary Genetics, Leibniz Institute for Zoo and Wild Research, Berlin, Germany)*
 - Colin Vullioud *(Department of Evolutionary Genetics, Leibniz Institute for Zoo and Wild Research, Berlin, Germany)*

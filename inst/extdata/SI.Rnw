@@ -42,7 +42,7 @@
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\subtitle{Lower fertility for mothers with higher twinning propensity in pre-industrial Europe}
+\subtitle{Mothers with higher twinning propensity have lower fertility in pre-industrial Europe}
 \author{I. J. Rickard \and C. Vullioud \and F. Rousset \and E. Postma \and S.
 Helle \and V. Lummaa \and R. Kylli \and J. E. Pettay \and E.
 Røskaft \and G. R. Skjærvø \and C. Störmer \and E. Voland \and D.
