@@ -82,9 +82,6 @@
 #' #---------------------------------- Fitting models ----------------------------------------------
 #' #------------------------------------------------------------------------------------------------
 #'
-#'    #### Note: the fitted models are also saved and available on GitHub for you not to have to
-#'    #### refit them all, see next section.
-#'
 #' fit_01 <- fit_totalbirths(data_mothers_monthly, when_twinner = "allbirths")
 #' fit_02 <- fit_twinner.allbirths(data_mothers_monthly)
 #' fit_03 <- fit_twinning.binomial(data_mothers_monthly)
@@ -118,10 +115,6 @@
 #' #------------------------------------------------------------------------------------------------
 #' #---------------------------------- Saving fitted models ----------------------------------------
 #' #------------------------------------------------------------------------------------------------
-#'
-#'    #### Note: this is how we saved the models.
-#'    #### To directly load them, just download them from our Github repository
-#'    #### (folder "fitted_models") and open them in RStudio.
 #'
 #' dir.create("fitted_models") # create a folder to store the fitted models
 #' save(fit_01, file = "fitted_models/fit_01.rda", compress = "xz")
