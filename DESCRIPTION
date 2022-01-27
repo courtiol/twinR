@@ -6,7 +6,7 @@ Authors@R: c(person("Alexandre", "Courtiol", email = "courtiol@izw-berlin.de", r
              person("François", "Rousset", email = "francois.rousset@umontpellier.fr", role = "aut", comment = c(ORCID = "0000-0003-4670-0371")),
              person("Ian", "Rickard", email = "ian.rickard@durham.ac.uk", role = "aut", comment = c(ORCID = "0000-0003-0762-1689")),
              person("Colin", "Vullioud", email = "colin.vullioud@posteo.org", role = "aut", comment = c(ORCID = "0000-0001-9218-1571")))
-Description: This package contains the code necessary to produce the results of the paper "Twinners in pre-industrial Europe: more babies but fewer births".
+Description: This package contains the code necessary to produce the results of the paper "Mothers with higher twinning propensity have lower fertility in pre-industrial Europe".
 License: CC BY-SA 4.0
 Encoding: UTF-8
 LazyData: true
