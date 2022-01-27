@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/324365720.svg)](https://zenodo.org/badge/latestdoi/324365720)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5911341.svg)](https://zenodo.org/record/5911341)
 
 # twinR
 
