@@ -376,7 +376,7 @@ format_goodness_of_fit.table_2_LaTeX <- function(goodness_of_fit.table) {
                  booktabs = TRUE, ## bold line as in usual tables
                  table.envir = "table",
                  label = "tab13",
-                 caption = "Results of the goodness-of-fit tests. P-values underlined denote scenario simulations generating data for which the relationship between twinning propensity and fertility is similar to the one estimated on the raw data, using a threshold of 0.05. The two columns for p-values correspond, respectivelly from left to right, to p-values obtained in the case of the double-bootstrap or single-level bootstrap procedure  (see SI Section 1 \\& Fig. S7).",
+                 caption = "Results of the goodness-of-fit tests. P-values underlined denote scenario simulations generating data for which the relationship between twinning propensity and fertility is similar to the one estimated on the raw data, using a threshold of 0.05. The two columns for p-values correspond, respectivelly from left to right, to p-values obtained in the case of the double-bootstrap or single-level bootstrap procedure  (see Section 1 \\& Fig. S7).",
                  digits = 3L,
                  align = "lrr") %>%
     kableExtra::column_spec(2, underline = goodness_of_fit.table$`GOF p-value` >= 0.05) %>%
