@@ -5,7 +5,7 @@
 \usepackage[sectionbib]{natbib}
 \usepackage{graphicx}
 \usepackage{lmodern}
-\usepackage{amssymb,amsmath}
+\usepackage{amssymb,amsmath,bm,upgreek}
 \usepackage{xcolor}
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -31,7 +31,7 @@
 \newcommand{\CDF}{\ensuremath{\mathrm{CDF}}}
 \newcommand{\sfn}{\ensuremath{\mathrm{s}}}
 \newcommand{\tfn}{\ensuremath{\mathrm{t}}}
-\newcommand{\bth}{\ensuremath{\boldsymbol{\theta}}}
+\newcommand{\bth}{\ensuremath{\bm{\uptheta}}}
 \newcommand{\bSigma}{\ensuremath{\boldsymbol{\Sigma}}}
 \DeclareMathOperator{\Esp}{E}
 
@@ -42,7 +42,7 @@
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\subtitle{Mothers with higher twinning propensity have lower fertility in pre-industrial Europe}
+\subtitle{Mothers with higher twinning propensity had lower fertility in pre-industrial Europe}
 \author{I. J. Rickard \and C. Vullioud \and F. Rousset \and E. Postma \and S.
 Helle \and V. Lummaa \and R. Kylli \and J. E. Pettay \and E.
 Røskaft \and G. R. Skjærvø \and C. Störmer \and E. Voland \and D.
