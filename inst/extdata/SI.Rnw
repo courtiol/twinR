@@ -126,7 +126,8 @@ For a GOF test, we can then simulate the distribution $\phi(S;\hat{\bth}_\pi)$ a
 
 However, we fitted parameters on the data, which means that the data tend to be more consistent with the fitted model $\phi(S;\hat{\bth}_\pi)$ than with the data-generating process $\phi(S; \bth)$. This means that, if a GOF test has controlled error rates (uniform p-values) when defined from $\CDF(x;\bth)$, it may be conservative when each sample is assessed against  $\CDF(x;\hat{\bth}_\pi)$, with parameters and CDF re-estimated on each sample produced by the data-generating process.
 
-Whether the test is conservative depends on the relationship between the GOF statistic (more generally denoted $T=\tfn(D)$) and the estimated parameters. A toy example that captures this problem considers that $\bth$ is reduced to a single scalar parameter $\theta$, and that $\hat{\theta}(\data)$ follows jointly with $T(\data)$ the bivariate Gaussian model \begin{equation*}
+Whether the test is conservative depends on the relationship between the GOF statistic (more generally denoted $T=\tfn(D)$) and the estimated parameters. A toy example that captures this problem considers that $\bth$ is reduced to a single scalar parameter $\theta$, and that $\hat{\theta}(\data)$ follows jointly with $T$ the bivariate Gaussian model
+\begin{equation*}
 	\begin{pmatrix}T\\  \hat{\theta}\end{pmatrix} \sim \mathcal{N}\left(\boldsymbol{\mu}=\begin{pmatrix}\beta \theta\\ \theta\end{pmatrix}, \bSigma=\begin{pmatrix}
 	\sigma^2_t+\beta^2 \sigma^2_{\hat{\theta}}& \beta \sigma^2_{\hat{\theta}}\\
 	\beta \sigma^2_{\hat{\theta}}& \sigma^2_{\hat{\theta}}
