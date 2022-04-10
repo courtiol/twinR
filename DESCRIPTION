@@ -1,6 +1,6 @@
 Package: twinR
 Type: Package
-Title: A Supporting R Package for the Paper "Mothers with higher twinning propensity have lower fertility in pre-industrial Europe"
+Title: A Supporting R Package for the Paper "Mothers with higher twinning propensity had lower fertility in pre-industrial Europe"
 Version: 0.9999
 Authors@R: c(person("Alexandre", "Courtiol", email = "courtiol@izw-berlin.de", role = c("cre", "aut"), comment = c(ORCID = "0000-0003-0637-2959")),
              person("François", "Rousset", email = "francois.rousset@umontpellier.fr", role = "aut", comment = c(ORCID = "0000-0003-4670-0371")),

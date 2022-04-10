@@ -1,7 +1,7 @@
 #' Welcome to the R package twinR
 #'
 #' This package contains the code necessary to produce the results of the paper
-#' _"Mothers with higher twinning propensity have lower fertility in pre-industrial Europe"_.
+#' _"Mothers with higher twinning propensity had lower fertility in pre-industrial Europe"_.
 #' See section __Examples__ below.
 #'
 #' @name twinR-package
