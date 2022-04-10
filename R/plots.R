@@ -513,7 +513,7 @@ draw_fig_4B <- function(data) {
                  linetype = .data$twin) +
     ggplot2::geom_line() +
     ggplot2::scale_color_viridis_d("Parity", guide = NULL) +
-    ggplot2::scale_linetype_discrete("Twinning status", guide = ggplot2::guide_legend(title.vjust = 0.5, nrow = 1)) +
+    ggplot2::scale_linetype_manual("Twinning status", values = c("dashed", "solid"), guide = ggplot2::guide_legend(title.vjust = 0.5, nrow = 1)) +
     ggplot2::scale_x_continuous("Maternal age", breaks = seq(20, 45, by = 5)) +
     theme_twin() +
     ggplot2::labs(y = "Interbirth interval (months)") +
@@ -637,6 +637,7 @@ draw_fig_S1 <- function(data) {
                         mapping = ggplot2::aes(y = log(.data$n)*2.5 + 12,
                                                shape = .data$twinner), colour = "grey") +
     ggplot2::scale_shape_discrete("Lifetime twin. status", solid = TRUE) +
+    ggplot2::scale_linetype_manual(values = c("dotted", "solid")) +
     ggnewscale::new_scale("shape") +
     ggplot2::geom_errorbar(ggplot2::aes(
       group = .data$twinner,

@@ -439,7 +439,7 @@
 #'
 #' draw_fig_S1(data_fig_S1)
 #'
-#' ggsave(file = "figures/figS1.pdf", width = 88, height = 35, units = "mm")
+#' ggsave(file = "figures/figS1.pdf", width = 100, height = 50, units = "mm")
 #'
 #'
 #' ## Figure S2:
