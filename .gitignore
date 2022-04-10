@@ -10,3 +10,6 @@ script.R
 fitted_models
 fitted_models/non_shared
 fitted_models_backup
+source_data
+singularity
+manuscript

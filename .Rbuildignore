@@ -9,3 +9,6 @@ log_.*
 script.R
 ^SI$
 LICENSE
+^source\_data$
+^singularity$
+^manuscript$
