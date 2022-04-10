@@ -439,7 +439,7 @@
 #'
 #' draw_fig_S1(data_fig_S1)
 #'
-#' ggsave(file = "figures/figS1.pdf", width = 11.4, height = 6, units = "cm")
+#' ggsave(file = "figures/figS1.pdf", width = 88, height = 35, units = "mm")
 #'
 #'
 #' ## Figure S2:
@@ -449,7 +449,7 @@
 #'
 #' draw_fig_S2(data_fig_S2)
 #'
-#' ggsave(file = "figures/figS2.pdf", width = 17.8, height = 10, units = "cm", scale = 1.3)
+#' ggsave(file = "figures/figS2.pdf", width = 188, height = 110, units = "mm")
 #'
 #'
 #'
@@ -461,7 +461,7 @@
 #'
 #' draw_fig_S5(list(data_fig_2 = data_fig_2$results, data_fig_S5 = data_fig_S5$results))
 #'
-#' ggsave(file = "figures/figS5.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
+#' ggsave(file = "figures/figS5.pdf", width = 88, height = 70, units = "mm")
 #'
 #'
 #'
@@ -515,9 +515,9 @@
 #' fig_S6D <- draw_fig_S6D(data_fig_S6)
 #'
 #' plot_grid(fig_S6A, fig_S6B, fig_S6C, fig_S6D,
-#'           labels = "AUTO", label_size = 12, align = "v", axis = "l")
+#'           labels = "auto", label_size = 12, align = "v", axis = "l")
 #'
-#' ggsave(file = "figures/figS6.pdf", width = 13, height = 10, units = "cm", scale = 1.3)
+#' ggsave(file = "figures/figS6.pdf", width = 188, height = 150, units = "mm")
 #'
 #'
 #'

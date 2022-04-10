@@ -283,11 +283,11 @@ prepare_data_fig_S6 <- function(simulation_obj, birth_level_data) {
 
   expand_data(simulation_obj$birth_level_data.simulated) %>%
     dplyr::select(.data$pop, .data$maternal_id, .data$parity, .data$twin, .data$IBI, .data$age)  %>%
-    dplyr::mutate(scenario = paste0("simulated (", simulation_obj$scenario, ")")) -> simulated
+    dplyr::mutate(scenario = paste0("data simulated (", simulation_obj$scenario, ")")) -> simulated
 
   birth_level_data %>%
     dplyr::select(.data$pop, .data$maternal_id, .data$parity, .data$twin, .data$IBI, .data$age) %>%
-    dplyr::mutate(scenario = "observed") -> observed
+    dplyr::mutate(scenario = "data observed") -> observed
 
   dplyr::bind_rows(simulated, observed) %>%
     dplyr::mutate(age_round = round(.data$age, 0L))
@@ -773,9 +773,9 @@ draw_fig_S6A <- function(data) {
                                 breaks = c(1, 10, 100, 1000, 10000),
                                 labels = c("1", "10", "100", "1000", "10000"),
                                 limits = c(1, 10000)) +
-    ggplot2::scale_color_manual("Data", values = c("darkgreen", "lightgreen")) +
-    ggplot2::scale_shape_discrete("Lifetime twin. status", solid = FALSE) +
-    ggplot2::scale_linetype_discrete("Lifetime twin. status") +
+    ggplot2::scale_color_manual("", values = c("darkgreen", "lightgreen")) +
+    ggplot2::scale_shape_discrete("", solid = FALSE) +
+    ggplot2::scale_linetype_discrete("") +
     ggplot2::scale_x_continuous("Maternal total births", breaks = c(1, 5, 10, 15, 18),
                                 labels = c("1", "5", "10", "15", "18")) +
     theme_twin() +
