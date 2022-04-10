@@ -735,7 +735,7 @@ draw_fig_S2 <- function(data) {
     theme_twin() +
     ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on interbirth interval") -> p6
 
-  cowplot::plot_grid(p1, p2, p3, p4, p5, p6, labels = "AUTO", label_size = 12, nrow = 2)
+  cowplot::plot_grid(p1, p2, p3, p4, p5, p6, labels = "auto", label_size = 12, nrow = 2)
 }
 
 
