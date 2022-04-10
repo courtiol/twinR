@@ -399,9 +399,9 @@ data_fig_1B <- compute_predictions(fit_02,
 fig_1A <- draw_fig_1A(data_fig_1A)
 fig_1B <- draw_fig_1B(data_fig_1B)
 
-plot_grid(fig_1A, fig_1B, labels = "AUTO", label_size = 12, align = "v", axis = "l")
+plot_grid(fig_1A, fig_1B, labels = "auto", label_size = 7, align = "v", axis = "l")
 
-ggsave(file = "figures/fig1.pdf", width = 11.4, height = 8.5/2, units = "cm") # export as PDF
+ggsave(file = "figures/fig1.pdf", width = 88, height = 35, units = "mm") # export as PDF
 ggsave(file = "figures/fig1.png", width = 11.4, height = 8.5/2, units = "cm") # export as PNG
 
 

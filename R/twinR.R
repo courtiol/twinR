@@ -399,10 +399,10 @@
 #' fig_1A <- draw_fig_1A(data_fig_1A)
 #' fig_1B <- draw_fig_1B(data_fig_1B)
 #'
-#' plot_grid(fig_1A, fig_1B, labels = "AUTO", label_size = 12, align = "v", axis = "l")
+#' plot_grid(fig_1A, fig_1B, labels = "auto", label_size = 7, align = "v", axis = "l")
 #'
-#' ggsave(file = "figures/fig1.pdf", width = 11.4, height = 8.5/2, units = "cm") # export as PDF
-#' ggsave(file = "figures/fig1.png", width = 11.4, height = 8.5/2, units = "cm") # export as PNG
+#' ggsave(file = "figures/fig1.pdf", width = 88, height = 35, units = "mm") # export as PDF
+#' ggsave(file = "figures/fig1.png", width = 88, height = 35, units = "mm") # export as PNG
 #'
 #'
 #' ## Figure 2:
@@ -413,8 +413,8 @@
 #'
 #' draw_fig_2(data_fig_2)
 #'
-#' ggsave(file = "figures/fig2.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
-#' ggsave(file = "figures/fig2.png", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
+#' ggsave(file = "figures/fig2.pdf", width = 88, height = 70, units = "mm")
+#' ggsave(file = "figures/fig2.png", width = 88, height = 70, units = "mm")
 #'
 #'
 #' ## Figure 4:
@@ -427,10 +427,10 @@
 #' fig_4B <- draw_fig_4B(data_fig_4B)
 #' fig_4C <- draw_fig_4C(data_fig_4C)
 #' plot_grid(fig_4A, fig_4B, fig_4C,
-#'           labels = "AUTO", nrow = 3, label_size = 12, align = "v", axis = "lr")
+#'           labels = "auto", nrow = 1, label_size = 7, align = "v", axis = "lr")
 #'
-#' ggsave(file = "figures/fig4.pdf", width = 8.7, height = 20, units = "cm")
-#' ggsave(file = "figures/fig4.png", width = 8.7, height = 20, units = "cm")
+#' ggsave(file = "figures/fig4.pdf", width = 180, height = 55, units = "mm")
+#' ggsave(file = "figures/fig4.png", width = 180, height = 55, units = "mm")
 #'
 #'
 #' ## Figure S1:
@@ -591,8 +591,8 @@
 #'
 #' draw_fig_5(all_slopes, width = 1)
 #'
-#' ggsave(file = "figures/fig5.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
-#' ggsave(file = "figures/fig5.png", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
+#' ggsave(file = "figures/fig5.pdf", width = 88, height = 70, units = "mm")
+#' ggsave(file = "figures/fig5.png", width = 88, height = 70, units = "mm")
 #'
 #'
 #' ## test scenarios (table S13):

@@ -27,12 +27,12 @@ theme_twin <- function(base_size = 11, base_family = "",
       panel.border = ggplot2::element_rect(colour = gray),
       panel.grid = ggplot2::element_blank(),
       strip.background = ggplot2::element_rect(fill = "white", colour = NA),
-      title = ggplot2::element_text(colour = black, size = 10, family = base_family),
-      axis.text.x = ggplot2::element_text(colour = black, size = 8, family = base_family),
-      axis.text.y = ggplot2::element_text(colour = black, size = 8, family = base_family),
-      axis.title.x = ggplot2::element_text(colour = black, size = 10, family = base_family, margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0)),
-      axis.title.y = ggplot2::element_text(colour = black, size = 10,  family = base_family, margin = ggplot2::margin(t = 0, r = 10, b = 0, l = 10)),
-      plot.margin = ggplot2::margin(6, 12, 6, 6)
+      title = ggplot2::element_text(colour = black, size = 7, family = base_family),
+      axis.text.x = ggplot2::element_text(colour = black, size = 5, family = base_family),
+      axis.text.y = ggplot2::element_text(colour = black, size = 5, family = base_family),
+      axis.title.x = ggplot2::element_text(colour = black, size = 7, family = base_family, margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0)),
+      axis.title.y = ggplot2::element_text(colour = black, size = 7,  family = base_family, margin = ggplot2::margin(t = 0, r = 10, b = 0, l = 10)),
+      plot.margin = ggplot2::margin(3, 1, 3, 1)
     )
 }
 
@@ -317,15 +317,15 @@ draw_fig_1A <- function(data) {
     data <- data$results
   }
 
+  #data_mothers_monthly %>% count(births_total, twinner) -> data_points
+
   data %>%
     ggplot2::ggplot() +
     ggplot2::aes(x = factor(.data$twinner),
-                 y = .data$estimate,
-                 ymin = .data$lwr,
-                 ymax = .data$upr) +
-    ggplot2::geom_col(color = "black",
-                      fill = c("lightgray", "white"), width = .6) +
-    ggplot2::geom_errorbar(size = 0.5, width = 0.1, linetype = 1) +
+                 y = .data$estimate) +
+    #ggplot2::geom_point(ggplot2::aes(x = twinner, y = births_total, size = log(n)), data = data_points, shape = 1) +
+    ggplot2::geom_point(color = "black", size = 0.5) +
+    ggplot2::geom_errorbar(ggplot2::aes(ymin = .data$lwr, ymax = .data$upr), size = 0.5, width = 0.1, linetype = 1) +
     ggplot2::labs(y = "Maternal total births", x = "Lifetime twin. status") +
     ggplot2::scale_x_discrete(labels = c("Non-twinner", "Twinner")) +
     ggplot2::scale_y_continuous(limits = c(0, 8), breaks = c(0, 2, 4, 6, 8)) +
@@ -438,11 +438,9 @@ draw_fig_2 <- function(data) {
                   x = "Maternal total births" ) +
     ggplot2::geom_line(colour = "black", size = 1) +
     ggplot2::geom_ribbon(alpha = 0.3, fill = "grey") +
-    ggplot2::scale_x_continuous(breaks = c(1, 5, 10, 15, 18),
-                                labels = c("1", "5", "10", "15", "18")) +
+    ggplot2::scale_x_continuous(breaks = 1:18) +
     ggplot2::scale_y_continuous(trans = "logit",
-                                breaks = c(0.01, 0.015, 0.02, 0.025),
-                                labels = c("0.010", "0.015", "0.020", "0.025")) +
+                                breaks = seq(0.005, 0.025, by = 0.001)) +
     theme_twin() +
     ggplot2::coord_cartesian()
 }
@@ -465,9 +463,9 @@ draw_fig_4A <- function(data) {
   data_plot %>%
     ggplot2::ggplot() +
     ggplot2::aes(x = .data$parity) +
-    ggplot2::geom_line(data = data_plot_twin,
-                       mapping = ggplot2::aes(y = (.data$age - 25) / 20,
-                                              x = .data$parity), colour = "grey") +
+    #ggplot2::geom_line(data = data_plot_twin,
+    #                   mapping = ggplot2::aes(y = (.data$age - 25) / 20,
+    #                                          x = .data$parity), colour = "grey") +
     ggplot2::geom_point(data = data_plot_twin,
                         mapping = ggplot2::aes(y = (.data$age - 25) / 20,
                                                x = .data$parity),
@@ -477,8 +475,8 @@ draw_fig_4A <- function(data) {
                                                              name = "Mean maternal age",
                                                              breaks = seq(25, 45, by = 5)),
                                 breaks = seq(0, 1, by = 0.1)) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$PP,
-                                    linetype = .data$twin)) +
+    #ggplot2::geom_line(ggplot2::aes(y = .data$PP,
+    #                                linetype = .data$twin)) +
     ggplot2::geom_point(ggplot2::aes(y = .data$PP,
                                      shape = .data$twin)) +
     ggplot2::expand_limits(y = c(0, 1)) +
@@ -491,7 +489,7 @@ draw_fig_4A <- function(data) {
     ggplot2::theme(legend.position = "bottom",
                    legend.key.width = ggplot2::unit(0.5, units = "cm"),
                    legend.text = ggplot2::element_text(size = 6),
-                   legend.title = ggplot2::element_text(size = 8),
+                   legend.title = ggplot2::element_text(size = 7),
                    legend.margin = ggplot2::margin(c(0, 0, 0, 0)))
 }
 
@@ -524,7 +522,7 @@ draw_fig_4B <- function(data) {
     ggplot2::theme(legend.position = "bottom",
                    legend.key.width = ggplot2::unit(0.5, units = "cm"),
                    legend.text = ggplot2::element_text(size = 6),
-                   legend.title = ggplot2::element_text(size = 8),
+                   legend.title = ggplot2::element_text(size = 7),
                    legend.margin = ggplot2::margin(c(0, 0, 0, 0)))
 }
 
@@ -551,10 +549,10 @@ draw_fig_4C <- function(data) {
     ggplot2::expand_limits(y = c(0.01, 0.04)) +
     ggplot2::expand_limits(x = c(20, 45)) +
     theme_twin() +
-    ggplot2::theme(legend.position = "top",
+    ggplot2::theme(legend.position = "bottom",
                    legend.key.width = ggplot2::unit(0.5, units = "cm"),
                    legend.text = ggplot2::element_text(size = 6),
-                   legend.title = ggplot2::element_text(size = 8),
+                   legend.title = ggplot2::element_text(size = 7),
                    legend.margin = ggplot2::margin(c(0, 0, 0, 0)))
 }
 
