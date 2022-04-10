@@ -40,7 +40,7 @@ filter_data <- function(birth_level_data) {
   birth_level_data %>%
     dplyr::filter(.data$monthly) %>%
     dplyr::group_by(.data$maternal_id) %>%
-    dplyr::filter(dplyr::across(tidyselect::everything(), ~ !is.na(.x))) %>%
+    dplyr::filter(dplyr::if_all(tidyselect::everything(), ~ !is.na(.x))) %>%
     dplyr::ungroup() %>%
     droplevels()
 }
