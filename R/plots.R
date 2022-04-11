@@ -8,12 +8,14 @@
 #' @param base_family base font family
 #' @param base_line_size base size for line elements
 #' @param base_rect_size base size for rect elements
+#' @param larger a scalar indicating by how much to increase text size compared to default (for SI figs)
 #'
 #' @return the theme
 #' @export
 #'
 theme_twin <- function(base_size = 11, base_family = "",
-                       base_line_size = base_size/22, base_rect_size = base_size/22) {
+                       base_line_size = base_size/22, base_rect_size = base_size/22,
+                       larger = 0) {
   gray <- "#4D4D4D"
   black <- "#000000"
   ggplot2::theme_bw(base_size = base_size, base_family = base_family,
@@ -27,11 +29,11 @@ theme_twin <- function(base_size = 11, base_family = "",
       panel.border = ggplot2::element_rect(colour = gray),
       panel.grid = ggplot2::element_blank(),
       strip.background = ggplot2::element_rect(fill = "white", colour = NA),
-      title = ggplot2::element_text(colour = black, size = 7, family = base_family),
-      axis.text.x = ggplot2::element_text(colour = black, size = 5, family = base_family),
-      axis.text.y = ggplot2::element_text(colour = black, size = 5, family = base_family),
-      axis.title.x = ggplot2::element_text(colour = black, size = 7, family = base_family, margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0)),
-      axis.title.y = ggplot2::element_text(colour = black, size = 7,  family = base_family, margin = ggplot2::margin(t = 0, r = 10, b = 0, l = 10)),
+      title = ggplot2::element_text(colour = black, size = 7 + larger, family = base_family),
+      axis.text.x = ggplot2::element_text(colour = black, size = 5 + larger, family = base_family),
+      axis.text.y = ggplot2::element_text(colour = black, size = 5 + larger, family = base_family),
+      axis.title.x = ggplot2::element_text(colour = black, size = 7 + larger, family = base_family, margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0)),
+      axis.title.y = ggplot2::element_text(colour = black, size = 7 + larger,  family = base_family, margin = ggplot2::margin(t = 0, r = 10, b = 0, l = 10)),
       plot.margin = ggplot2::margin(3, 1, 3, 1)
     )
 }
@@ -71,6 +73,7 @@ NULL
 #' @name prepare_data_for_fig
 #' @inheritParams fit_models
 #' @inheritParams predictions
+#' @inheritParams theme_twin
 #' @param xaxis a `character` indicating whether `"age"` or `"parity"` must be considered as the x-axis
 #' @param fit_PP a fitted model for predicting the parity progression
 #' @param fit_IBI a fitted model for predicting the interbirth interval
@@ -299,6 +302,7 @@ prepare_data_fig_S6 <- function(simulation_obj, birth_level_data) {
 #'
 #' @param data a `data.frame` or a `list` containing the data to be plotted
 #' @param width_petal a numeric used to influence the width of each petal in the flower plot (default = 0.5)
+#' @inheritParams theme_twin
 #' @return a ggplot
 #' @name figures
 #' @examples
@@ -420,7 +424,7 @@ draw_fig_1D <- function(data) {
 #' @describeIn figures draw fig. 2
 #' @export
 #'
-draw_fig_2 <- function(data) {
+draw_fig_2 <- function(data, larger = 0) {
 
   ## extract results component from the output of compute_predictions() if not done by user
   if (is.list(data) && !is.data.frame(data)) {
@@ -441,7 +445,7 @@ draw_fig_2 <- function(data) {
     ggplot2::scale_x_continuous(breaks = 1:18) +
     ggplot2::scale_y_continuous(trans = "logit",
                                 breaks = seq(0.005, 0.025, by = 0.001)) +
-    theme_twin() +
+    theme_twin(larger = larger) +
     ggplot2::coord_cartesian()
 }
 
@@ -670,73 +674,77 @@ draw_fig_S1 <- function(data) {
 #'
 draw_fig_S2 <- function(data) {
 
+  larger <- 1
+  size_points <- 0.02
+
   data %>%
     dplyr::filter(.data$twin_total == 0) %>%
     tidyr::drop_na(.data$ranef_twin, .data$ranef_PP) %>%
     ggplot2::ggplot() +
-    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_PP), size = 0.05) +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_PP), size = size_points) +
     ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
     ggplot2::scale_y_continuous(limits = c(-0.5, 1.55)) +
     ggplot2::scale_x_continuous(breaks = seq(-0.15, 0, 0.05), limits = c(-0.15, 0)) +
-    theme_twin() +
+    theme_twin(larger = larger) +
     ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on parity progression") -> p1
 
   data %>%
     dplyr::filter(.data$twin_total == 1) %>%
     tidyr::drop_na(.data$ranef_twin, .data$ranef_PP) %>%
     ggplot2::ggplot() +
-    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_PP), size = 0.05) +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_PP), size = size_points) +
     ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
     ggplot2::scale_y_continuous(limits = c(-0.5, 1.55)) +
     ggplot2::scale_x_continuous(breaks = seq(0.3, 0.5, 0.05), limits = c(0.3, 0.5)) +
-    theme_twin() +
+    theme_twin(larger = larger) +
     ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on parity progression") -> p2
 
   data %>%
     dplyr::filter(.data$twin_total == 2) %>%
     tidyr::drop_na(.data$ranef_twin, .data$ranef_PP) %>%
     ggplot2::ggplot() +
-    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_PP), size = 0.05) +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_PP), size = size_points) +
     ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
     ggplot2::scale_y_continuous(limits = c(-0.5, 1.55)) +
     ggplot2::scale_x_continuous(breaks = seq(0.7, 0.95, 0.05), limits = c(0.7, 0.95)) +
-    theme_twin() +
+    theme_twin(larger = larger) +
     ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on parity progression") -> p3
 
   data %>%
     dplyr::filter(.data$twin_total == 0) %>%
     tidyr::drop_na(.data$ranef_twin, .data$ranef_IBI) %>%
     ggplot2::ggplot() +
-    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_IBI), size = 0.05) +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_IBI), size = size_points) +
     ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
     ggplot2::scale_y_continuous(breaks = seq(-1.5, 1.5, 0.5), limits = c(-1.5, 1.55)) +
     ggplot2::scale_x_continuous(breaks = seq(-0.15, 0, 0.05), limits = c(-0.15, 0)) +
-    theme_twin() +
+    theme_twin(larger = larger) +
     ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on interbirth interval") -> p4
 
   data %>%
     dplyr::filter(.data$twin_total == 1) %>%
     tidyr::drop_na(.data$ranef_twin, .data$ranef_IBI) %>%
     ggplot2::ggplot() +
-    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_IBI), size = 0.05) +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_IBI), size = size_points) +
     ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
     ggplot2::scale_y_continuous(breaks = seq(-1.5, 1.5, 0.5), limits = c(-1.5, 1.55)) +
     ggplot2::scale_x_continuous(breaks = seq(0.3, 0.5, 0.05), limits = c(0.3, 0.5)) +
-    theme_twin() +
+    theme_twin(larger = larger) +
     ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on interbirth interval") -> p5
 
   data %>%
     dplyr::filter(.data$twin_total == 2) %>%
     tidyr::drop_na(.data$ranef_twin, .data$ranef_IBI) %>%
     ggplot2::ggplot() +
-    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_IBI), size = 0.05) +
+    ggplot2::geom_point(ggplot2::aes(x = .data$ranef_twin, y = .data$ranef_IBI), size = size_points) +
     ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
     ggplot2::scale_y_continuous(breaks = seq(-1.5, 1.5, 0.5), limits = c(-1.5, 1.55)) +
     ggplot2::scale_x_continuous(breaks = seq(0.7, 0.95, 0.05), limits = c(0.7, 0.95)) +
-    theme_twin() +
+    theme_twin(larger = larger) +
     ggplot2::labs(x = "Random effect on twinning probability", y = "Random effect on interbirth interval") -> p6
 
-  cowplot::plot_grid(p1, p2, p3, p4, p5, p6, labels = "auto", label_size = 12, nrow = 2)
+  cowplot::plot_grid(p1, p2, p3, p4, p5, p6, labels = "auto", label_size = 10, nrow = 2) +
+    ggplot2::theme(plot.margin = ggplot2::margin(0, r = 1, 0, 0))
 }
 
 
@@ -745,7 +753,7 @@ draw_fig_S2 <- function(data) {
 #'
 draw_fig_S5 <- function(data) {
 
-  draw_fig_2(data$data_fig_2) +
+  draw_fig_2(data$data_fig_2, larger = 2) +
     ggplot2::geom_line(data = data$data_fig_S5, linetype = "dashed", lwd = 1) +
     ggplot2::geom_line(data = data$data_fig_S5, ggplot2::aes(y = .data$lwr), linetype = "dotted", lwd = 1) +
     ggplot2::geom_line(data = data$data_fig_S5, ggplot2::aes(y = .data$upr), linetype = "dotted", lwd = 1)
@@ -779,7 +787,7 @@ draw_fig_S6A <- function(data) {
     ggplot2::scale_linetype_discrete("") +
     ggplot2::scale_x_continuous("Maternal total births", breaks = c(1, 5, 10, 15, 18),
                                 labels = c("1", "5", "10", "15", "18")) +
-    theme_twin() +
+    theme_twin(larger = 4) +
     ggplot2::guides(col = ggplot2::guide_legend(override.aes = list(shape = 15, size = 4)),
                     linetype = ggplot2::guide_legend(ovveride.aes = list(size = 8)),
                     shape = ggplot2::guide_legend(ovveride.aes = list(size = 8))) +
@@ -817,7 +825,7 @@ draw_fig_S6B <- function(data) {
     ggplot2::scale_fill_manual("Scenario", values = c("darkgreen", "lightgreen"), guide = ggplot2::guide_legend(title.vjust = 0.5, nrow = 2)) +
     ggplot2::scale_x_discrete("Lifetime twin. status", breaks = c(0, 1),
                               labels = c("Non-twinner", "Twinner")) +
-    theme_twin() +
+    theme_twin(larger = 4) +
     ggplot2::theme(legend.position = "none")
 
 }
@@ -836,7 +844,7 @@ draw_fig_S6C <- function(data) {
                                 limits = c(0.00, 0.06)) +
     ggplot2::scale_x_continuous("Maternal age at birth") +
     ggplot2::scale_color_manual(values = c("darkgreen", "lightgreen")) +
-    theme_twin() +
+    theme_twin(larger = 4) +
     ggplot2::theme(legend.position = "none")
 
 }
@@ -857,7 +865,7 @@ draw_fig_S6D <- function(data) {
     ggplot2::scale_fill_manual("Scenario", values = c("darkgreen", "lightgreen"), guide = ggplot2::guide_legend(title.vjust = 0.5, nrow = 2)) +
     ggplot2::scale_x_discrete("Birth outcome", breaks = c(0, 1),
                               labels = c("Singleton", "Twin")) +
-    theme_twin() +
+    theme_twin(larger = 4) +
     ggplot2::theme(legend.position = "none")
 
 }

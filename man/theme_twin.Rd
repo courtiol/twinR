@@ -8,7 +8,8 @@ theme_twin(
   base_size = 11,
   base_family = "",
   base_line_size = base_size/22,
-  base_rect_size = base_size/22
+  base_rect_size = base_size/22,
+  larger = 0
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ theme_twin(
 \item{base_line_size}{base size for line elements}
 
 \item{base_rect_size}{base size for rect elements}
+
+\item{larger}{a scalar indicating by how much to increase text size compared to default (for SI figs)}
 }
 \value{
 the theme

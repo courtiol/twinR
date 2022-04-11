@@ -28,7 +28,7 @@ draw_fig_1C(data)
 
 draw_fig_1D(data)
 
-draw_fig_2(data)
+draw_fig_2(data, larger = 0)
 
 draw_fig_4A(data)
 
@@ -54,6 +54,8 @@ draw_fig_S6D(data)
 }
 \arguments{
 \item{data}{a \code{data.frame} or a \code{list} containing the data to be plotted}
+
+\item{larger}{a scalar indicating by how much to increase text size compared to default (for SI figs)}
 
 \item{width_petal}{a numeric used to influence the width of each petal in the flower plot (default = 0.5)}
 }
