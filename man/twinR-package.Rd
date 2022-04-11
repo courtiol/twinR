@@ -61,6 +61,9 @@ data_births_monthly.complete <- expand_data(data_births_monthly) # see ?expand_d
 
 dir.create("tables") # create a folder to store the tables
 
+## Create Source Data file:
+write.csv(data_births_all, file = "tables/source_data_file.csv", row.names = FALSE)
+
 ## Create table 1:
 
 table1 <- build_data_summary.table(data_births_monthly)
