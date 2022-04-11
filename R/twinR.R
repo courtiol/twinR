@@ -8,6 +8,10 @@
 #' @aliases twinR-package twinR
 #' @docType package
 #'
+#' @references
+#' Rickard et al. 2022. Mothers with higher twinning propensity had lower fertility in pre-industrial Europe.
+#' Nature Communications.
+#'
 #' @keywords package
 #'
 #' @examples
