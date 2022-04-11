@@ -314,6 +314,7 @@ format_fit_summary.table_2_LaTeX <- function(fit_summary.table, fit_n = 0) {
                escape = FALSE, ## interpret tex "as is"
                booktabs = TRUE, ## bold line as in usual tables
                table.envir = "table",
+               position = "H",
                label = paste0("tab", fit_n),
                caption = paste0("Summary of the fit of model ", fit_n, ". The model fit corresponds to the fit of a model with the following formula: ",
                                 format_formula_2_LaTeX(fit_summary.table, size = "small"), ".", extra_caption),
@@ -376,7 +377,7 @@ format_goodness_of_fit.table_2_LaTeX <- function(goodness_of_fit.table) {
                  booktabs = TRUE, ## bold line as in usual tables
                  table.envir = "table",
                  label = "tab13",
-                 caption = "Results of the goodness-of-fit tests. P-values underlined denote scenario simulations generating data for which the relationship between twinning propensity and fertility is similar to the one estimated on the raw data, using a threshold of 0.05. The two columns for p-values correspond, respectivelly from left to right, to p-values obtained in the case of the double-bootstrap or single-level bootstrap procedure  (see Section 1 \\& Fig. S7).",
+                 caption = "Results of the goodness-of-fit tests. P-values underlined denote scenario simulations generating data for which the relationship between twinning propensity and fertility is similar to the one estimated on the raw data, using a threshold of 0.05. The two columns for p-values correspond, respectivelly from left to right, to p-values obtained in the case of the double-bootstrap or single-level bootstrap procedure  (see Supplementary Notes \\& Fig. S7).",
                  digits = 3L,
                  align = "lrr") %>%
     kableExtra::column_spec(2, underline = goodness_of_fit.table$`GOF p-value` >= 0.05) %>%
