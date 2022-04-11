@@ -7,7 +7,7 @@
 \title{Welcome to the R package twinR}
 \description{
 This package contains the code necessary to produce the results of the paper
-\emph{"Mothers with higher twinning propensity have lower fertility in pre-industrial Europe"}.
+\emph{"Mothers with higher twinning propensity had lower fertility in pre-industrial Europe"}.
 See section \strong{Examples} below.
 }
 \examples{
@@ -405,7 +405,7 @@ fig_1B <- draw_fig_1B(data_fig_1B)
 plot_grid(fig_1A, fig_1B, labels = "auto", label_size = 7, align = "v", axis = "l")
 
 ggsave(file = "figures/fig1.pdf", width = 88, height = 35, units = "mm") # export as PDF
-ggsave(file = "figures/fig1.png", width = 11.4, height = 8.5/2, units = "cm") # export as PNG
+ggsave(file = "figures/fig1.png", width = 88, height = 35, units = "mm") # export as PNG
 
 
 ## Figure 2:
@@ -416,8 +416,8 @@ data_fig_2 <- compute_predictions(fit_03,
 
 draw_fig_2(data_fig_2)
 
-ggsave(file = "figures/fig2.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
-ggsave(file = "figures/fig2.png", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
+ggsave(file = "figures/fig2.pdf", width = 88, height = 70, units = "mm")
+ggsave(file = "figures/fig2.png", width = 88, height = 70, units = "mm")
 
 
 ## Figure 4:
@@ -430,10 +430,10 @@ fig_4A <- draw_fig_4A(data_fig_4A)
 fig_4B <- draw_fig_4B(data_fig_4B)
 fig_4C <- draw_fig_4C(data_fig_4C)
 plot_grid(fig_4A, fig_4B, fig_4C,
-          labels = "AUTO", nrow = 3, label_size = 12, align = "v", axis = "lr")
+          labels = "auto", nrow = 1, label_size = 7, align = "v", axis = "lr")
 
-ggsave(file = "figures/fig4.pdf", width = 8.7, height = 20, units = "cm")
-ggsave(file = "figures/fig4.png", width = 8.7, height = 20, units = "cm")
+ggsave(file = "figures/fig4.pdf", width = 180, height = 55, units = "mm")
+ggsave(file = "figures/fig4.png", width = 180, height = 55, units = "mm")
 
 
 ## Figure S1:
@@ -442,7 +442,7 @@ data_fig_S1 <- prepare_data_fig_S1(fit_07)
 
 draw_fig_S1(data_fig_S1)
 
-ggsave(file = "figures/figS1.pdf", width = 11.4, height = 6, units = "cm")
+ggsave(file = "figures/figS1.pdf", width = 100, height = 50, units = "mm")
 
 
 ## Figure S2:
@@ -452,7 +452,7 @@ data_fig_S2 <- prepare_data_fig_S2(fit_PP = fit_04, fit_IBI = fit_05, fit_twin =
 
 draw_fig_S2(data_fig_S2)
 
-ggsave(file = "figures/figS2.pdf", width = 17.8, height = 10, units = "cm", scale = 1.3)
+ggsave(file = "figures/figS2.pdf", width = 188, height = 110, units = "mm")
 
 
 
@@ -464,7 +464,7 @@ data_fig_S5 <- compute_predictions(fit_03bis,
 
 draw_fig_S5(list(data_fig_2 = data_fig_2$results, data_fig_S5 = data_fig_S5$results))
 
-ggsave(file = "figures/figS5.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
+ggsave(file = "figures/figS5.pdf", width = 88, height = 70, units = "mm")
 
 
 
@@ -518,9 +518,9 @@ fig_S6C <- draw_fig_S6C(data_fig_S6)
 fig_S6D <- draw_fig_S6D(data_fig_S6)
 
 plot_grid(fig_S6A, fig_S6B, fig_S6C, fig_S6D,
-          labels = "AUTO", label_size = 12, align = "v", axis = "l")
+          labels = "auto", label_size = 12, align = "v", axis = "l")
 
-ggsave(file = "figures/figS6.pdf", width = 13, height = 10, units = "cm", scale = 1.3)
+ggsave(file = "figures/figS6.pdf", width = 188, height = 150, units = "mm")
 
 
 
@@ -594,8 +594,8 @@ all_slopes <- combine_simulated_slopes()
 
 draw_fig_5(all_slopes, width = 1)
 
-ggsave(file = "figures/fig5.pdf", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
-ggsave(file = "figures/fig5.png", width = 8.7, height = 8.7*8.5/11.4, units = "cm")
+ggsave(file = "figures/fig5.pdf", width = 88, height = 70, units = "mm")
+ggsave(file = "figures/fig5.png", width = 88, height = 70, units = "mm")
 
 
 ## test scenarios (table S13):
@@ -683,5 +683,9 @@ build_SI()
 
 }
 
+}
+\references{
+Rickard et al. 2022. Mothers with higher twinning propensity had lower fertility in pre-industrial Europe.
+Nature Communications.
 }
 \keyword{package}
