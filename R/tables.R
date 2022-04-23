@@ -287,9 +287,9 @@ format_fit_summary.table_2_LaTeX <- function(fit_summary.table, fit_n = 0) {
   if (fit_n == 1) {
     extra_caption <- " In all tables showing the summary of fits, values given in column 3 for fixed effects, random effects (if applicable) and the parameters of the response family (if applicable) are estimates. Other values are the results of computations."
   } else if (fit_n %in% c(5, 9)) {
-    extra_caption <- " Note that the variable \\texttt{IBI} fitted in the model actually corresponds to the duration of interbirth interval minus six months. This rescaling prevents numerical issues during the simulations. When this fitted model is used for predictions (in plots or to compute effect sizes), the missing six months are reintroduced to produce correct results. See legend of Table S1 for other details."
+    extra_caption <- " Note that the variable \\texttt{IBI} fitted in the model actually corresponds to the duration of interbirth interval minus six months. This rescaling prevents numerical issues during the simulations. When this fitted model is used for predictions (in plots or to compute effect sizes), the missing six months are reintroduced to produce correct results. See legend of Supplementary Table 1 for other details."
   } else {
-  extra_caption <- " See legend of Table S1 for more details."
+  extra_caption <- " See legend of Supplementary Table 1 for more details."
   }
 
   ## adapt formatting to LaTeX:
@@ -342,7 +342,7 @@ format_data_summary.table_2_LaTeX <- function(data_summary.table) {
                  booktabs = TRUE, ## bold line as in usual tables
                  table.envir = "table",
                  label = "tab16",
-                 caption = "Details of data used in the present study, for each population separately and for all populations combined. This table is the same as Table 1, but here we also include data from families with missing birth month information. Therefore this table includes an entry for the Norway dataset, in which birth month information was never available. All references are cited in main text.",
+                 caption = "Details of data used in the present study, for each population separately and for all populations combined. This table is the same as Table 1 from main text, but here we also include data from families with missing birth month information. Therefore this table includes an entry for the Norway dataset, in which birth month information was never available. All references are cited in main text.",
                  digits = 3L,
                 align = "llcccccccccccl") %>%
   kableExtra::kable_styling(full_width = FALSE,
@@ -377,7 +377,7 @@ format_goodness_of_fit.table_2_LaTeX <- function(goodness_of_fit.table) {
                  booktabs = TRUE, ## bold line as in usual tables
                  table.envir = "table",
                  label = "tab13",
-                 caption = "Results of the goodness-of-fit tests. P-values underlined denote scenario simulations generating data for which the relationship between twinning propensity and fertility is similar to the one estimated on the raw data, using a threshold of 0.05. The two columns for p-values correspond, respectivelly from left to right, to p-values obtained in the case of the double-bootstrap or single-level bootstrap procedure  (see Supplementary Notes \\& Fig. S7).",
+                 caption = "Results of the goodness-of-fit tests. P-values underlined denote scenario simulations generating data for which the relationship between twinning propensity and fertility is similar to the one estimated on the raw data, using a threshold of 0.05. The two columns for p-values correspond, respectivelly from left to right, to p-values obtained in the case of the double-bootstrap or single-level bootstrap procedure  (see Supplementary Notes \\& Supplementary Figure 7).",
                  digits = 3L,
                  align = "lrr") %>%
     kableExtra::column_spec(2, underline = goodness_of_fit.table$`GOF p-value` >= 0.05) %>%
