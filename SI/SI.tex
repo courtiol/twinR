@@ -63,7 +63,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsfonts}
-\usepackage[sectionbib]{natbib}
 \usepackage{graphicx}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath,bm,upgreek}
@@ -84,8 +83,9 @@
 \usepackage{makecell}
 \usepackage[margin=1in]{geometry}
 \usepackage{flafter}
-
-\bibliographystyle{abbrv}
+%\usepackage[sectionbib]{natbib}
+\usepackage[style=nature, natbib=true]{biblatex}
+\addbibresource{twin_SI.bib}
 
 \newcommand{\adata}{\ensuremath{\mathcal{D}}}
 \newcommand{\data}{\ensuremath{D}}
@@ -116,8 +116,11 @@ Waldvogel \and A. Courtiol\footnote{corresponding author: courtiol@izw-berlin.de
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
-\renewcommand{\thetable}{S\arabic{table}}
-\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\figurename}{Supplementary Figure}
+\renewcommand{\tablename}{Supplementary Table}
+%\renewcommand{\thetable}{\arabic{table}}
+%\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand\refname{\textbf{Supplementary References}}
 
 
 
@@ -164,7 +167,7 @@ Pivotal statistics are not generally available for use in one-step bootstrap pro
 
 Double-bootstrap computations are computer intensive, and indeed not practically applicable as described above to the present problem. For such reasons, various simplifications of the above procedure have been discussed in the literature (\citealp{DavisonH97}, ch. 9). We apply here the notion of control variates, previously applied for bias correction in non-parametric bootstrap (ibid, Section 9.3; \citealp{Efron90}), as follows. A control variate is a variable correlated with $T$, which can be used to predict its value. The control variate that we consider here is (an estimator of) E$[S^*;\hat{\bth}_\pi(\data)]$, the expected value of the slope from samples drawn under the model fitted to \data. The test statistic of the corrected bootstrap test is then the residual of the prediction of the slope \sfn(\data)  by the mean value of $S^*$ under $\hat{\bth}_\pi(\data)$; the latter mean being obtained by performing a single-level bootstrap simulation. In the literature, simpler control variates have been considered, not requiring a bootstrap simulation; but these previous works considered non-parametric bootstrap simulations, which involve additional assumptions not valid here. In some of these previous works, parameter estimates (elements of $\hat{\bth}_\pi$) clearly correlated with $T$ have been used, in contrast to the present case.
 
-More specifically, we apply the following procedure, which would be exact (apart from finite simulation error) under the toy model. Under the tested model, we draw $B$ replicates of $\data^*$ given $\hat{\bth}_\pi(\adata)$ and $C$ replicates of $\data^{**}$ given $\hat{\bth}_\pi(\data^*)$. We then perform a \emph{calibration} fit to construct a predictor of $\sfn(\datab)$ from the average value of $\sfn(\databb)$, by simple regression with intercept and slope. We use the residuals of prediction as GOF statistics. We use $B=200$ and $C=49$. We also performed \emph{validation} simulations that demonstrated the need for correcting the single-level bootstrap procedure and the effectiveness of our correction. For this validation, under each of the sixteen scenarios, we simulated $B_{\mathrm{v}}=200$ samples under the fitted model and applied to them both the single-level bootstrap test and the testing procedure with control variate. The resulting distributions are shown in Fig. S7, which confirms the need for a correction for models including mechanisms P and S.
+More specifically, we apply the following procedure, which would be exact (apart from finite simulation error) under the toy model. Under the tested model, we draw $B$ replicates of $\data^*$ given $\hat{\bth}_\pi(\adata)$ and $C$ replicates of $\data^{**}$ given $\hat{\bth}_\pi(\data^*)$. We then perform a \emph{calibration} fit to construct a predictor of $\sfn(\datab)$ from the average value of $\sfn(\databb)$, by simple regression with intercept and slope. We use the residuals of prediction as GOF statistics. We use $B=200$ and $C=49$. We also performed \emph{validation} simulations that demonstrated the need for correcting the single-level bootstrap procedure and the effectiveness of our correction. For this validation, under each of the sixteen scenarios, we simulated $B_{\mathrm{v}}=200$ samples under the fitted model and applied to them both the single-level bootstrap test and the testing procedure with control variate. The resulting distributions are shown in Supplementary Figure 7, which confirms the need for a correction for models including mechanisms P and S.
 
 Computationally, the main benefits of using a control variate over the raw double-bootstrap appear (a) when performing a single test, as fewer simulations may be needed to reach a given degree of accuracy in p-value determination; (b) when assessing the performance of the GOF test of an hypothesis $\pi_0$ under an alternative model $\pi_1$ (and in particular for the validation simulations, where $\pi_0 = \pi_1$). We first perform a double bootstrap simulation to obtain a calibration fit under $\pi_0$. Then, for each new sample \data\ generated under $\pi_1$, we do not need to perform a new double-bootstrap simulation. Instead, we need only to compute \sfn(\data), $\hat{\bth}_{\pi_0}(\data)$, and values of $\sfn(\data^*)$ for $C$ replicates of $\data^*$ simulated given $\hat{\bth}_{\pi_0}(\data)$, to obtain the residual of prediction of \sfn(\data)  from mean $\sfn(\data^*)$ and to compare it to the distribution of residuals from the single double bootstrap simulation on the original \data.
 
@@ -179,7 +182,7 @@ Despite the huge savings in computing brought by the control variate approach ov
 \begin{center}
 \includegraphics[height = 6cm]{../figures/figS1.pdf}
 \end{center}
-\caption{Relationship between lifetime twinning status, maternal total births and the age at first birth (n=21,290 mothers in total, from 8 populations; see Table 1). The age at first birth was significantly higher for twinners with one ($\textrm{AFB}_\textrm{twinners}$ = 31.6 years; 95\% CI: 30.2, 33.0; $\textrm{AFB}_\textrm{non-twinners}$ = 29.3 years; 95\% CI 28.6, 30.0; delay for twinners = 27.5 months; 95\% CI: 11.9, 43.7) or two maternal total births ($\textrm{AFB}_\textrm{twinners}$ = 29.7 years; 95\% CI: 28.6, 30.8; $\textrm{AFB}_\textrm{non-twinners}$ = 28.2 years; 95\% CI: 27.5, 28.8; delay for twinners = 17.9 months; 95\% CI: 6.55, 29.4). Marginal predictions for the age at first reproduction are shown in black with open symbols. Their values are provided by the left y-axis. The distribution of maternal total births for both twinners and non-twinners is shown by the grey lines with filled symbols, with the numerical value given by the log-scaled y-axis on the right of the figure. 95\% CIs are shown as error bars and are based on 1000 parametric bootstrap replicates for each depicted category of maternal total births.}
+\caption{Relationship between lifetime twinning status, maternal total births and the age at first birth (n=21,290 mothers in total, from 8 populations; see Table 1 in main text). The age at first birth was significantly higher for twinners with one ($\textrm{AFB}_\textrm{twinners}$ = 31.6 years; 95\% CI: 30.2, 33.0; $\textrm{AFB}_\textrm{non-twinners}$ = 29.3 years; 95\% CI 28.6, 30.0; delay for twinners = 27.5 months; 95\% CI: 11.9, 43.7) or two maternal total births ($\textrm{AFB}_\textrm{twinners}$ = 29.7 years; 95\% CI: 28.6, 30.8; $\textrm{AFB}_\textrm{non-twinners}$ = 28.2 years; 95\% CI: 27.5, 28.8; delay for twinners = 17.9 months; 95\% CI: 6.55, 29.4). Marginal predictions for the age at first reproduction are shown in black with open symbols. Their values are provided by the left y-axis. The distribution of maternal total births for both twinners and non-twinners is shown by the grey lines with filled symbols, with the numerical value given by the log-scaled y-axis on the right of the figure. 95\% CIs are shown as error bars and are based on 1000 parametric bootstrap replicates for each depicted category of maternal total births.}
 \end{figure}
 
 \begin{figure}[H]
@@ -208,7 +211,7 @@ Top row (A-C) shows the relationship between the random effect from the fit of m
 \begin{center}
 \includegraphics[height = 6cm]{../figures/figS5.pdf}
 \end{center}
-\caption{Relationship between the per-birth twinning probability and maternal total births (n=23,281 mothers in total, from 9 populations; see Table S14). This figure reproduces the relationship shown in Main Text Fig. 2 (solid line for the regression line and grey area for the 95\% CI) but additionally plots the relationship with the inclusion of data from families with missing birth month information (including the entire Norway dataset). This latter relationship is illustrated by the dashed regression line with an estimated slope $\beta'$ of -0.0346 (95\% CI: -0.0511, -0.0183), as well as with the dotted lines showing the location of the 95\% CI.}
+\caption{Relationship between the per-birth twinning probability and maternal total births (n=23,281 mothers in total, from 9 populations; see Supplementary Table 14). This figure reproduces the relationship shown in main text Fig. 2 (solid line for the regression line and grey area for the 95\% CI) but additionally plots the relationship with the inclusion of data from families with missing birth month information (including the entire Norway dataset). This latter relationship is illustrated by the dashed regression line with an estimated slope $\beta'$ of -0.0346 (95\% CI: -0.0511, -0.0183), as well as with the dotted lines showing the location of the 95\% CI.}
 \end{figure}
 
 \begin{figure}[H]
@@ -257,7 +260,8 @@ Top row (A-C) shows the relationship between the random effect from the fit of m
 
 \input{../tables/tableS14.tex}
 
-\bibliography{biol,english,twin_SI}
+%\bibliography{twin_SI}
+\printbibliography
 
 \end{document}
 
