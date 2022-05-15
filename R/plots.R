@@ -587,7 +587,7 @@ draw_fig_5 <- function(data, width_petal = 0.5) {
   data_plot %>%
     ggplot2::ggplot() +
       ggplot2::aes(x = .data$scenario, y = .data$slopes_level1, fill = .data$pv_gof) +
-      ggplot2::coord_polar(start = pi/length(unique(data_plot$scenario))) +
+      ggplot2::coord_polar(start = -pi/length(unique(data_plot$scenario))) +
       ggplot2::geom_violin(size = 0.1, width = width_petal) + ## change width to change the width of the petals
       ggplot2::geom_hline(yintercept = 0, colour = "black", size = 0.2) +
       ggplot2::geom_hline(yintercept = unique(data_plot$slope_observed),
@@ -596,6 +596,7 @@ draw_fig_5 <- function(data, width_petal = 0.5) {
                                     midpoint = log(0.05, 10), limits  = c(min(c(0.005, data_plot$pv_gof)), 1), trans = "log10",
                                     breaks = c(0.005, 0.05, 1),
                                     guide = ggplot2::guide_colorbar(barwidth = ggplot2::unit(3.5, "cm"),
+                                                                    barheight = ggplot2::unit(0.4, "cm"),
                                                                     ticks.colour = "black",
                                                                     title.vjust = 0.8)) +
       ggplot2::labs(fill = "p-value") +
