@@ -46,14 +46,14 @@ They contains in the code the captions of the supplementary tables.
 }
 \section{Functions}{
 \itemize{
-\item \code{format_fit_summary.table_2_LaTeX}: turn a model fit summary table into the *.tex format
+\item \code{format_fit_summary.table_2_LaTeX()}: turn a model fit summary table into the *.tex format
 
-\item \code{format_data_summary.table_2_LaTeX}: turn a data summary table into the *.tex format
+\item \code{format_data_summary.table_2_LaTeX()}: turn a data summary table into the *.tex format
 
-\item \code{format_goodness_of_fit.table_2_LaTeX}: turn the table with the results from the goodness of fit into the *.tex format
+\item \code{format_goodness_of_fit.table_2_LaTeX()}: turn the table with the results from the goodness of fit into the *.tex format
 
-\item \code{format_formula_2_LaTeX}: extract a model formula from a fitted model and format it for LaTeX
+\item \code{format_formula_2_LaTeX()}: extract a model formula from a fitted model and format it for LaTeX
 
-\item \code{format_text_2_LaTeX}: format text for LaTeX
+\item \code{format_text_2_LaTeX()}: format text for LaTeX
+
 }}
-

@@ -155,45 +155,45 @@ See \strong{Functions}, below, for details on which model each function does fit
 }
 \section{Functions}{
 \itemize{
-\item \code{fit_totalbirths}: fit the model predicting the total number of births per mother from her twinning status
+\item \code{fit_totalbirths()}: fit the model predicting the total number of births per mother from her twinning status
 
-\item \code{fit_twinner.allbirths}: fit the model predicting the twinning status of the mother at any birth during her life from her total number of births
+\item \code{fit_twinner.allbirths()}: fit the model predicting the twinning status of the mother at any birth during her life from her total number of births
 
-\item \code{fit_twinner.firstbirth}: fit the model predicting the twinning status of the mother at first birth from her total number of births
+\item \code{fit_twinner.firstbirth()}: fit the model predicting the twinning status of the mother at first birth from her total number of births
 
-\item \code{fit_twinning.binomial}: fit the model predicting the probability of a birth to result in twins from the total number of births
+\item \code{fit_twinning.binomial()}: fit the model predicting the probability of a birth to result in twins from the total number of births
 
-\item \code{fit_twinning.binomial_with_pop_as_fixed}: fit the model predicting the probability of a birth to result in twins from the total number of births with population considered as a fixed effect
+\item \code{fit_twinning.binomial_with_pop_as_fixed()}: fit the model predicting the probability of a birth to result in twins from the total number of births with population considered as a fixed effect
 
-\item \code{fit_twinning.binomial_with_pop_interaction}: fit the model predicting the probability of a birth to result in twins from the total number of births in interaction with the population
+\item \code{fit_twinning.binomial_with_pop_interaction()}: fit the model predicting the probability of a birth to result in twins from the total number of births in interaction with the population
 
-\item \code{fit_AFB}: fit the model predicting the age at first birth from the twinning status and the total number of births
+\item \code{fit_AFB()}: fit the model predicting the age at first birth from the twinning status and the total number of births
 
-\item \code{fit_PP}: fit the model predicting the probability of parity progression
+\item \code{fit_PP()}: fit the model predicting the probability of parity progression
 
-\item \code{fit_IBI}: fit the model predicting the duration of the interbirth interval (minus 6 months)
+\item \code{fit_IBI()}: fit the model predicting the duration of the interbirth interval (minus 6 months)
 
-\item \code{fit_twinning.binary}: fit the model predicting the probability of twinning for a given birth event
+\item \code{fit_twinning.binary()}: fit the model predicting the probability of twinning for a given birth event
 
-\item \code{fit_life_histories}: fit all three life history models according to the simulation scenario
+\item \code{fit_life_histories()}: fit all three life history models according to the simulation scenario
 
 This function fits all three life history models according to the simulation scenario provided.
 The polynomial orders are estimated, which is why each of the three models has to be fitted seven
 times under its default settings (order 0->6). It also returns the total time elapsed by the
 function.
 
-\item \code{compute_slope_from_birth.level.data}: compute the slope between the total number of births and the per-birth twinning probability from birth level data
+\item \code{compute_slope_from_birth.level.data()}: compute the slope between the total number of births and the per-birth twinning probability from birth level data
 
 This function fits the model investigating the relationship between parity and twinning
 probability using \code{\link{fit_twinning.binomial}} and retrieve the slope of interest. For this, it
 aggregates the birth level data.
 
-\item \code{fit_model_safely}: internal function calling the fitting function from spaMM
+\item \code{fit_model_safely()}: internal function calling the fitting function from spaMM
 
 This internal function allows for the handling of messages and timeout threshold.
 It is called by all the other fitting functions.
-}}
 
+}}
 \examples{
 # See ?twinR
 

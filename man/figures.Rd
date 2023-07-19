@@ -67,39 +67,39 @@ Functions producing the figures
 }
 \section{Functions}{
 \itemize{
-\item \code{draw_fig_1A}: draw fig. 1A
+\item \code{draw_fig_1A()}: draw fig. 1A
 
-\item \code{draw_fig_1B}: draw fig. 1B
+\item \code{draw_fig_1B()}: draw fig. 1B
 
-\item \code{draw_fig_1C}: draw fig. 1C
+\item \code{draw_fig_1C()}: draw fig. 1C
 
-\item \code{draw_fig_1D}: draw fig. 1D
+\item \code{draw_fig_1D()}: draw fig. 1D
 
-\item \code{draw_fig_2}: draw fig. 2
+\item \code{draw_fig_2()}: draw fig. 2
 
-\item \code{draw_fig_4A}: draw fig. 4A
+\item \code{draw_fig_4A()}: draw fig. 4A
 
-\item \code{draw_fig_4B}: draw fig. 4B
+\item \code{draw_fig_4B()}: draw fig. 4B
 
-\item \code{draw_fig_4C}: draw fig. 4C
+\item \code{draw_fig_4C()}: draw fig. 4C
 
-\item \code{draw_fig_5}: draw fig. 5
+\item \code{draw_fig_5()}: draw fig. 5
 
-\item \code{draw_fig_S1}: draw fig. S1
+\item \code{draw_fig_S1()}: draw fig. S1
 
-\item \code{draw_fig_S2}: draw fig. S2
+\item \code{draw_fig_S2()}: draw fig. S2
 
-\item \code{draw_fig_S5}: draw fig. S5
+\item \code{draw_fig_S5()}: draw fig. S5
 
-\item \code{draw_fig_S6A}: draw fig. S6A
+\item \code{draw_fig_S6A()}: draw fig. S6A
 
-\item \code{draw_fig_S6B}: draw fig. S6B
+\item \code{draw_fig_S6B()}: draw fig. S6B
 
-\item \code{draw_fig_S6C}: draw fig. S6C
+\item \code{draw_fig_S6C()}: draw fig. S6C
 
-\item \code{draw_fig_S6D}: draw fig. S6D
+\item \code{draw_fig_S6D()}: draw fig. S6D
+
 }}
-
 \examples{
 # See ?twinR
 

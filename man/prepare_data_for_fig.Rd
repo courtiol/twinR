@@ -60,23 +60,23 @@ the comments will have been stripped away during the installation process.
 }
 \section{Functions}{
 \itemize{
-\item \code{prepare_newdata_fig_3}: an internal function to prepare the data used to generate the predictions to be plotted in Fig. 3
+\item \code{prepare_newdata_fig_3()}: an internal function to prepare the data used to generate the predictions to be plotted in Fig. 3
 
-\item \code{prepare_data_fig_4A}: prepare the data to be plotted in Fig. 4A
+\item \code{prepare_data_fig_4A()}: prepare the data to be plotted in Fig. 4A
 
-\item \code{prepare_data_fig_4B}: prepare the data to be plotted in Fig. 4B
+\item \code{prepare_data_fig_4B()}: prepare the data to be plotted in Fig. 4B
 
-\item \code{prepare_data_fig_4C}: prepare the data to be plotted in Fig. 4C
+\item \code{prepare_data_fig_4C()}: prepare the data to be plotted in Fig. 4C
 
-\item \code{prepare_newdata_fig_S1}: an internal function to prepare the data used to generate the predictions to be plotted in Fig. S1
+\item \code{prepare_newdata_fig_S1()}: an internal function to prepare the data used to generate the predictions to be plotted in Fig. S1
 
-\item \code{prepare_data_fig_S1}: prepare the data to be plotted in Fig. S1
+\item \code{prepare_data_fig_S1()}: prepare the data to be plotted in Fig. S1
 
-\item \code{prepare_data_fig_S2}: prepare the data to be plotted in Fig. S2
+\item \code{prepare_data_fig_S2()}: prepare the data to be plotted in Fig. S2
 
-\item \code{prepare_data_fig_S6}: prepare the data to be plotted in Fig. S6
+\item \code{prepare_data_fig_S6()}: prepare the data to be plotted in Fig. S6
+
 }}
-
 \examples{
 prepare_newdata_fig_3(expand_data(data_births_all), xaxis = "age")
 prepare_newdata_fig_3(expand_data(data_births_all), xaxis = "parity")

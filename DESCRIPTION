@@ -1,7 +1,7 @@
 Package: twinR
 Type: Package
 Title: A Supporting R Package for the Paper "Mothers with higher twinning propensity had lower fertility in pre-industrial Europe" (Rickard et al., Nature Communications 2002)
-Version: 1.0.2
+Version: 1.1
 Authors@R: c(person("Alexandre", "Courtiol", email = "courtiol@izw-berlin.de", role = c("cre", "aut"), comment = c(ORCID = "0000-0003-0637-2959")),
              person("François", "Rousset", email = "francois.rousset@umontpellier.fr", role = "aut", comment = c(ORCID = "0000-0003-4670-0371")),
              person("Ian", "Rickard", email = "ian.rickard@durham.ac.uk", role = "aut", comment = c(ORCID = "0000-0003-0762-1689")),
@@ -10,7 +10,7 @@ Description: This package contains the code necessary to produce the results of 
 License: CC BY-SA 4.0
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Depends:
     R (>= 3.5.0)
@@ -32,6 +32,7 @@ Imports:
 Suggests:
     doSNOW,
     digest,
+    ggthemes,
     openxlsx,
     pbmcapply,
     knitr,

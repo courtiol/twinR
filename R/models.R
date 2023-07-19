@@ -116,7 +116,11 @@ fit_twinner.firstbirth <- function(mother_level_data, timeout = Inf, verbose = T
 #'
 fit_twinning.binomial <- function(mother_level_data, timeout = Inf, verbose = TRUE) {
 
-  formula <- "cbind(twin_total, singleton_total) ~ 1 + births_total + (1|pop)"
+  if (length(unique(mother_level_data$pop)) > 1) {
+    formula <- "cbind(twin_total, singleton_total) ~ 1 + births_total + (1|pop)"
+  } else {
+    formula <- "cbind(twin_total, singleton_total) ~ 1 + births_total"
+  }
 
   if (verbose) print(paste0("Fitting model '", formula, "'..."))
 

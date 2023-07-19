@@ -70,19 +70,19 @@ exactly how we performed our simulations.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{life_histories$new()}}
-\item \href{#method-build_initial_state}{\code{life_histories$build_initial_state()}}
-\item \href{#method-simulate_one_iteration}{\code{life_histories$simulate_one_iteration()}}
-\item \href{#method-update_data_simulated}{\code{life_histories$update_data_simulated()}}
-\item \href{#method-filter_data_simulated}{\code{life_histories$filter_data_simulated()}}
-\item \href{#method-run}{\code{life_histories$run()}}
-\item \href{#method-format_data_outputs}{\code{life_histories$format_data_outputs()}}
-\item \href{#method-clone}{\code{life_histories$clone()}}
+\item \href{#method-life_histories-new}{\code{life_histories$new()}}
+\item \href{#method-life_histories-build_initial_state}{\code{life_histories$build_initial_state()}}
+\item \href{#method-life_histories-simulate_one_iteration}{\code{life_histories$simulate_one_iteration()}}
+\item \href{#method-life_histories-update_data_simulated}{\code{life_histories$update_data_simulated()}}
+\item \href{#method-life_histories-filter_data_simulated}{\code{life_histories$filter_data_simulated()}}
+\item \href{#method-life_histories-run}{\code{life_histories$run()}}
+\item \href{#method-life_histories-format_data_outputs}{\code{life_histories$format_data_outputs()}}
+\item \href{#method-life_histories-clone}{\code{life_histories$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-life_histories-new"></a>}}
+\if{latex}{\out{\hypertarget{method-life_histories-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new object from the class life_histories (constructor)
 
@@ -118,8 +118,8 @@ an object of class \code{life_histories}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-build_initial_state"></a>}}
-\if{latex}{\out{\hypertarget{method-build_initial_state}{}}}
+\if{html}{\out{<a id="method-life_histories-build_initial_state"></a>}}
+\if{latex}{\out{\hypertarget{method-life_histories-build_initial_state}{}}}
 \subsection{Method \code{build_initial_state()}}{
 Build the initial state for the simulations
 
@@ -137,8 +137,8 @@ building of the initial state of the population.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-simulate_one_iteration"></a>}}
-\if{latex}{\out{\hypertarget{method-simulate_one_iteration}{}}}
+\if{html}{\out{<a id="method-life_histories-simulate_one_iteration"></a>}}
+\if{latex}{\out{\hypertarget{method-life_histories-simulate_one_iteration}{}}}
 \subsection{Method \code{simulate_one_iteration()}}{
 Simulate an iteration of the life history of the mothers
 
@@ -155,8 +155,8 @@ In the simulation, an iteration corresponds to three specific happenings:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-update_data_simulated"></a>}}
-\if{latex}{\out{\hypertarget{method-update_data_simulated}{}}}
+\if{html}{\out{<a id="method-life_histories-update_data_simulated"></a>}}
+\if{latex}{\out{\hypertarget{method-life_histories-update_data_simulated}{}}}
 \subsection{Method \code{update_data_simulated()}}{
 Update the simulated dataset
 
@@ -167,8 +167,8 @@ This function adds data from a given iteration to the complete dataset (i.e. \co
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-filter_data_simulated"></a>}}
-\if{latex}{\out{\hypertarget{method-filter_data_simulated}{}}}
+\if{html}{\out{<a id="method-life_histories-filter_data_simulated"></a>}}
+\if{latex}{\out{\hypertarget{method-life_histories-filter_data_simulated}{}}}
 \subsection{Method \code{filter_data_simulated()}}{
 Filter the simulated dataset
 
@@ -183,8 +183,8 @@ than 60, but no mother will reproduce passed 60.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-run"></a>}}
-\if{latex}{\out{\hypertarget{method-run}{}}}
+\if{html}{\out{<a id="method-life_histories-run"></a>}}
+\if{latex}{\out{\hypertarget{method-life_histories-run}{}}}
 \subsection{Method \code{run()}}{
 Run the simulation
 
@@ -197,8 +197,8 @@ no mother keeps reproducing.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_data_outputs"></a>}}
-\if{latex}{\out{\hypertarget{method-format_data_outputs}{}}}
+\if{html}{\out{<a id="method-life_histories-format_data_outputs"></a>}}
+\if{latex}{\out{\hypertarget{method-life_histories-format_data_outputs}{}}}
 \subsection{Method \code{format_data_outputs()}}{
 Format the simulated data as original data
 
@@ -209,8 +209,8 @@ This function turns the simulated data into birth level data and mother level da
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-life_histories-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-life_histories-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

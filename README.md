@@ -51,9 +51,18 @@ Since comments embedded within source code disappear upon installation of R pack
 The source files are located within the folder **"R"** shown above.
 
 
+## New analysis
+
+Following a comment on our paper (not yet published), we designed a new analysis. This analysis can be viewed in the script located in `inst/extdata/analysis_reply_to_comment.R` which can be accessed easily in RStudio (after installing our package, see above) with the following command:
+
+```r
+rstudioapi::documentOpen(paste0(system.file(package = "twinR"), "/extdata/analysis_reply_to_comment.R"))
+```
+
+
 ## R session info
 
-Here are the versions of all the packages used directly or indirectly for this work:
+Here are the versions of all the packages used directly or indirectly for the main publication:
 
 ```r
 > sessionInfo()

@@ -56,8 +56,8 @@ repetitions.
 }
 \section{Functions}{
 \itemize{
-\item \code{compare_predictions}: compute differences or odds ratio between two predictions
+\item \code{compare_predictions()}: compute differences or odds ratio between two predictions
 
-\item \code{compute_predictions}: compute multiple predictions
+\item \code{compute_predictions()}: compute multiple predictions
+
 }}
-
