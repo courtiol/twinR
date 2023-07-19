@@ -251,24 +251,24 @@ result_estonian_study$data_fig_2_noLB_post1850$results$pre1850_included <- FALSE
 draw_plot(bind_rows(result_original_study$data_fig_2$results,
                     result_estonian_study$data_fig_2$results) |>
             mutate(pop = relevel(as.factor(pop), ref = "Estonian")),
-          title = "Complete datasets\n (no date restriction)") -> plot1
+          title = "With last births (no date restriction)") -> plot1
 
 draw_plot(bind_rows(result_original_study$data_fig_2_noLB$results,
                     result_estonian_study$data_fig_2_noLB$results) |>
             mutate(pop = relevel(as.factor(pop), ref = "Estonian")),
-          title = "Without last births\n (no date restriction)") +
+          title = "Without last births (no date restriction)") +
   theme(legend.position = "none") -> plot2
 
 draw_plot(bind_rows(result_original_study$data_fig_2_post1850$results,
                     result_estonian_study$data_fig_2_post1850$results) |>
             mutate(pop = relevel(as.factor(pop), ref = "Estonian")),
-          title = "Complete datasets\n (mothers born 1850-1899)") +
+          title = "With last births (mothers born 1850-1899)") +
   theme(legend.position = "none") -> plot3
 
 draw_plot(bind_rows(result_original_study$data_fig_2_noLB_post1850$results,
                     result_estonian_study$data_fig_2_noLB_post1850$results) |>
             mutate(pop = relevel(as.factor(pop), ref = "Estonian")),
-          title = "Without last births\n (mothers born 1850-1899)") +
+          title = "Without last births (mothers born 1850-1899)") +
   theme(legend.position = "none") -> plot4
 
 legend <- get_legend(plot1 +
