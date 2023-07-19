@@ -207,8 +207,8 @@ fit_all_noLB_pre1850_no_int <- fitme(cbind(twin_total, singleton_total) ~ 1 + bi
                                      data = data_all_noLB_pre1850)
 
 anova(fit_all_noLB_pre1850, fit_all_noLB_pre1850_no_int)
-# chi2_LR df  p_value
-
+#         chi2_LR df   p_value
+# p_v 0.003886339  2 0.9980587
 
 
 # Preparing data for plots -------------------------------------------------
