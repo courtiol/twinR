@@ -175,38 +175,38 @@ data_births_all2 |>
 
 # Compare datasets using models with last births -------------------------------
 
-data_all_pre1850 <- bind_rows(result_original_study$fits$fit_post1850$data,
-                              result_estonian_study$fits$fit_post1850$data) |>
+data_all_post1850 <- bind_rows(result_original_study$fits$fit_post1850$data,
+                               result_estonian_study$fits$fit_post1850$data) |>
   mutate(dataset = ifelse(pop == "EE", "EE", "original"))
 
-fit_all_pre1850 <- fitme(cbind(twin_total, singleton_total) ~ 1 + births_total*dataset + (1 | pop),
-                         family = binomial(link = "logit"),
-                         data = data_all_pre1850)
+fit_all_post1850 <- fitme(cbind(twin_total, singleton_total) ~ 1 + births_total*dataset + (1 | pop),
+                          family = binomial(link = "logit"),
+                          data = data_all_post1850)
 
-fit_all_pre1850_no_int <- fitme(cbind(twin_total, singleton_total) ~ 1 + births_total + (1 | pop),
-                                family = binomial(link = "logit"),
-                                data = data_all_pre1850)
+fit_all_post1850_no_int <- fitme(cbind(twin_total, singleton_total) ~ 1 + births_total + (1 | pop),
+                                 family = binomial(link = "logit"),
+                                 data = data_all_post1850)
 
-anova(fit_all_pre1850, fit_all_pre1850_no_int)
+anova(fit_all_post1850, fit_all_post1850_no_int)
 # chi2_LR df  p_value
 # p_v 3.129245  2 0.209167
 
 
 # Compare datasets using models without last births -------------------------------
 
-data_all_noLB_pre1850 <- bind_rows(result_original_study$fits$fit_noLB_post1850$data,
-                                   result_estonian_study$fits$fit_noLB_post1850$data) |>
+data_all_noLB_post1850 <- bind_rows(result_original_study$fits$fit_noLB_post1850$data,
+                                    result_estonian_study$fits$fit_noLB_post1850$data) |>
   mutate(dataset = ifelse(pop == "EE", "EE", "original"))
 
-fit_all_noLB_pre1850 <- fitme(cbind(twin_total, singleton_total) ~ 1 + births_total*dataset + (1 | pop),
-                              family = binomial(link = "logit"),
-                              data = data_all_noLB_pre1850)
+fit_all_noLB_post1850 <- fitme(cbind(twin_total, singleton_total) ~ 1 + births_total*dataset + (1 | pop),
+                               family = binomial(link = "logit"),
+                               data = data_all_noLB_post1850)
 
-fit_all_noLB_pre1850_no_int <- fitme(cbind(twin_total, singleton_total) ~ 1 + births_total + (1 | pop),
-                                     family = binomial(link = "logit"),
-                                     data = data_all_noLB_pre1850)
+fit_all_noLB_post1850_no_int <- fitme(cbind(twin_total, singleton_total) ~ 1 + births_total + (1 | pop),
+                                      family = binomial(link = "logit"),
+                                      data = data_all_noLB_post1850)
 
-anova(fit_all_noLB_pre1850, fit_all_noLB_pre1850_no_int)
+anova(fit_all_noLB_post1850, fit_all_noLB_post1850_no_int)
 #         chi2_LR df   p_value
 # p_v 0.003886339  2 0.9980587
 
